@@ -1,9 +1,11 @@
-package com.vpaliy.espressoinaction;
+package com.vpaliy.espressoinaction.presentation;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class MainActivity extends AppCompatActivity {
+import com.vpaliy.espressoinaction.R;
+
+public class HomeActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
