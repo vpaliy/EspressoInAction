@@ -3,6 +3,8 @@ package com.vpaliy.espressoinaction.di.module;
 
 import android.content.Context;
 
+import com.vpaliy.espressoinaction.presentation.bus.RxBus;
+
 import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
@@ -18,7 +20,13 @@ public class ApplicationModule {
 
     @Provides
     @Singleton
-    public Context provideContext(){
+    Context provideContext(){
         return context;
+    }
+
+    @Provides
+    @Singleton
+    RxBus provideBus(){
+        return new RxBus();
     }
 }
