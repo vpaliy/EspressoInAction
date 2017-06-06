@@ -4,3 +4,4 @@ public interface IMessageProvider {
     String onError();
     String onEmpty();
 }
+
