@@ -1,6 +1,6 @@
 package com.vpaliy.espressoinaction.data;
 
-import com.vpaliy.espressoinaction.data.cache.Cache;
+import com.vpaliy.espressoinaction.data.cache.CacheStore;
 import com.vpaliy.espressoinaction.data.local.DataHandler;
 import com.vpaliy.espressoinaction.domain.IRepository;
 import com.vpaliy.espressoinaction.domain.model.Coffee;
@@ -16,11 +16,11 @@ import rx.Observable;
 public class CoffeeRepository implements IRepository<Coffee> {
 
     private DataHandler<Coffee> handler;
-    private Cache<Coffee> cache;
+    private CacheStore<Coffee> cache;
 
     @Inject
     public CoffeeRepository(DataHandler<Coffee> handler,
-                            Cache<Coffee> cache){
+                            CacheStore<Coffee> cache){
         this.handler=handler;
         this.cache=cache;
     }
