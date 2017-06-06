@@ -1,7 +1,11 @@
 package com.vpaliy.espressoinaction.presentation.ui.fragment;
 
 import android.os.Bundle;
+
+import com.vpaliy.espressoinaction.CoffeeApp;
 import com.vpaliy.espressoinaction.R;
+import com.vpaliy.espressoinaction.di.component.DaggerViewComponent;
+import com.vpaliy.espressoinaction.di.module.PresenterModule;
 import com.vpaliy.espressoinaction.domain.model.Coffee;
 import com.vpaliy.espressoinaction.presentation.bus.RxBus;
 import com.vpaliy.espressoinaction.presentation.mvp.contract.CoffeesContract;
@@ -43,7 +47,10 @@ public class CoffeesFragment extends BaseFragment
 
     @Override
     void initializeDependencies() {
-
+        DaggerViewComponent.builder()
+                .applicationComponent(CoffeeApp.app().component())
+                .presenterModule(new PresenterModule())
+                .build().inject(this);
     }
 
     @Override

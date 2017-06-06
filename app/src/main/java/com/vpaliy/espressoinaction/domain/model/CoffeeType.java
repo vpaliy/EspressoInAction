@@ -5,5 +5,7 @@ public enum CoffeeType {
     MOCHA,
     AMERICANO,
     ESPRESSO,
-    CAPPUCCINO
+    CAPPUCCINO,
+    CARAMEL_FRAPPUCCINO,
+    ESPRESSO_FRAPPUCCINO
 }

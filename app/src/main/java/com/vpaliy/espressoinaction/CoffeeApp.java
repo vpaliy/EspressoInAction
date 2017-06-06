@@ -11,6 +11,7 @@ public class CoffeeApp extends Application {
     private ApplicationComponent component;
 
     private static CoffeeApp app;
+
     @Override
     public void onCreate() {
         super.onCreate();

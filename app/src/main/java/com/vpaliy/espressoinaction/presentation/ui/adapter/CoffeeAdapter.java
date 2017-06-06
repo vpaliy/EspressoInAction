@@ -4,8 +4,16 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.vpaliy.espressoinaction.R;
 import com.vpaliy.espressoinaction.domain.model.Coffee;
 import com.vpaliy.espressoinaction.presentation.bus.RxBus;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class CoffeeAdapter extends AbstractAdapter<Coffee> {
 
@@ -16,18 +24,33 @@ public class CoffeeAdapter extends AbstractAdapter<Coffee> {
 
     @Override
     public AbstractViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return null;
+        View root=inflater.inflate(R.layout.adapter_coffee_item,parent,false);
+        return new CoffeeViewHolder(root);
     }
 
-    public class CoffeeViewHolder extends AbstractAdapter.AbstractViewHolder{
+    public class CoffeeViewHolder
+            extends AbstractAdapter<Coffee>.AbstractViewHolder{
 
-        public CoffeeViewHolder(View itemView){
+        @BindView(R.id.image) ImageView image;
+        @BindView(R.id.name) TextView name;
+        @BindView(R.id.price) TextView price;
+
+        CoffeeViewHolder(View itemView){
             super(itemView);
+            ButterKnife.bind(this,itemView);
         }
 
         @Override
         void onBind() {
-
+            Coffee coffee=at(getAdapterPosition());
+            String drawableUri=coffee.getImageUrl();
+            int resourceId=Integer.parseInt(drawableUri.substring(drawableUri.lastIndexOf("/")+1));
+            Glide.with(inflater.getContext())
+                    .load(resourceId)
+                    .centerCrop()
+                    .into(image);
+            name.setText(coffee.getCoffeeType().toString());
+            price.setText(Double.toString(coffee.getPrice()));
         }
     }
 }
