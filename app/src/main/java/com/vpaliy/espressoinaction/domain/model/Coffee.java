@@ -1,16 +1,33 @@
-package com.vpaliy.espressoinaction.model;
+package com.vpaliy.espressoinaction.domain.model;
 
 
 public class Coffee {
 
     private double price;
+    private int coffeeId;
     private Sweetness sweetness;
     private MilkType milkType;
     private SizeType sizeType;
     private CoffeeType coffeeType;
+    private String imageUrl;
 
     public void setCoffeeType(CoffeeType coffeeType) {
         this.coffeeType = coffeeType;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+    public void setCoffeeId(int coffeeId) {
+        this.coffeeId = coffeeId;
+    }
+
+    public int getCoffeeId() {
+        return coffeeId;
     }
 
     public void setMilkType(MilkType milkType) {
