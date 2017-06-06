@@ -2,10 +2,15 @@ package com.vpaliy.espressoinaction.data.cache;
 
 import android.util.SparseArray;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+@Singleton
 public class CacheStore<T> {
 
     private SparseArray<T> inMemoryCache;
 
+    @Inject
     public CacheStore(int size){
         this.inMemoryCache=new SparseArray<>(size);
     }

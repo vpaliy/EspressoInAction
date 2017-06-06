@@ -2,7 +2,9 @@ package com.vpaliy.espressoinaction.di.module;
 
 import android.content.ContentResolver;
 import android.content.Context;
-
+import com.vpaliy.espressoinaction.data.local.CoffeeHandler;
+import com.vpaliy.espressoinaction.data.local.DataHandler;
+import com.vpaliy.espressoinaction.data.local.OrderHandler;
 import com.vpaliy.espressoinaction.data.repository.CoffeeRepository;
 import com.vpaliy.espressoinaction.data.repository.OrderRepository;
 import com.vpaliy.espressoinaction.domain.IRepository;
@@ -17,20 +19,33 @@ public class DataModule {
 
     @Singleton
     @Provides
-    public IRepository<Coffee> coffeeIRepository(CoffeeRepository repository){
+    IRepository<Coffee> provideCoffeeIRepository(CoffeeRepository repository){
         return repository;
     }
 
     @Singleton
     @Provides
-    public IRepository<Order> orderIRepository(OrderRepository repository){
+    IRepository<Order> provideOrderIRepository(OrderRepository repository){
         return repository;
     }
 
     @Singleton
     @Provides
-    public ContentResolver provideContentResolver(Context context){
+    ContentResolver provideContentResolver(Context context){
         return context.getContentResolver();
     }
+
+    @Singleton
+    @Provides
+    DataHandler<Coffee> provideCoffeeHandler(CoffeeHandler handler){
+        return handler;
+    }
+
+    @Singleton
+    @Provides
+    DataHandler<Order> provideOrderHandler(OrderHandler handler){
+        return handler;
+    }
+
 
 }

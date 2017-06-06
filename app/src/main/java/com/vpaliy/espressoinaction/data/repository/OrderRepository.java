@@ -1,5 +1,7 @@
 package com.vpaliy.espressoinaction.data.repository;
 
+import android.support.annotation.NonNull;
+
 import com.vpaliy.espressoinaction.data.cache.CacheStore;
 import com.vpaliy.espressoinaction.data.local.DataHandler;
 import com.vpaliy.espressoinaction.domain.IRepository;
@@ -14,8 +16,8 @@ public class OrderRepository implements IRepository<Order> {
     private DataHandler<Order> handler;
 
     @Inject
-    public OrderRepository(DataHandler<Order> handler,
-                           CacheStore<Order> cache){
+    public OrderRepository(@NonNull DataHandler<Order> handler,
+                           @NonNull CacheStore<Order> cache){
         this.handler=handler;
         this.cache=cache;
     }

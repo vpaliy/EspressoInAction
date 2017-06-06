@@ -1,5 +1,7 @@
 package com.vpaliy.espressoinaction.data.repository;
 
+import android.support.annotation.NonNull;
+
 import com.vpaliy.espressoinaction.data.cache.CacheStore;
 import com.vpaliy.espressoinaction.data.local.DataHandler;
 import com.vpaliy.espressoinaction.domain.IRepository;
@@ -16,8 +18,8 @@ public class CoffeeRepository implements IRepository<Coffee> {
     private CacheStore<Coffee> cache;
 
     @Inject
-    public CoffeeRepository(DataHandler<Coffee> handler,
-                            CacheStore<Coffee> cache){
+    public CoffeeRepository(@NonNull DataHandler<Coffee> handler,
+                            @NonNull CacheStore<Coffee> cache){
         this.handler=handler;
         this.cache=cache;
     }
