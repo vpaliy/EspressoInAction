@@ -9,7 +9,9 @@ import com.vpaliy.espressoinaction.domain.model.Order;
 import java.util.List;
 import rx.Observable;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
+@Singleton
 public class OrderRepository implements IRepository<Order> {
 
     private CacheStore<Order> cache;

@@ -41,6 +41,8 @@ android {
 
 
 dependencies {
+
+    compile 'com.roughike:bottom-bar:2.3.1'
     compile libs.constraintLayout
     compile libs.cardView
     compile libs.recyclerView

@@ -8,8 +8,11 @@ import com.vpaliy.espressoinaction.domain.IRepository;
 import com.vpaliy.espressoinaction.domain.model.Coffee;
 import com.vpaliy.espressoinaction.domain.model.Order;
 
+import javax.inject.Singleton;
+
 import dagger.Component;
 
+@Singleton
 @Component(modules = {DataModule.class, ApplicationModule.class})
 public interface ApplicationComponent {
 

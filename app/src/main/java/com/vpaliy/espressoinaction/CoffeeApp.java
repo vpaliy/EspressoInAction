@@ -2,6 +2,9 @@ package com.vpaliy.espressoinaction;
 
 import android.app.Application;
 import com.vpaliy.espressoinaction.di.component.ApplicationComponent;
+import com.vpaliy.espressoinaction.di.component.DaggerApplicationComponent;
+import com.vpaliy.espressoinaction.di.module.ApplicationModule;
+import com.vpaliy.espressoinaction.di.module.DataModule;
 
 public class CoffeeApp extends Application {
 
@@ -24,7 +27,10 @@ public class CoffeeApp extends Application {
     }
 
     private void initializeComponent(){
-
+        component= DaggerApplicationComponent.builder()
+                .applicationModule(new ApplicationModule(this))
+                .dataModule(new DataModule())
+                .build();
     }
 
 }

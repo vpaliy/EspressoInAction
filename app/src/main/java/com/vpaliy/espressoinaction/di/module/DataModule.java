@@ -2,6 +2,8 @@ package com.vpaliy.espressoinaction.di.module;
 
 import android.content.ContentResolver;
 import android.content.Context;
+
+import com.vpaliy.espressoinaction.data.cache.CacheStore;
 import com.vpaliy.espressoinaction.data.local.CoffeeHandler;
 import com.vpaliy.espressoinaction.data.local.DataHandler;
 import com.vpaliy.espressoinaction.data.local.OrderHandler;
@@ -16,6 +18,8 @@ import dagger.Provides;
 
 @Module
 public class DataModule {
+
+    private static final int CACHE_SIZE=100;
 
     @Singleton
     @Provides
@@ -47,5 +51,16 @@ public class DataModule {
         return handler;
     }
 
+    @Singleton
+    @Provides
+    CacheStore<Coffee> provideCoffeeCache(){
+        return new CacheStore<>(CACHE_SIZE);
+    }
+
+    @Singleton
+    @Provides
+    CacheStore<Order> provideOrderCache(){
+        return new CacheStore<>(CACHE_SIZE);
+    }
 
 }

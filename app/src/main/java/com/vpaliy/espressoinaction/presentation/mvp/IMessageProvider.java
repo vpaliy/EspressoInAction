@@ -1,4 +1,4 @@
-package com.vpaliy.espressoinaction.presentation;
+package com.vpaliy.espressoinaction.presentation.mvp;
 
 public interface IMessageProvider {
     String onError();

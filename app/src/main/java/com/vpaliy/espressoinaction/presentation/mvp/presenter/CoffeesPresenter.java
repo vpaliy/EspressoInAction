@@ -1,18 +1,19 @@
-package com.vpaliy.espressoinaction.presentation.coffees;
-
+package com.vpaliy.espressoinaction.presentation.mvp.presenter;
 
 import android.support.annotation.NonNull;
+
 import com.vpaliy.espressoinaction.common.scheduler.BaseSchedulerProvider;
-import com.vpaliy.espressoinaction.di.scope.ViewScope;
 import com.vpaliy.espressoinaction.domain.IRepository;
 import com.vpaliy.espressoinaction.domain.model.Coffee;
+import com.vpaliy.espressoinaction.presentation.coffees.CoffeesContract.Presenter;
+import com.vpaliy.espressoinaction.presentation.coffees.CoffeesContract.View;
 import java.util.List;
+
 import javax.inject.Inject;
-import  com.vpaliy.espressoinaction.presentation.coffees.CoffeesContract.View;
+
 import rx.subscriptions.CompositeSubscription;
 
-@ViewScope
-public class CoffeesPresenter implements CoffeesContract.Presenter{
+public class CoffeesPresenter implements Presenter{
 
     private View view;
     private IRepository<Coffee> repository;

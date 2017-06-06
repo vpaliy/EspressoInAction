@@ -1,4 +1,4 @@
-package com.vpaliy.espressoinaction.presentation;
+package com.vpaliy.espressoinaction.presentation.mvp;
 
 
 import android.support.annotation.NonNull;

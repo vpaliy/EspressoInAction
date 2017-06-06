@@ -1,8 +1,7 @@
-package com.vpaliy.espressoinaction.presentation;
+package com.vpaliy.espressoinaction.presentation.ui.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-
 import com.vpaliy.espressoinaction.R;
 
 public class HomeActivity extends AppCompatActivity {

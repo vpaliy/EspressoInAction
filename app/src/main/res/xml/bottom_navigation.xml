@@ -1,0 +1,20 @@
+<tabs>
+    <tab
+        id="@+id/coffee"
+        icon="@drawable/ic_take_away_coffee"
+        barColorWhenSelected="#ff6f00"
+        badgeHidesWhenActive="true"
+        title="Coffee" />
+    <tab
+        id="@+id/orders"
+        icon="@drawable/ic_order"
+        barColorWhenSelected="#4db6f1"
+        badgeHidesWhenActive="true"
+        title="Order" />
+    <tab
+        id="@+id/personal"
+        icon="@drawable/ic_info"
+        barColorWhenSelected="#00695c"
+        badgeHidesWhenActive="true"
+        title="Info" />
+</tabs>

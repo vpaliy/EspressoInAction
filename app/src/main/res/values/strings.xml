@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">EspressoInAction</string>
+
+    <string name="coffee_tab">Coffees</string>
+    <string name="order_tab">Orders</string>
+    <string name="info_tab">Info</string>
 </resources>
