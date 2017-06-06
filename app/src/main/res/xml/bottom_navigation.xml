@@ -2,18 +2,21 @@
     <tab
         id="@+id/coffee"
         icon="@drawable/ic_take_away_coffee"
+        activeColor="#ffff"
         barColorWhenSelected="#ff6f00"
         badgeHidesWhenActive="true"
         title="Coffee" />
     <tab
         id="@+id/orders"
         icon="@drawable/ic_order"
+        activeColor="#ffff"
         barColorWhenSelected="#4db6f1"
         badgeHidesWhenActive="true"
         title="Order" />
     <tab
         id="@+id/personal"
         icon="@drawable/ic_info"
+        activeColor="#ffff"
         barColorWhenSelected="#00695c"
         badgeHidesWhenActive="true"
         title="Info" />

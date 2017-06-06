@@ -9,7 +9,6 @@ import com.roughike.bottombar.BottomBar;
 import com.vpaliy.espressoinaction.R;
 import com.vpaliy.espressoinaction.presentation.ui.adapter.CoffeePagerAdapter;
 import com.vpaliy.espressoinaction.presentation.view.CoffeePager;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -62,7 +61,7 @@ public class HomeActivity extends AppCompatActivity {
                                     pager.setCurrentItem(1,false);
                                     break;
                                 case R.id.info:
-                                    actionBar.setTitle(R.string.order_tab);
+                                    actionBar.setTitle(R.string.info_tab);
                                     pager.setCurrentItem(2,false);
                             }
                             pager.animate()

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="app_bar_height">180dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
+
+    <dimen name="coffee_margin">8dp</dimen>
+    <dimen name="coffee_radius">10dp</dimen>
+    <dimen name="coffee_regular_height">160dp</dimen>
+    <dimen name="coffee_large_height">208dp</dimen>
+    <dimen name="coffee_order_form_height">412dp</dimen>
+    <dimen name="coffee_color_size">32dp</dimen>
+    <dimen name="bottom_sheet_height">420dp</dimen>
+
+    <!-- Font size -->
+    <dimen name="font_size_medium">16sp</dimen>
+    <dimen name="font_size_big">18sp</dimen>
+
+    <!-- Spacing -->
+    <dimen name="spacing_medium">8dp</dimen>
+    <dimen name="spacing_large">16dp</dimen>
+    <dimen name="spacing_big">24dp</dimen>
+    <dimen name="spacing_huge">32dp</dimen>
+    <dimen name="item_bottom_padding">42dp</dimen>
+    <dimen name="img_form_size">56dp</dimen>
+</resources>

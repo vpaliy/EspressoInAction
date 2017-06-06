@@ -1,0 +1,13 @@
+<android.support.v7.widget.RecyclerView
+    android:id="@+id/products_recycler"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipToPadding="false"
+    android:paddingTop="@dimen/spacing_medium"
+    app:layoutManager="StaggeredGridLayoutManager"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    app:spanCount="@integer/span_count"
+    tools:listitem="@layout/adapter_coffee_item"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android" />

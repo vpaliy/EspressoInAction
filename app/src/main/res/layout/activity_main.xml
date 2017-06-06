@@ -30,7 +30,7 @@
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:fitsSystemWindows="false"
-        app:bb_behavior="shy|underNavbar"
+        app:bb_behavior="shy"
         android:layout_gravity="bottom"
         app:bb_tabXmlResource="@xml/bottom_navigation"/>
 
