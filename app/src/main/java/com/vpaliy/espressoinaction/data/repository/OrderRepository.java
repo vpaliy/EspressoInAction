@@ -1,4 +1,4 @@
-package com.vpaliy.espressoinaction.data;
+package com.vpaliy.espressoinaction.data.repository;
 
 import com.vpaliy.espressoinaction.data.cache.CacheStore;
 import com.vpaliy.espressoinaction.data.local.DataHandler;
@@ -22,16 +22,27 @@ public class OrderRepository implements IRepository<Order> {
 
     @Override
     public Observable<List<Order>> getAll() {
-        return Observable.fromCallable(()->handler.fetchAll());
+        return Observable.fromCallable(()->handler.fetchAll())
+                .doOnNext(this::cache);
+    }
+
+    private void cache(List<Order> orders){
+        if(orders!=null){
+            orders.forEach(order->cache.put(order.getOrderId(),order));
+        }
     }
 
     @Override
     public Observable<Order> getById(int id) {
+        if(cache.isInCache(id)){
+            return Observable.just(cache.get(id));
+        }
         return Observable.fromCallable(()->handler.fetchById(id));
     }
 
     @Override
     public void insert(Order item) {
+        cache.put(item.getOrderId(),item);
         handler.insert(item);
     }
 }
