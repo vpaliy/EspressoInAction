@@ -2,6 +2,7 @@ package com.vpaliy.espressoinaction.di.component;
 
 import android.content.Context;
 
+import com.vpaliy.espressoinaction.common.scheduler.BaseSchedulerProvider;
 import com.vpaliy.espressoinaction.di.module.ApplicationModule;
 import com.vpaliy.espressoinaction.di.module.DataModule;
 import com.vpaliy.espressoinaction.domain.IRepository;
@@ -20,5 +21,6 @@ public interface ApplicationComponent {
     Context context();
     IRepository<Coffee> coffeeRepository();
     IRepository<Order> orderRepository();
+    BaseSchedulerProvider scheduler();
     RxBus rxBus();
 }

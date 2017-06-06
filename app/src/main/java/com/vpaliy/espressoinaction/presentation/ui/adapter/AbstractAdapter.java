@@ -14,8 +14,6 @@ import java.util.List;
 
 public abstract class AbstractAdapter<T> extends RecyclerView.Adapter<AbstractAdapter<T>.AbstractViewHolder>{
 
-    private static final String TAG=AbstractAdapter.class.getSimpleName();
-
     protected LayoutInflater inflater;
     protected RxBus rxBus;
     protected List<T> data;

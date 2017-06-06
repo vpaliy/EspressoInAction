@@ -3,6 +3,8 @@ package com.vpaliy.espressoinaction.di.module;
 
 import android.content.Context;
 
+import com.vpaliy.espressoinaction.common.scheduler.BaseSchedulerProvider;
+import com.vpaliy.espressoinaction.common.scheduler.SchedulerProvider;
 import com.vpaliy.espressoinaction.presentation.bus.RxBus;
 
 import javax.inject.Singleton;
@@ -28,5 +30,11 @@ public class ApplicationModule {
     @Singleton
     RxBus provideBus(){
         return new RxBus();
+    }
+
+    @Provides
+    @Singleton
+    BaseSchedulerProvider provideScheduler(){
+        return new SchedulerProvider();
     }
 }
