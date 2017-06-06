@@ -33,10 +33,6 @@ public class CoffeePager extends ViewPager {
         return false;
     }
 
-    /**
-     * Enable or disable the swipe navigation
-     * @param enabled
-     */
     public void setPagingEnabled(boolean enabled) {
         this.enabled = enabled;
     }
