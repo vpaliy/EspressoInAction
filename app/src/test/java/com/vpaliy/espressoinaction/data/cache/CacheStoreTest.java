@@ -18,6 +18,7 @@ import static com.vpaliy.espressoinaction.common.FakeDataProvider.provideOrder;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertTrue;
 import static org.hamcrest.CoreMatchers.is;
 
 
@@ -59,7 +60,7 @@ public class CacheStoreTest {
     }
 
     @Test
-    public void replacesOneValueWithAnotherIfTheyHaveSimilarKey(){
+    public void replacesOneValueWithAnotherIfTheyHaveSameKey(){
         Order order=provideOrder();
         Coffee coffee=provideCoffee();
         int id=FAKE_ID;
@@ -75,5 +76,18 @@ public class CacheStoreTest {
 
         assertThat(orderCache.get(id),not(order));
         assertThat(coffeeCache.get(id),not(coffee));
+    }
+
+    @Test
+    public void checksIfItemIsInCache(){
+        Order order=provideOrder();
+        Coffee coffee=provideCoffee();
+        int id=FAKE_ID;
+
+        orderCache.put(id,order);
+        coffeeCache.put(id,coffee);
+
+        assertTrue(orderCache.isInCache(id));
+        assertTrue(coffeeCache.isInCache(id));
     }
 }
