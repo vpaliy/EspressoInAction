@@ -3,6 +3,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:ignore="HardcodedText"
+    android:padding="10dp"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
@@ -23,61 +24,66 @@
         android:gravity="center"
         android:drawableTop="@drawable/ic_small_coffee_size"
         android:drawablePadding="10dp"
-        android:layout_marginLeft="@dimen/spacing_huge"
-        android:layout_marginTop="@dimen/spacing_large"
-        android:text="6"
-        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="24dp"
+        android:text="Small"
+        android:fontFamily="sans-serif-medium"
         app:layout_constraintTop_toBottomOf="@+id/txt_label_size"
         app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintRight_toLeftOf="@+id/textView"
-        android:layout_marginRight="8dp"
-        app:layout_constraintHorizontal_bias="0.244" />
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintLeft_toLeftOf="parent" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:drawablePadding="10dp"
+        android:gravity="center"
+        android:fontFamily="sans-serif-medium"
         android:drawableTop="@drawable/ic_coffee_medium_size"
         app:layout_constraintBottom_toBottomOf="@+id/txt_size_1"
         android:layout_marginBottom="0dp"
         app:layout_constraintTop_toTopOf="@+id/txt_size_1"
         android:layout_marginTop="0dp"
-        app:layout_constraintVertical_bias="0.0"
-        tools:layout_editor_absoluteX="119dp" />
+        android:text="Medium"
+        app:layout_constraintRight_toLeftOf="@+id/textView2"
+        app:layout_constraintLeft_toRightOf="@+id/txt_size_1"
+
+        app:layout_constraintHorizontal_bias="0.5"/>
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
+        android:text="Large"
+        android:gravity="center"
         android:drawablePadding="10dp"
+        android:fontFamily="sans-serif-medium"
         android:drawableTop="@drawable/ic_coffee_large_size"
         app:layout_constraintTop_toTopOf="@+id/textView"
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="@+id/textView"
         android:layout_marginBottom="8dp"
-        app:layout_constraintVertical_bias="0.444"
+        app:layout_constraintRight_toLeftOf="@+id/textView3"
         app:layout_constraintLeft_toRightOf="@+id/textView"
-        android:layout_marginLeft="34dp" />
+        app:layout_constraintVertical_bias="0.636" />
 
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
+        android:text="Tall"
+        android:gravity="center"
         android:drawablePadding="10dp"
+        android:fontFamily="sans-serif-medium"
         android:drawableTop="@drawable/ic_coffee_xlarge_size"
         app:layout_constraintTop_toTopOf="@+id/textView2"
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="@+id/textView2"
-        android:layout_marginBottom="0dp"
-        android:layout_marginRight="8dp"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toRightOf="@+id/textView2"
-        android:layout_marginLeft="8dp"
-        app:layout_constraintHorizontal_bias="0.448"
-        app:layout_constraintVertical_bias="0.444" />
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintVertical_bias="1.0" />
 
 
 </android.support.constraint.ConstraintLayout>
