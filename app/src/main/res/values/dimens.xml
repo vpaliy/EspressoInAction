@@ -10,7 +10,7 @@
     <dimen name="coffee_large_height">208dp</dimen>
     <dimen name="coffee_order_form_height">412dp</dimen>
     <dimen name="coffee_color_size">32dp</dimen>
-    <dimen name="bottom_sheet_height">420dp</dimen>
+    <dimen name="bottom_sheet_height">500dp</dimen>
 
     <!-- Font size -->
     <dimen name="font_size_medium">16sp</dimen>

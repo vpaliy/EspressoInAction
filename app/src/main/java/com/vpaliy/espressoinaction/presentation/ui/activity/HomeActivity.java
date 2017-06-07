@@ -6,10 +6,11 @@ import android.support.annotation.CallSuper;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+
 import com.roughike.bottombar.BottomBar;
 import com.vpaliy.espressoinaction.CoffeeApp;
 import com.vpaliy.espressoinaction.R;
-import com.vpaliy.espressoinaction.common.Constants;
 import com.vpaliy.espressoinaction.presentation.bus.RxBus;
 import com.vpaliy.espressoinaction.presentation.bus.event.OnCoffeeClicked;
 import com.vpaliy.espressoinaction.presentation.ui.adapter.CoffeePagerAdapter;
@@ -22,6 +23,8 @@ import butterknife.ButterKnife;
 import io.reactivex.disposables.CompositeDisposable;
 
 public class HomeActivity extends AppCompatActivity {
+
+    private static final String TAG=HomeActivity.class.getSimpleName();
 
     @BindView(R.id.pager)
     protected CoffeePager pager;
@@ -59,6 +62,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void handleEvent(Object object){
+        disposables.clear();
         if(object!=null){
             if(object instanceof OnCoffeeClicked){
                 OnCoffeeClicked event=OnCoffeeClicked.class.cast(object);
@@ -112,5 +116,11 @@ public class HomeActivity extends AppCompatActivity {
                         }
                     }).start();
         }));
+    }
+
+    @Override
+    protected void onStop(){
+        super.onStop();
+        disposables.clear();
     }
 }
