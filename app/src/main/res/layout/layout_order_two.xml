@@ -1,0 +1,32 @@
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:ignore="HardcodedText"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <io.feeeei.circleseekbar.CircleSeekBar
+        android:id="@+id/seek_hour"
+        android:layout_width="236dp"
+        android:layout_height="236dp"
+        android:layout_centerInParent="true"
+        app:wheel_max_process="11"
+        app:wheel_pointer_color="@color/colorPrimaryDark"
+        app:wheel_pointer_radius="8dp"
+        app:wheel_reached_color="@color/colorAccent"
+        app:wheel_reached_width="5dp"
+        app:wheel_unreached_width="5dp"
+        app:wheel_unreached_color="@color/colorPrimary" />
+
+    <TextView
+        android:id="@+id/sugar"
+        tools:text="None"
+        style="@style/Widget.Label"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:textSize="18sp" />
+
+</RelativeLayout>

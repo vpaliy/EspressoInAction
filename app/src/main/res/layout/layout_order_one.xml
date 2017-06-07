@@ -18,7 +18,7 @@
 
 
     <TextView
-        android:id="@+id/txt_size_1"
+        android:id="@+id/small_cup_size"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:gravity="center"
@@ -29,30 +29,31 @@
         android:fontFamily="sans-serif-medium"
         app:layout_constraintTop_toBottomOf="@+id/txt_label_size"
         app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintRight_toLeftOf="@+id/textView"
+        app:layout_constraintRight_toLeftOf="@+id/medium_size_cup"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintLeft_toLeftOf="parent" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/medium_size_cup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:drawablePadding="10dp"
         android:gravity="center"
         android:fontFamily="sans-serif-medium"
         android:drawableTop="@drawable/ic_coffee_medium_size"
-        app:layout_constraintBottom_toBottomOf="@+id/txt_size_1"
+        app:layout_constraintBottom_toBottomOf="@+id/small_cup_size"
         android:layout_marginBottom="0dp"
-        app:layout_constraintTop_toTopOf="@+id/txt_size_1"
+        app:layout_constraintTop_toTopOf="@+id/small_cup_size"
         android:layout_marginTop="0dp"
         android:text="Medium"
-        app:layout_constraintRight_toLeftOf="@+id/textView2"
-        app:layout_constraintLeft_toRightOf="@+id/txt_size_1"
+        app:layout_constraintRight_toLeftOf="@+id/large_size_cup"
+        app:layout_constraintLeft_toRightOf="@+id/small_cup_size"
 
-        app:layout_constraintHorizontal_bias="0.5"/>
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/large_size_cup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Large"
@@ -60,16 +61,16 @@
         android:drawablePadding="10dp"
         android:fontFamily="sans-serif-medium"
         android:drawableTop="@drawable/ic_coffee_large_size"
-        app:layout_constraintTop_toTopOf="@+id/textView"
+        app:layout_constraintTop_toTopOf="@+id/medium_size_cup"
         android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/textView"
+        app:layout_constraintBottom_toBottomOf="@+id/medium_size_cup"
         android:layout_marginBottom="8dp"
-        app:layout_constraintRight_toLeftOf="@+id/textView3"
-        app:layout_constraintLeft_toRightOf="@+id/textView"
+        app:layout_constraintRight_toLeftOf="@+id/tall_size_cup"
+        app:layout_constraintLeft_toRightOf="@+id/medium_size_cup"
         app:layout_constraintVertical_bias="0.636" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/tall_size_cup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Tall"
@@ -77,13 +78,80 @@
         android:drawablePadding="10dp"
         android:fontFamily="sans-serif-medium"
         android:drawableTop="@drawable/ic_coffee_xlarge_size"
-        app:layout_constraintTop_toTopOf="@+id/textView2"
+        app:layout_constraintTop_toTopOf="@+id/large_size_cup"
         android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/textView2"
+        app:layout_constraintBottom_toBottomOf="@+id/large_size_cup"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toRightOf="@+id/textView2"
+        app:layout_constraintLeft_toRightOf="@+id/large_size_cup"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintVertical_bias="1.0" />
 
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Milk"
+        style="@style/Widget.Label"
+        android:layout_marginTop="@dimen/spacing_huge"
+        app:layout_constraintTop_toBottomOf="@+id/small_cup_size"
+        android:layout_marginLeft="@dimen/spacing_big"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <TextView
+        android:id="@+id/soy_milk"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Soy"
+        android:drawableTop="@drawable/ic_beans"
+        android:layout_marginTop="@dimen/spacing_huge"
+        app:layout_constraintTop_toBottomOf="@+id/textView4"
+        android:drawablePadding="10dp"
+        app:layout_constraintRight_toLeftOf="@+id/coconut_milk"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <TextView
+        android:id="@+id/coconut_milk"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Coconut"
+        android:drawableTop="@drawable/ic_coconut_x"
+        app:layout_constraintTop_toTopOf="@+id/soy_milk"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/soy_milk"
+        android:layout_marginBottom="0dp"
+        android:drawablePadding="10dp"
+        app:layout_constraintRight_toLeftOf="@+id/almond_milk"
+        app:layout_constraintLeft_toRightOf="@+id/soy_milk"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/almond_milk"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Almond"
+        android:drawableTop="@drawable/ic_almond"
+        app:layout_constraintTop_toTopOf="@+id/coconut_milk"
+        android:layout_marginTop="8dp"
+        android:drawablePadding="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/coconut_milk"
+        android:layout_marginBottom="0dp"
+        app:layout_constraintVertical_bias="1.0"
+        app:layout_constraintRight_toLeftOf="@+id/cow_milk"
+        app:layout_constraintLeft_toRightOf="@+id/coconut_milk" />
+
+    <TextView
+        android:id="@+id/cow_milk"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cow"
+        android:drawableTop="@drawable/ic_cow"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/almond_milk"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/almond_milk"
+        android:layout_marginBottom="0dp"
+        android:drawablePadding="10dp"
+        app:layout_constraintVertical_bias="1.0"
+        app:layout_constraintLeft_toRightOf="@+id/almond_milk" />
 
 </android.support.constraint.ConstraintLayout>
