@@ -74,6 +74,9 @@
             app:layout_constraintTop_toBottomOf="@+id/img_product"
             >
 
+            <include
+                layout="@layout/layout_order_one"/>
+
 
         </ViewSwitcher>
 
