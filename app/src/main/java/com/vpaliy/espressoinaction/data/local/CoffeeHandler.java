@@ -12,6 +12,8 @@ import com.vpaliy.espressoinaction.domain.model.Sweetness;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -38,13 +40,15 @@ public class CoffeeHandler implements DataHandler<Coffee> {
     @Override
     public List<Coffee> fetchAll() {
         List<Coffee> result=new ArrayList<>();
+        int id=0;
+        Random random=new Random();
         for(CoffeeType type:CoffeeType.values()){
             Coffee coffee=new Coffee();
             coffee.setSizeType(SizeType.LARGE);
-            coffee.setPrice(2.f);
+            coffee.setPrice(random.nextInt(8));
             coffee.setMilkType(MilkType.NONFAT_MILK);
             coffee.setSweetness(Sweetness.FULL_SWEETNESS);
-            coffee.setCoffeeId(1);
+            coffee.setCoffeeId(id++);
             coffee.setCoffeeType(type);
             switch (type){
                 case AMERICANO:

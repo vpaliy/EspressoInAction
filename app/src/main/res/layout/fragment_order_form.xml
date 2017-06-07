@@ -1,0 +1,145 @@
+<FrameLayout
+    android:id="@+id/content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/main_container"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/bottom_sheet_height">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/img_product"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginLeft="@dimen/spacing_huge"
+            android:layout_marginStart="@dimen/spacing_huge"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/cap"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:ignore="ContentDescription"
+            />
+
+        <TextView
+            android:id="@+id/txt_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="24dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="24dp"
+            android:fontFamily="sans-serif-medium"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@+id/img_product"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintLeft_toRightOf="@+id/img_product"
+            app:layout_constraintRight_toLeftOf="@+id/txt_price"
+            app:layout_constraintTop_toTopOf="@+id/img_product"
+            app:layout_constraintVertical_bias="0.52"
+            tools:text="Espresso"
+            />
+
+        <TextView
+            android:id="@+id/txt_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:drawablePadding="@dimen/spacing_large"
+            android:drawableRight="@drawable/ic_keyboard_arrow_down_black_24dp"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center_vertical"
+            android:textSize="@dimen/font_size_medium"
+            app:layout_constraintLeft_toRightOf="@+id/txt_name"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBaseline_toBaselineOf="@+id/txt_name"
+            tools:ignore="UnusedAttribute"
+            tools:text="6 $"
+            />
+
+        <ViewSwitcher
+            android:id="@+id/switcher"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:inAnimation="@anim/slide_in_right"
+            android:outAnimation="@anim/slide_out_left"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/img_product"
+            >
+
+
+        </ViewSwitcher>
+
+        <FrameLayout
+            android:id="@+id/btn_go"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="0dp"
+            android:layout_marginLeft="0dp"
+            android:background="@color/colorPrimaryDark"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="@+id/guideline"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/switcher"
+            >
+
+            <TextView
+                android:id="@+id/txt_action"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Go"
+                android:textColor="#fff"
+                android:textSize="38sp"
+                />
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/txt_label_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginLeft="24dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="16dp"
+            android:fontFamily="sans-serif-medium"
+            android:text="Size"
+            android:textSize="@dimen/font_size_medium"
+            app:layout_constraintBottom_toTopOf="@+id/txt_label_colour"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/switcher"
+            />
+
+        <TextView
+            android:id="@+id/txt_label_colour"
+            android:layout_width="wrap_content"
+            android:layout_height="17dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="16dp"
+            android:fontFamily="sans-serif-medium"
+            android:text="Color"
+            android:textSize="@dimen/font_size_medium"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="@+id/txt_label_size"
+            app:layout_constraintTop_toBottomOf="@+id/txt_label_size"
+            app:layout_constraintVertical_bias="0.507"
+            />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.55"
+            />
+    </android.support.constraint.ConstraintLayout>
+</FrameLayout>

@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide;
 import com.vpaliy.espressoinaction.R;
 import com.vpaliy.espressoinaction.domain.model.Coffee;
 import com.vpaliy.espressoinaction.presentation.bus.RxBus;
+import com.vpaliy.espressoinaction.presentation.bus.event.OnCoffeeClicked;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,7 +30,8 @@ public class CoffeeAdapter extends AbstractAdapter<Coffee> {
     }
 
     public class CoffeeViewHolder
-            extends AbstractAdapter<Coffee>.AbstractViewHolder{
+            extends AbstractAdapter<Coffee>.AbstractViewHolder
+            implements View.OnClickListener{
 
         @BindView(R.id.image) ImageView image;
         @BindView(R.id.name) TextView name;
@@ -38,6 +40,16 @@ public class CoffeeAdapter extends AbstractAdapter<Coffee> {
         CoffeeViewHolder(View itemView){
             super(itemView);
             ButterKnife.bind(this,itemView);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            if(!isLocked()){
+                lock();
+                Coffee coffee=at(getAdapterPosition());
+                rxBus.send(OnCoffeeClicked.click(coffee));
+            }
         }
 
         @Override
