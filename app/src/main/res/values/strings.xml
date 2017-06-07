@@ -4,4 +4,14 @@
     <string name="coffee_tab">Coffees</string>
     <string name="order_tab">Orders</string>
     <string name="info_tab">Info</string>
+
+    <string name="today_date">Today</string>
+    <string name="tomorrow_date">Tomorrow</string>
+    <string name="monday_date">Monday</string>
+    <string name="tuesday_date">Tuesday</string>
+    <string name="wednesday_date">Wednesday</string>
+    <string name="thursday_date">Thursday</string>
+    <string name="friday_date">Friday</string>
+    <string name="saturday_date">Saturday</string>
+    <string name="sunday_date">Sunday</string>
 </resources>

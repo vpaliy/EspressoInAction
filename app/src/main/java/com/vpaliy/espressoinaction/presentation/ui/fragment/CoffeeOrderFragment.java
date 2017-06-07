@@ -3,11 +3,9 @@ package com.vpaliy.espressoinaction.presentation.ui.fragment;
 
 import android.os.Bundle;
 import android.support.design.widget.BottomSheetDialogFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
@@ -20,6 +18,7 @@ import com.vpaliy.espressoinaction.domain.model.Coffee;
 import com.vpaliy.espressoinaction.domain.model.CoffeeType;
 import com.vpaliy.espressoinaction.presentation.mvp.contract.CoffeeOrderContract;
 import com.vpaliy.espressoinaction.presentation.mvp.contract.CoffeeOrderContract.Presenter;
+import com.vpaliy.espressoinaction.presentation.ui.utils.CalendarUtils;
 
 import java.util.Calendar;
 import java.util.Locale;
@@ -148,10 +147,61 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
             if(!flipper.isFlipping()) {
                 flipper.showNext();
             }
+        }else if(isVisible(second)){
+            prepareDay();
+            if(!flipper.isFlipping()) {
+                flipper.showNext();
+            }
         }
+    }
+
+    private void prepareDay(){
         Calendar calendar=Calendar.getInstance();
-        calendar.getTime();
-        flipper.stopFlipping();
+        for(int index=0;index<3;index++) {
+            TextView day;
+            switch (index){
+                case 0:
+                    day=ButterKnife.findById(third,R.id.today_day);
+                    break;
+                case 1:
+                    day=ButterKnife.findById(third,R.id.tomorrow_day);
+                    break;
+                default:
+                    day=ButterKnife.findById(third,R.id.third_day);
+                    break;
+            }
+            StringBuilder builder = new StringBuilder();
+            builder.append(CalendarUtils.getDay(getContext(), calendar));
+            builder.append('\n');
+            builder.append(CalendarUtils.dayOfMonth(calendar));
+            day.setText(CalendarUtils.buildSpannableText(builder.toString(), 3));
+            calendar.add(Calendar.DAY_OF_MONTH,1);
+        }
+        prepareTime();
+    }
+
+    private void prepareTime(){
+        for(int index=0;index<3;index++){
+            TextView time;
+            String text;
+            switch (index){
+                case 0:
+                    time=ButterKnife.findById(third,R.id.time_frame_one);
+                    text=time.getText().toString();
+                    time.setText(CalendarUtils.buildSpannableText(text,4));
+                    break;
+                case 1:
+                    time=ButterKnife.findById(third,R.id.time_frame_two);
+                    text=time.getText().toString();
+                    time.setText(CalendarUtils.buildSpannableText(text,4));
+                    break;
+                default:
+                    time=ButterKnife.findById(third,R.id.time_frame_three);
+                    text=time.getText().toString();
+                    time.setText(CalendarUtils.buildSpannableText(text,3));
+                    break;
+            }
+        }
     }
 
     private boolean isVisible(View view){
