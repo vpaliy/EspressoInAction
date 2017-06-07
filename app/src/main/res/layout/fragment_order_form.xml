@@ -107,33 +107,33 @@
         </FrameLayout>
 
         <TextView
-            android:id="@+id/txt_label_size"
+            android:id="@+id/property_label_one"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="17dp"
             android:layout_marginBottom="16dp"
             android:layout_marginLeft="24dp"
             android:layout_marginStart="24dp"
-            android:fontFamily="sans-serif-medium"
-            android:text="Size"
+            style="@style/Widget.Label"
+            android:text="@string/size_label"
             android:textSize="@dimen/font_size_medium"
-            app:layout_constraintBottom_toTopOf="@+id/txt_label_colour"
+            app:layout_constraintBottom_toTopOf="@+id/property_label_two"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/switcher"
             />
 
         <TextView
-            android:id="@+id/txt_label_colour"
+            android:id="@+id/property_label_two"
             android:layout_width="wrap_content"
             android:layout_height="17dp"
             android:layout_marginLeft="0dp"
             android:layout_marginStart="0dp"
             android:layout_marginTop="16dp"
-            android:fontFamily="sans-serif-medium"
-            android:text="Milk"
+            style="@style/Widget.Label"
+            android:text="@string/milk_label"
             android:textSize="@dimen/font_size_medium"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="@+id/txt_label_size"
-            app:layout_constraintTop_toBottomOf="@+id/txt_label_size"
+            app:layout_constraintLeft_toLeftOf="@+id/property_label_one"
+            app:layout_constraintTop_toBottomOf="@+id/property_label_one"
             app:layout_constraintVertical_bias="0.507"
             />
 

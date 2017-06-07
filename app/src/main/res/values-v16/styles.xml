@@ -13,6 +13,7 @@
         <item name="android:background">@drawable/bg_square_date</item>
         <item name="android:textColor">@color/colorPrimaryDark</item>
         <item name="android:gravity">center</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
         <item name="android:padding">@dimen/spacing_medium</item>
     </style>
 </resources>

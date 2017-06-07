@@ -65,6 +65,12 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
     @BindView(R.id.switcher)
     protected ViewFlipper flipper;
 
+    @BindView(R.id.property_label_one)
+    protected TextView firstLabel;
+
+    @BindView(R.id.property_label_two)
+    protected TextView secondLabel;
+
 
     public static CoffeeOrderFragment newInstance(Bundle args){
         CoffeeOrderFragment fragment=new CoffeeOrderFragment();
@@ -149,6 +155,7 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
             }
         }else if(isVisible(second)){
             prepareDay();
+            prepareTime();
             if(!flipper.isFlipping()) {
                 flipper.showNext();
             }
@@ -177,10 +184,11 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
             day.setText(CalendarUtils.buildSpannableText(builder.toString(), 3));
             calendar.add(Calendar.DAY_OF_MONTH,1);
         }
-        prepareTime();
     }
 
     private void prepareTime(){
+        firstLabel.setText(getString(R.string.day_label));
+        secondLabel.setText(getString(R.string.time_label));
         for(int index=0;index<3;index++){
             TextView time;
             String text;

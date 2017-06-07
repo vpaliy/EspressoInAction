@@ -5,6 +5,11 @@
     <string name="order_tab">Orders</string>
     <string name="info_tab">Info</string>
 
+    <string name="day_label">Day</string>
+    <string name="time_label">Time</string>
+    <string name="size_label">Size</string>
+    <string name="milk_label">Milk</string>
+    <string name="sugar_label">Sugar</string>
     <string name="today_date">Today</string>
     <string name="tomorrow_date">Tomorrow</string>
     <string name="monday_date">Monday</string>

@@ -32,6 +32,7 @@ public class CalendarUtils {
         if(isToday(calendar,today)){
             return context.getString(R.string.tomorrow_date);
         }
+        calendar.add(Calendar.DAY_OF_MONTH,-1);
         switch (calendar.get(Calendar.DAY_OF_WEEK)){
             case Calendar.MONDAY:
                 dayText=context.getString(R.string.monday_date);

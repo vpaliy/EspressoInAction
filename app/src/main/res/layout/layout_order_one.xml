@@ -8,7 +8,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <TextView
-        android:id="@+id/txt_label_size"
+        android:id="@+id/property_label_one"
         android:layout_marginLeft="@dimen/spacing_big"
         android:layout_marginTop="@dimen/spacing_medium"
         style="@style/Widget.Label"
@@ -27,7 +27,7 @@
         android:layout_marginTop="24dp"
         android:text="Small"
         android:fontFamily="sans-serif-medium"
-        app:layout_constraintTop_toBottomOf="@+id/txt_label_size"
+        app:layout_constraintTop_toBottomOf="@+id/property_label_one"
         app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintRight_toLeftOf="@+id/medium_size_cup"
         app:layout_constraintHorizontal_bias="0.5"
