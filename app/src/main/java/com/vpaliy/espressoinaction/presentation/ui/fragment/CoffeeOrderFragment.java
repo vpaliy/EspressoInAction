@@ -1,17 +1,23 @@
 package com.vpaliy.espressoinaction.presentation.ui.fragment;
 
 
+import android.annotation.TargetApi;
+import android.databinding.DataBindingUtil;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomSheetDialogFragment;
+import android.transition.TransitionManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.vpaliy.espressoinaction.CoffeeApp;
 import com.vpaliy.espressoinaction.R;
 import com.vpaliy.espressoinaction.common.Constants;
+import com.vpaliy.espressoinaction.databinding.FragmentOrderFormBinding;
 import com.vpaliy.espressoinaction.di.component.DaggerViewComponent;
 import com.vpaliy.espressoinaction.di.module.PresenterModule;
 import com.vpaliy.espressoinaction.domain.model.Coffee;
@@ -19,18 +25,13 @@ import com.vpaliy.espressoinaction.domain.model.CoffeeType;
 import com.vpaliy.espressoinaction.presentation.mvp.contract.CoffeeOrderContract;
 import com.vpaliy.espressoinaction.presentation.mvp.contract.CoffeeOrderContract.Presenter;
 import com.vpaliy.espressoinaction.presentation.ui.utils.CalendarUtils;
-
 import java.util.Calendar;
 import java.util.Locale;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.Unbinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.widget.ViewFlipper;
-
 import javax.inject.Inject;
-import butterknife.BindView;
 
 public class CoffeeOrderFragment extends BottomSheetDialogFragment
         implements CoffeeOrderContract.View{
@@ -38,39 +39,13 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
     private static final String TAG=CoffeeOrderFragment.class.getSimpleName();
 
     private Presenter presenter;
-    private Unbinder unbinder;
     private int coffeeId;
 
-    @BindView(R.id.coffee_image)
-    protected ImageView image;
+    private FragmentOrderFormBinding binding;
 
-    @BindView(R.id.coffee_name)
-    protected TextView coffeeName;
-
-    @BindView(R.id.coffee_price)
-    protected TextView coffeePrice;
-
-    @BindView(R.id.go_button)
-    protected View view;
-
-    @BindView(R.id.layout_one)
-    protected View first;
-
-    @BindView(R.id.layout_two)
-    protected View second;
-
-    @BindView(R.id.layout_three)
-    protected View third;
-
-    @BindView(R.id.switcher)
-    protected ViewFlipper flipper;
-
-    @BindView(R.id.property_label_one)
-    protected TextView firstLabel;
-
-    @BindView(R.id.property_label_two)
-    protected TextView secondLabel;
-
+    public interface OnPropertyClicked {
+        void onClick(View view);
+    }
 
     public static CoffeeOrderFragment newInstance(Bundle args){
         CoffeeOrderFragment fragment=new CoffeeOrderFragment();
@@ -98,10 +73,11 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View root=inflater.inflate(R.layout.fragment_order_form,container,false);
-        unbinder= ButterKnife.bind(this,root);
-        return root;
+    public View onCreateView(LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        binding=DataBindingUtil.inflate(inflater,R.layout.fragment_order_form,container,false);
+        return binding.getRoot();
     }
 
     @Override
@@ -109,6 +85,11 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
         super.onViewCreated(view, savedInstanceState);
         if(view!=null){
             presenter.start(coffeeId);
+            binding.goButton.setOnClickListener(v->go());
+            binding.layoutOne.setMilkHandler(text->
+                animateToUpper(createCupSizeView(text),binding.propertyLabelTwo));
+            binding.layoutOne.setSizeHandler(text->
+                    animateToUpper(createCupSizeView(text),binding.propertyLabelOne));
         }
     }
 
@@ -126,7 +107,7 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
     }
 
     private void showCoffeeType(CoffeeType coffeeType){
-        coffeeName.setText(coffeeType.toString());
+        binding.coffeeName.setText(coffeeType.toString());
     }
 
     private void showCoffeeImage(Coffee coffee){
@@ -135,11 +116,11 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
         Glide.with(getContext())
                 .load(resourceId)
                 .centerCrop()
-                .into(image);
+                .into(binding.coffeeImage);
     }
 
     private void showCoffeePrice(double price){
-        coffeePrice.setText(String.format(Locale.US,"$ "+"%.1f",price));
+        binding.coffeePrice.setText(String.format(Locale.US,"$ "+"%.1f",price));
     }
 
     @Override
@@ -147,17 +128,16 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
 
     }
 
-    @OnClick(R.id.go_button)
     public void go(){
-        if(isVisible(first)){
-            if(!flipper.isFlipping()) {
-                flipper.showNext();
+        if(isVisible(binding.layoutOne.getRoot())){
+            if(!binding.switcher.isFlipping()) {
+                binding.switcher.showNext();
             }
-        }else if(isVisible(second)){
+        }else if(isVisible(binding.layoutTwo)){
             prepareDay();
             prepareTime();
-            if(!flipper.isFlipping()) {
-                flipper.showNext();
+            if(!binding.switcher.isFlipping()) {
+                binding.switcher.showNext();
             }
         }
     }
@@ -168,13 +148,13 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
             TextView day;
             switch (index){
                 case 0:
-                    day=ButterKnife.findById(third,R.id.today_day);
+                    day=ButterKnife.findById(binding.layoutThree,R.id.today_day);
                     break;
                 case 1:
-                    day=ButterKnife.findById(third,R.id.tomorrow_day);
+                    day=ButterKnife.findById(binding.layoutThree,R.id.tomorrow_day);
                     break;
                 default:
-                    day=ButterKnife.findById(third,R.id.third_day);
+                    day=ButterKnife.findById(binding.layoutThree,R.id.third_day);
                     break;
             }
             StringBuilder builder = new StringBuilder();
@@ -187,24 +167,24 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
     }
 
     private void prepareTime(){
-        firstLabel.setText(getString(R.string.day_label));
-        secondLabel.setText(getString(R.string.time_label));
+        binding.propertyLabelOne.setText(getString(R.string.day_label));
+        binding.propertyLabelTwo.setText(getString(R.string.time_label));
         for(int index=0;index<3;index++){
             TextView time;
             String text;
             switch (index){
                 case 0:
-                    time=ButterKnife.findById(third,R.id.time_frame_one);
+                    time=ButterKnife.findById(binding.layoutThree,R.id.time_frame_one);
                     text=time.getText().toString();
                     time.setText(CalendarUtils.buildSpannableText(text,4));
                     break;
                 case 1:
-                    time=ButterKnife.findById(third,R.id.time_frame_two);
+                    time=ButterKnife.findById(binding.layoutThree,R.id.time_frame_two);
                     text=time.getText().toString();
                     time.setText(CalendarUtils.buildSpannableText(text,4));
                     break;
                 default:
-                    time=ButterKnife.findById(third,R.id.time_frame_three);
+                    time=ButterKnife.findById(binding.layoutThree,R.id.time_frame_three);
                     text=time.getText().toString();
                     time.setText(CalendarUtils.buildSpannableText(text,3));
                     break;
@@ -212,14 +192,30 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
         }
     }
 
-    private boolean isVisible(View view){
-        return view.getVisibility()==View.VISIBLE;
+    private ViewGroup getRoot(){
+        return ViewGroup.class.cast(getView());
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if(unbinder!=null) unbinder.unbind();
+    @TargetApi(19)
+    private void animateToUpper(View clonedView, View targetView){
+        clonedView.post(()->{
+            TransitionManager.beginDelayedTransition(getRoot());
+            clonedView.setLayoutParams(SelectedParamsFactory.endParams(clonedView,targetView));
+        });
+    }
+
+    private TextView createCupSizeView(View real){
+        final TextView fakeSelectedTextView = new TextView(
+                getContext());
+        TextView realTextView=TextView.class.cast(real);
+        Drawable[] drawables=realTextView.getCompoundDrawables();
+        fakeSelectedTextView.setCompoundDrawables(drawables[0],drawables[1],drawables[2],drawables[3]);
+        fakeSelectedTextView.setLayoutParams(SelectedParamsFactory.startTextParams(real));
+        binding.mainContainer.addView(fakeSelectedTextView);
+        return fakeSelectedTextView;
+    }
+    private boolean isVisible(View view){
+        return view.getVisibility()==View.VISIBLE;
     }
 
     @Inject
@@ -228,4 +224,38 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
         this.presenter=presenter;
         this.presenter.attachView(this);
     }
+
+    private static class SelectedParamsFactory {
+
+        private static ConstraintLayout.LayoutParams startTextParams(View selectedView) {
+            final ConstraintLayout.LayoutParams layoutParams =
+                    new ConstraintLayout.LayoutParams(
+                            ViewGroup.LayoutParams.WRAP_CONTENT,
+                            ViewGroup.LayoutParams.WRAP_CONTENT);
+            setStartState(selectedView, layoutParams);
+            return layoutParams;
+        }
+
+        private static void setStartState(View selectedView, ConstraintLayout.LayoutParams layoutParams) {
+            layoutParams.topToTop = ((ViewGroup) selectedView.getParent().getParent()).getId();
+            layoutParams.leftToLeft = ((ViewGroup) selectedView.getParent().getParent()).getId();
+            layoutParams.setMargins((int) selectedView.getX(), (int) selectedView.getY(), 0, 0);
+        }
+
+        private static ConstraintLayout.LayoutParams endParams(View v, View targetView) {
+            final ConstraintLayout.LayoutParams layoutParams =
+                    (ConstraintLayout.LayoutParams) v.getLayoutParams();
+
+            final int marginLeft = v.getContext().getResources()
+                    .getDimensionPixelOffset(R.dimen.spacing_medium);
+
+            layoutParams.setMargins(marginLeft, 0, 0, 0);
+            layoutParams.topToTop = targetView.getId();
+            layoutParams.startToEnd = targetView.getId();
+            layoutParams.bottomToBottom = targetView.getId();
+
+            return layoutParams;
+        }
+    }
+
 }
