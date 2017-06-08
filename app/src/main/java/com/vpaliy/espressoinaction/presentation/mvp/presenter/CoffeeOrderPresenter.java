@@ -58,6 +58,11 @@ public class CoffeeOrderPresenter implements CoffeeOrderContract.Presenter {
     @Override
     public void onSizeTypeSelected(SizeType sizeType) {
         this.coffee.setSizeType(sizeType);
+        if(sizeType!=SizeType.SMALL) {
+            view.appendSizeCharge(coffee.getPrice(),sizeType.price);
+        }else{
+            view.showUpdatedPrice(coffee.getPrice());
+        }
     }
 
     @Override
@@ -76,9 +81,13 @@ public class CoffeeOrderPresenter implements CoffeeOrderContract.Presenter {
         subscriptions.add(coffeeIRepository.getById(id)
             .subscribeOn(schedulerProvider.io())
             .observeOn(schedulerProvider.ui())
-            .subscribe(view::showCoffee));
+            .subscribe(this::process));
     }
 
+    private void process(Coffee coffee){
+        this.coffee=coffee;
+        view.showCoffee(coffee);
+    }
 
     @Override
     public void stop() {

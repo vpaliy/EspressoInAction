@@ -25,6 +25,6 @@ public class TextUtils {
         final SpannableString rightPartSpannable=new SpannableString(rightPart);
         leftPartSpannable.setSpan(new ForegroundColorSpan(leftColor),0,leftPart.length(),0);
         rightPartSpannable.setSpan(new ForegroundColorSpan(rightColor),0,rightPart.length(),0);
-        return builder.append(leftPartSpannable).append('\n').append(rightPartSpannable);
+        return builder.append(leftPartSpannable).append(rightPartSpannable);
     }
 }

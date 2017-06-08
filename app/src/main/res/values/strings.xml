@@ -9,10 +9,10 @@
     <string name="medium_size_label">Medium</string>
     <string name="large_size_label">Large</string>
     <string name="tall_size_label">Tall</string>
-    <string name="plus_zero_label">+$0</string>
-    <string name="plus_one_label">+$1</string>
-    <string name="plus_two_label">+$2</string>
-    <string name="plus_three_label">+$3</string>
+    <string name="plus_zero_label">\n+$0</string>
+    <string name="plus_one_label">\n+$1</string>
+    <string name="plus_two_label">\n+$2</string>
+    <string name="plus_three_label">\n+$3</string>
 
     <string name="day_label">Day</string>
     <string name="time_label">Time</string>

@@ -27,6 +27,8 @@ public interface CoffeeOrderContract {
     interface View extends BaseView<Presenter> {
         void attachPresenter(@NonNull Presenter presenter);
         void showCoffee(Coffee coffee);
+        void appendSizeCharge(double original, double additional);
+        void showUpdatedPrice(double price);
         void showMessage(String message);
     }
 }

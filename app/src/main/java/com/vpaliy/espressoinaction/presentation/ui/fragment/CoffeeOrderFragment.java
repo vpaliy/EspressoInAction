@@ -21,11 +21,13 @@ import com.vpaliy.espressoinaction.di.component.DaggerViewComponent;
 import com.vpaliy.espressoinaction.di.module.PresenterModule;
 import com.vpaliy.espressoinaction.domain.model.Coffee;
 import com.vpaliy.espressoinaction.domain.model.CoffeeType;
+import com.vpaliy.espressoinaction.domain.model.SizeType;
 import com.vpaliy.espressoinaction.presentation.mvp.contract.CoffeeOrderContract;
 import com.vpaliy.espressoinaction.presentation.mvp.contract.CoffeeOrderContract.Presenter;
 import com.vpaliy.espressoinaction.presentation.ui.utils.CalendarUtils;
 import com.vpaliy.espressoinaction.presentation.ui.utils.TextUtils;
 
+import java.io.BufferedReader;
 import java.util.Calendar;
 import java.util.LinkedHashMap;
 import java.util.Locale;
@@ -74,6 +76,7 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
         initializeDependencies();
         if(savedInstanceState==null) {
             savedInstanceState=getArguments();
+            Icepick.saveInstanceState(this,savedInstanceState);
         }
         Icepick.restoreInstanceState(this,savedInstanceState);
     }
@@ -111,6 +114,20 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
         });
         binding.layoutOne.setSizeHandler(text-> {
             removeIfExists(binding.propertyLabelOne);
+            switch (text.getId()){
+                case R.id.small_cup_size:
+                    presenter.onSizeTypeSelected(SizeType.SMALL);
+                    break;
+                case R.id.medium_size_cup:
+                    presenter.onSizeTypeSelected(SizeType.MEDIUM);
+                    break;
+                case R.id.large_size_cup:
+                    presenter.onSizeTypeSelected(SizeType.LARGE);
+                    break;
+                case R.id.tall_size_cup:
+                    presenter.onSizeTypeSelected(SizeType.TALL);
+                    break;
+            }
             text.setEnabled(false);
             animateIcon(createCupSizeView(text,binding.propertyLabelOne), binding.propertyLabelOne);
         });
@@ -169,7 +186,7 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
     }
 
     private void showCoffeePrice(double price){
-        binding.coffeePrice.setText(String.format(Locale.US,"$ "+"%.1f",price));
+        binding.coffeePrice.setText(String.format(Locale.US,"$ "+"%.0f",price));
     }
 
     @Override
@@ -275,6 +292,7 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
         TextView realTextView=TextView.class.cast(real);
         Drawable[] drawables=realTextView.getCompoundDrawables();
         fakeSelectedTextView.setCompoundDrawables(drawables[0],drawables[1],drawables[2],drawables[3]);
+        fakeSelectedTextView.setPadding(0,0,0,0);
         fakeSelectedTextView.setLayoutParams(SelectedParamsFactory.startTextParams(real,binding));
         Pair<View,View> pair=new Pair<>(real,fakeSelectedTextView);
         clonedViewsMap.put(textLabel,pair);
@@ -291,6 +309,20 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
         clonedViewsMap.put(textLabel,pair);
         binding.mainContainer.addView(fakeSelectedTextView);
         return fakeSelectedTextView;
+    }
+
+    @Override
+    public void appendSizeCharge(double original, double additional) {
+        String leftText=String.format(Locale.US,"$"+"%.0f",original);
+        String rightText=String.format(Locale.US," + $"+"%.0f",additional);
+        binding.coffeePrice.setText(TextUtils.mergeColoredText(leftText,rightText,
+                getResources().getColor(R.color.colorPrimary),
+                getResources().getColor(R.color.colorAccent)));
+    }
+
+    @Override
+    public void showUpdatedPrice(double price) {
+        showCoffeePrice(price);
     }
 
     private boolean isVisible(View view){
