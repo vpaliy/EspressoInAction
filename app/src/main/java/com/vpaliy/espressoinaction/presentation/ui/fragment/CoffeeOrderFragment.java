@@ -2,6 +2,7 @@ package com.vpaliy.espressoinaction.presentation.ui.fragment;
 
 
 import android.databinding.DataBindingUtil;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
@@ -23,6 +24,8 @@ import com.vpaliy.espressoinaction.domain.model.CoffeeType;
 import com.vpaliy.espressoinaction.presentation.mvp.contract.CoffeeOrderContract;
 import com.vpaliy.espressoinaction.presentation.mvp.contract.CoffeeOrderContract.Presenter;
 import com.vpaliy.espressoinaction.presentation.ui.utils.CalendarUtils;
+import com.vpaliy.espressoinaction.presentation.ui.utils.TextUtils;
+
 import java.util.Calendar;
 import java.util.LinkedHashMap;
 import java.util.Locale;
@@ -39,12 +42,16 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
         implements CoffeeOrderContract.View{
 
     private Presenter presenter;
-    @State int coffeeId;
     private FragmentOrderFormBinding binding;
     private Map<View,Pair<View,View>> clonedViewsMap=new LinkedHashMap<>();
+    @State int coffeeId;
 
     public interface OnPropertyClicked {
         void onClick(View view);
+    }
+
+    public interface TextHandler {
+        CharSequence setText(String leftPart, String rightPart);
     }
 
     public static CoffeeOrderFragment newInstance(Bundle args){
@@ -93,6 +100,10 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
     }
 
     private void initStepOne(){
+        binding.layoutOne.setTextHandler((leftPart, rightPart) ->
+            TextUtils.mergeColoredText(leftPart,rightPart,
+                    getResources().getColor(R.color.colorPrimary),
+                    getResources().getColor(R.color.colorAccent)));
         binding.layoutOne.setMilkHandler(text-> {
             removeIfExists(binding.propertyLabelTwo);
             text.setEnabled(false);
@@ -111,14 +122,14 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
 
     private void initStepThree(){
         binding.layoutThree.setDayHandler(day->{
-            removeIfExists(binding.propertyLabelTwo);
+            removeIfExists(binding.propertyLabelOne);
             day.setSelected(true);
-            animateText(createTimeView(day,binding.propertyLabelTwo),binding.propertyLabelTwo);
+            animateText(createTimeView(day,binding.propertyLabelOne),binding.propertyLabelOne);
         });
         binding.layoutThree.setTimeHandler(time->{
-            removeIfExists(binding.propertyLabelOne);
+            removeIfExists(binding.propertyLabelTwo);
             time.setSelected(true);
-            animateText(createTimeView(time,binding.propertyLabelOne), binding.propertyLabelOne);
+            animateText(createTimeView(time,binding.propertyLabelTwo), binding.propertyLabelTwo);
         });
     }
 
@@ -167,24 +178,23 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
 
     public void go(){
         cleanUpOnFlip();
-        if(isVisible(binding.layoutOne.getRoot())){
-            if(!binding.switcher.isFlipping()) {
-                binding.switcher.showNext();
-            }
+        if(isVisible(binding.layoutOne.root)){
+            binding.switcher.showNext();
         }else if(isVisible(binding.layoutTwo)){
             prepareDay();
             prepareTime();
-            if(!binding.switcher.isFlipping()) {
-                binding.switcher.showNext();
-            }
+            binding.switcher.showNext();
+        }else if(isVisible(binding.layoutThree.root)){
+            binding.propertyLabelOne.setText(R.string.size_label);
+            binding.propertyLabelTwo.setText(R.string.milk_label);
+            binding.switcher.showNext();
         }
     }
 
     private void cleanUpOnFlip(){
         if(clonedViewsMap.size()!=0){
-            clonedViewsMap.forEach((key,pair)->{
-                binding.mainContainer.removeView(pair.second);
-            });
+            clonedViewsMap.forEach((key,pair)->
+                binding.mainContainer.removeView(pair.second));
             clonedViewsMap.clear();
         }
     }
@@ -252,10 +262,11 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
     }
 
     @TargetApi(19)
-    private void animateText(View clonedView, View targetView){
+    private void animateText(TextView clonedView, TextView targetView){
         clonedView.post(()->{
             TransitionManager.beginDelayedTransition(getRoot());
             clonedView.setLayoutParams(SelectedParamsFactory.endTextParams(clonedView,targetView));
+            clonedView.setText(clonedView.getText().toString().replace('\n',' '));
         });
     }
 
@@ -274,7 +285,7 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
     private TextView createTimeView(View real, TextView textLabel){
         final TextView fakeSelectedTextView = new TextView(getContext(),null,R.attr.textStyle);
         TextView realTextView=TextView.class.cast(real);
-        fakeSelectedTextView.setText(realTextView.getText().toString().replace('\n',' '));
+        fakeSelectedTextView.setText(realTextView.getText());
         fakeSelectedTextView.setLayoutParams(SelectedParamsFactory.startTextParams(real,binding));
         Pair<View,View> pair=new Pair<>(real,fakeSelectedTextView);
         clonedViewsMap.put(textLabel,pair);
