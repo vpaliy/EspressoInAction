@@ -6,12 +6,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.bumptech.glide.Glide;
 import com.vpaliy.espressoinaction.R;
 import com.vpaliy.espressoinaction.domain.model.Coffee;
 import com.vpaliy.espressoinaction.presentation.bus.RxBus;
 import com.vpaliy.espressoinaction.presentation.bus.event.OnCoffeeClicked;
+
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -61,8 +62,8 @@ public class CoffeeAdapter extends AbstractAdapter<Coffee> {
                     .load(resourceId)
                     .centerCrop()
                     .into(image);
-            name.setText(coffee.getCoffeeType().toString());
-            price.setText(Double.toString(coffee.getPrice()));
+            name.setText(coffee.getCoffeeType().name);
+            price.setText(String.format(Locale.US,"$%.0f",coffee.getPrice()));
         }
     }
 }

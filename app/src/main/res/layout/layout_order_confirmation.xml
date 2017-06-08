@@ -5,6 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools">
     <data>
         <variable
+            name="coffeeHolder"
+            type="com.vpaliy.espressoinaction.presentation.ui.fragment.CoffeeOrderFragment.CoffeeHolder"/>
+        <variable
             name="sizeHolder"
             type="com.vpaliy.espressoinaction.presentation.ui.fragment.CoffeeOrderFragment.SizeHolder" />
         <variable
@@ -30,6 +33,7 @@
             android:layout_marginLeft="0dp"
             android:layout_marginRight="0dp"
             android:layout_marginTop="16dp"
+            android:text="@{coffeeHolder.title}"
             android:fontFamily="sans-serif-medium"
             android:textAppearance="@style/ConfirmationTextAppearance.Title"
             android:textSize="18sp"
@@ -94,17 +98,18 @@
             app:layout_constraintLeft_toLeftOf="@+id/cup_size"
             app:layout_constraintTop_toBottomOf="@+id/cup_size"
             tools:drawableTop="@drawable/ic_coconut_x"
-            tools:text="Coconut" />
+            tools:text="Coconut"
+            android:layout_marginLeft="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/coffee_icon"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintVertical_bias="0.907" />
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/coffee_icon"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_marginEnd="@dimen/spacing_medium"
-            android:layout_marginRight="@dimen/spacing_big"
-            android:layout_marginTop="64dp"
-            app:layout_constraintHorizontal_chainStyle="spread"
-            app:layout_constraintRight_toLeftOf="@+id/cup_size"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:src="@{coffeeHolder.image}"
+            android:layout_marginTop="@dimen/spacing_big"
             app:layout_constraintTop_toBottomOf="@+id/txt_subtitle"
             tools:ignore="ContentDescription"
             tools:src="@drawable/cap"
@@ -124,7 +129,9 @@
             android:textAppearance="@style/ConfirmationTextAppearance.Body"
             app:layout_constraintLeft_toRightOf="@+id/coffee_icon"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/coffee_icon" />
+            app:layout_constraintTop_toTopOf="@+id/coffee_icon"
+            android:layout_marginTop="0dp"
+            app:layout_constraintHorizontal_bias="0.382" />
 
         <TextView
             android:id="@+id/txt_message"

@@ -16,6 +16,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.target.ImageViewTarget;
 import com.vpaliy.espressoinaction.CoffeeApp;
 import com.vpaliy.espressoinaction.R;
 import com.vpaliy.espressoinaction.databinding.FragmentOrderFormBinding;
@@ -50,6 +52,7 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
     private SizeHolder sizeHolder=new SizeHolder();
     private MilkHolder milkHolder=new MilkHolder();
     private TimeHolder timeHolder=new TimeHolder();
+    private CoffeeHolder coffeeHolder=new CoffeeHolder();
     @State int coffeeId;
 
     public interface OnPropertyClicked {
@@ -75,6 +78,10 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
         public String time;
     }
 
+    public class CoffeeHolder {
+        public Drawable image;
+        public String title;
+    }
 
     public static CoffeeOrderFragment newInstance(Bundle args){
         CoffeeOrderFragment fragment=new CoffeeOrderFragment();
@@ -197,7 +204,8 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
     }
 
     private void showCoffeeType(CoffeeType coffeeType){
-        binding.coffeeName.setText(coffeeType.toString());
+        coffeeHolder.title=coffeeType.name;
+        binding.coffeeName.setText(coffeeType.name);
     }
 
     private void showCoffeeImage(Coffee coffee){
@@ -206,7 +214,13 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
         Glide.with(getContext())
                 .load(resourceId)
                 .centerCrop()
-                .into(binding.coffeeImage);
+                .into(new ImageViewTarget<GlideDrawable>(binding.coffeeImage) {
+                    @Override
+                    protected void setResource(GlideDrawable resource) {
+                        binding.coffeeImage.setImageDrawable(resource);
+                        coffeeHolder.image=resource;
+                    }
+                });
     }
 
     private void showCoffeePrice(double price){
@@ -248,6 +262,7 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
         confirmationBinding.setMilkHolder(milkHolder);
         confirmationBinding.setSizeHolder(sizeHolder);
         confirmationBinding.setTimeHolder(timeHolder);
+        confirmationBinding.setCoffeeHolder(coffeeHolder);
         return confirmationBinding;
     }
 
