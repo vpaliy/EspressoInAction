@@ -19,4 +19,6 @@
     <string name="friday_date">Friday</string>
     <string name="saturday_date">Saturday</string>
     <string name="sunday_date">Sunday</string>
+    <string name="day_to_pick_up_label">Day to pick up</string>
+    <string name="time_to_pick_up_label">Time to pick up</string>
 </resources>

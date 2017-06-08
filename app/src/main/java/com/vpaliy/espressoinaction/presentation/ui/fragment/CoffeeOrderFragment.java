@@ -1,15 +1,13 @@
 package com.vpaliy.espressoinaction.presentation.ui.fragment;
 
 
-import android.annotation.TargetApi;
 import android.databinding.DataBindingUtil;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
-import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialogFragment;
+import android.support.v4.util.Pair;
 import android.transition.TransitionManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +15,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.vpaliy.espressoinaction.CoffeeApp;
 import com.vpaliy.espressoinaction.R;
-import com.vpaliy.espressoinaction.common.Constants;
 import com.vpaliy.espressoinaction.databinding.FragmentOrderFormBinding;
 import com.vpaliy.espressoinaction.di.component.DaggerViewComponent;
 import com.vpaliy.espressoinaction.di.module.PresenterModule;
@@ -27,13 +24,13 @@ import com.vpaliy.espressoinaction.presentation.mvp.contract.CoffeeOrderContract
 import com.vpaliy.espressoinaction.presentation.mvp.contract.CoffeeOrderContract.Presenter;
 import com.vpaliy.espressoinaction.presentation.ui.utils.CalendarUtils;
 import java.util.Calendar;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.LinkedHashMap;
 import java.util.Locale;
-import butterknife.ButterKnife;
+import java.util.Map;
 import icepick.Icepick;
-import icepick.State;
 
+import icepick.State;
+import android.annotation.TargetApi;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import javax.inject.Inject;
@@ -41,14 +38,10 @@ import javax.inject.Inject;
 public class CoffeeOrderFragment extends BottomSheetDialogFragment
         implements CoffeeOrderContract.View{
 
-    private static final String TAG=CoffeeOrderFragment.class.getSimpleName();
-
     private Presenter presenter;
-
     @State int coffeeId;
-
     private FragmentOrderFormBinding binding;
-    private List<View> clonedViews;
+    private Map<View,Pair<View,View>> clonedViewsMap=new LinkedHashMap<>();
 
     public interface OnPropertyClicked {
         void onClick(View view);
@@ -92,16 +85,49 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
         super.onViewCreated(view, savedInstanceState);
         if(view!=null){
             presenter.start(coffeeId);
-            clonedViews=new LinkedList<>();
             binding.goButton.setOnClickListener(v->go());
-            binding.layoutOne.setMilkHandler(text-> {
-                if (clonedViews.size() < 2)
-                    animateToUpper(createCupSizeView(text), binding.propertyLabelTwo);
-            });
-            binding.layoutOne.setSizeHandler(text-> {
-                if (clonedViews.size() < 2)
-                    animateToUpper(createCupSizeView(text), binding.propertyLabelOne);
-            });
+            initStepOne();
+            initStepTwo();
+            initStepThree();
+        }
+    }
+
+    private void initStepOne(){
+        binding.layoutOne.setMilkHandler(text-> {
+            removeIfExists(binding.propertyLabelTwo);
+            text.setEnabled(false);
+            animateIcon(createCupSizeView(text,binding.propertyLabelTwo),binding.propertyLabelTwo);
+        });
+        binding.layoutOne.setSizeHandler(text-> {
+            removeIfExists(binding.propertyLabelOne);
+            text.setEnabled(false);
+            animateIcon(createCupSizeView(text,binding.propertyLabelOne), binding.propertyLabelOne);
+        });
+    }
+
+    private void initStepTwo(){
+
+    }
+
+    private void initStepThree(){
+        binding.layoutThree.setDayHandler(day->{
+            removeIfExists(binding.propertyLabelTwo);
+            day.setSelected(true);
+            animateText(createTimeView(day,binding.propertyLabelTwo),binding.propertyLabelTwo);
+        });
+        binding.layoutThree.setTimeHandler(time->{
+            removeIfExists(binding.propertyLabelOne);
+            time.setSelected(true);
+            animateText(createTimeView(time,binding.propertyLabelOne), binding.propertyLabelOne);
+        });
+    }
+
+    private void removeIfExists(View key){
+        if(clonedViewsMap.containsKey(key)) {
+            Pair<View, View> pair = clonedViewsMap.get(key);
+            pair.first.setEnabled(true);
+            binding.mainContainer.removeView(pair.second);
+            clonedViewsMap.remove(key);
         }
     }
 
@@ -140,11 +166,8 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
     }
 
     public void go(){
+        cleanUpOnFlip();
         if(isVisible(binding.layoutOne.getRoot())){
-            if(!clonedViews.isEmpty()){
-                clonedViews.forEach(binding.mainContainer::removeView);
-                clonedViews.clear();
-            }
             if(!binding.switcher.isFlipping()) {
                 binding.switcher.showNext();
             }
@@ -157,19 +180,28 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
         }
     }
 
+    private void cleanUpOnFlip(){
+        if(clonedViewsMap.size()!=0){
+            clonedViewsMap.forEach((key,pair)->{
+                binding.mainContainer.removeView(pair.second);
+            });
+            clonedViewsMap.clear();
+        }
+    }
+
     private void prepareDay(){
         Calendar calendar=Calendar.getInstance();
         for(int index=0;index<3;index++) {
             TextView day;
             switch (index){
                 case 0:
-                    day=ButterKnife.findById(binding.layoutThree,R.id.today_day);
+                    day=binding.layoutThree.todayDay;
                     break;
                 case 1:
-                    day=ButterKnife.findById(binding.layoutThree,R.id.tomorrow_day);
+                    day=binding.layoutThree.tomorrowDay;
                     break;
                 default:
-                    day=ButterKnife.findById(binding.layoutThree,R.id.third_day);
+                    day=binding.layoutThree.thirdDay;
                     break;
             }
             StringBuilder builder = new StringBuilder();
@@ -189,17 +221,17 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
             String text;
             switch (index){
                 case 0:
-                    time=ButterKnife.findById(binding.layoutThree,R.id.time_frame_one);
+                    time=binding.layoutThree.timeFrameOne;
                     text=time.getText().toString();
                     time.setText(CalendarUtils.buildSpannableText(text,4));
                     break;
                 case 1:
-                    time=ButterKnife.findById(binding.layoutThree,R.id.time_frame_two);
+                    time=binding.layoutThree.timeFrameTwo;
                     text=time.getText().toString();
                     time.setText(CalendarUtils.buildSpannableText(text,4));
                     break;
                 default:
-                    time=ButterKnife.findById(binding.layoutThree,R.id.time_frame_three);
+                    time=binding.layoutThree.timeFrameThree;
                     text=time.getText().toString();
                     time.setText(CalendarUtils.buildSpannableText(text,3));
                     break;
@@ -212,25 +244,44 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
     }
 
     @TargetApi(19)
-    private void animateToUpper(View clonedView, View targetView){
+    private void animateIcon(View clonedView, View targetView){
         clonedView.post(()->{
             TransitionManager.beginDelayedTransition(getRoot());
-            clonedView.setLayoutParams(SelectedParamsFactory.endParams(clonedView,targetView));
+            clonedView.setLayoutParams(SelectedParamsFactory.endIconParams(clonedView,targetView));
         });
     }
 
-    private TextView createCupSizeView(View real){
+    @TargetApi(19)
+    private void animateText(View clonedView, View targetView){
+        clonedView.post(()->{
+            TransitionManager.beginDelayedTransition(getRoot());
+            clonedView.setLayoutParams(SelectedParamsFactory.endTextParams(clonedView,targetView));
+        });
+    }
+
+    private TextView createCupSizeView(View real, TextView textLabel){
         final TextView fakeSelectedTextView = new TextView(getContext());
         TextView realTextView=TextView.class.cast(real);
         Drawable[] drawables=realTextView.getCompoundDrawables();
         fakeSelectedTextView.setCompoundDrawables(drawables[0],drawables[1],drawables[2],drawables[3]);
         fakeSelectedTextView.setLayoutParams(SelectedParamsFactory.startTextParams(real,binding));
-        if(clonedViews.size()<2) {
-            clonedViews.add(fakeSelectedTextView);
-            binding.mainContainer.addView(fakeSelectedTextView);
-        }
+        Pair<View,View> pair=new Pair<>(real,fakeSelectedTextView);
+        clonedViewsMap.put(textLabel,pair);
+        binding.mainContainer.addView(fakeSelectedTextView);
         return fakeSelectedTextView;
     }
+
+    private TextView createTimeView(View real, TextView textLabel){
+        final TextView fakeSelectedTextView = new TextView(getContext(),null,R.attr.textStyle);
+        TextView realTextView=TextView.class.cast(real);
+        fakeSelectedTextView.setText(realTextView.getText().toString().replace('\n',' '));
+        fakeSelectedTextView.setLayoutParams(SelectedParamsFactory.startTextParams(real,binding));
+        Pair<View,View> pair=new Pair<>(real,fakeSelectedTextView);
+        clonedViewsMap.put(textLabel,pair);
+        binding.mainContainer.addView(fakeSelectedTextView);
+        return fakeSelectedTextView;
+    }
+
     private boolean isVisible(View view){
         return view.getVisibility()==View.VISIBLE;
     }
@@ -262,19 +313,29 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
             layoutParams.setMargins((int) selectedView.getX(), (int) selectedView.getY(), 0, 0);
         }
 
-        private static ConstraintLayout.LayoutParams endParams(View v, View targetView) {
-            final ConstraintLayout.LayoutParams layoutParams =
-                    (ConstraintLayout.LayoutParams) v.getLayoutParams();
-
+        private static ConstraintLayout.LayoutParams endIconParams(View v, View targetView) {
             final int marginLeft = v.getContext().getResources()
                     .getDimensionPixelOffset(R.dimen.spacing_medium);
             final int marginTop=v.getContext().getResources()
                     .getDimensionPixelOffset(R.dimen.spacing_big);
+            return endParams(v,targetView,marginTop,marginLeft);
+        }
+
+        private static ConstraintLayout.LayoutParams endParams(View view, View targetView,
+                                                               int marginTop, int marginLeft){
+            final ConstraintLayout.LayoutParams layoutParams =
+                    (ConstraintLayout.LayoutParams) view.getLayoutParams();
             layoutParams.setMargins(marginLeft, marginTop, 0, 0);
             layoutParams.topToTop = targetView.getId();
             layoutParams.startToEnd = targetView.getId();
             layoutParams.bottomToBottom = targetView.getId();
             return layoutParams;
+        }
+
+        private static ConstraintLayout.LayoutParams endTextParams(View v, View targetView) {
+            final int marginLeft = v.getContext().getResources()
+                    .getDimensionPixelOffset(R.dimen.spacing_medium);
+            return endParams(v,targetView,0,marginLeft);
         }
     }
 
