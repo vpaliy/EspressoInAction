@@ -6,6 +6,7 @@ import android.databinding.DataBindingUtil;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.transition.TransitionManager;
 import android.util.Log;
@@ -26,9 +27,13 @@ import com.vpaliy.espressoinaction.presentation.mvp.contract.CoffeeOrderContract
 import com.vpaliy.espressoinaction.presentation.mvp.contract.CoffeeOrderContract.Presenter;
 import com.vpaliy.espressoinaction.presentation.ui.utils.CalendarUtils;
 import java.util.Calendar;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
+import icepick.Icepick;
+import icepick.State;
+
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import javax.inject.Inject;
@@ -39,9 +44,11 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
     private static final String TAG=CoffeeOrderFragment.class.getSimpleName();
 
     private Presenter presenter;
-    private int coffeeId;
+
+    @State int coffeeId;
 
     private FragmentOrderFormBinding binding;
+    private List<View> clonedViews;
 
     public interface OnPropertyClicked {
         void onClick(View view);
@@ -68,7 +75,7 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
         if(savedInstanceState==null) {
             savedInstanceState=getArguments();
         }
-        this.coffeeId=savedInstanceState.getInt(Constants.EXTRA_COFFEE_ID);
+        Icepick.restoreInstanceState(this,savedInstanceState);
     }
 
     @Nullable
@@ -85,18 +92,23 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
         super.onViewCreated(view, savedInstanceState);
         if(view!=null){
             presenter.start(coffeeId);
+            clonedViews=new LinkedList<>();
             binding.goButton.setOnClickListener(v->go());
-            binding.layoutOne.setMilkHandler(text->
-                animateToUpper(createCupSizeView(text),binding.propertyLabelTwo));
-            binding.layoutOne.setSizeHandler(text->
-                    animateToUpper(createCupSizeView(text),binding.propertyLabelOne));
+            binding.layoutOne.setMilkHandler(text-> {
+                if (clonedViews.size() < 2)
+                    animateToUpper(createCupSizeView(text), binding.propertyLabelTwo);
+            });
+            binding.layoutOne.setSizeHandler(text-> {
+                if (clonedViews.size() < 2)
+                    animateToUpper(createCupSizeView(text), binding.propertyLabelOne);
+            });
         }
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt(Constants.EXTRA_COFFEE_ID,coffeeId);
+        Icepick.saveInstanceState(this,outState);
     }
 
     @Override
@@ -125,11 +137,14 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
 
     @Override
     public void showMessage(String message) {
-
     }
 
     public void go(){
         if(isVisible(binding.layoutOne.getRoot())){
+            if(!clonedViews.isEmpty()){
+                clonedViews.forEach(binding.mainContainer::removeView);
+                clonedViews.clear();
+            }
             if(!binding.switcher.isFlipping()) {
                 binding.switcher.showNext();
             }
@@ -205,13 +220,15 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
     }
 
     private TextView createCupSizeView(View real){
-        final TextView fakeSelectedTextView = new TextView(
-                getContext());
+        final TextView fakeSelectedTextView = new TextView(getContext());
         TextView realTextView=TextView.class.cast(real);
         Drawable[] drawables=realTextView.getCompoundDrawables();
         fakeSelectedTextView.setCompoundDrawables(drawables[0],drawables[1],drawables[2],drawables[3]);
-        fakeSelectedTextView.setLayoutParams(SelectedParamsFactory.startTextParams(real));
-        binding.mainContainer.addView(fakeSelectedTextView);
+        fakeSelectedTextView.setLayoutParams(SelectedParamsFactory.startTextParams(real,binding));
+        if(clonedViews.size()<2) {
+            clonedViews.add(fakeSelectedTextView);
+            binding.mainContainer.addView(fakeSelectedTextView);
+        }
         return fakeSelectedTextView;
     }
     private boolean isVisible(View view){
@@ -227,12 +244,15 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
 
     private static class SelectedParamsFactory {
 
-        private static ConstraintLayout.LayoutParams startTextParams(View selectedView) {
+        private static ConstraintLayout.LayoutParams startTextParams(View selectedView, FragmentOrderFormBinding binding) {
             final ConstraintLayout.LayoutParams layoutParams =
                     new ConstraintLayout.LayoutParams(
                             ViewGroup.LayoutParams.WRAP_CONTENT,
                             ViewGroup.LayoutParams.WRAP_CONTENT);
-            setStartState(selectedView, layoutParams);
+            layoutParams.topToTop = binding.mainContainer.getId();
+            layoutParams.leftToLeft = binding.mainContainer.getId();
+            layoutParams.setMargins((int) selectedView.getX(), (int) selectedView.getY(), 0, 0);
+            setStartState(selectedView,layoutParams);
             return layoutParams;
         }
 
@@ -248,12 +268,12 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
 
             final int marginLeft = v.getContext().getResources()
                     .getDimensionPixelOffset(R.dimen.spacing_medium);
-
-            layoutParams.setMargins(marginLeft, 0, 0, 0);
+            final int marginTop=v.getContext().getResources()
+                    .getDimensionPixelOffset(R.dimen.spacing_big);
+            layoutParams.setMargins(marginLeft, marginTop, 0, 0);
             layoutParams.topToTop = targetView.getId();
             layoutParams.startToEnd = targetView.getId();
             layoutParams.bottomToBottom = targetView.getId();
-
             return layoutParams;
         }
     }
