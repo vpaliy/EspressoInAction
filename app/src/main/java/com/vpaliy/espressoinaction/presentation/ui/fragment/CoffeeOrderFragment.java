@@ -2,12 +2,14 @@ package com.vpaliy.espressoinaction.presentation.ui.fragment;
 
 
 import android.databinding.DataBindingUtil;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v4.util.Pair;
+import android.transition.Scene;
+import android.transition.Transition;
+import android.transition.TransitionInflater;
 import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +19,7 @@ import com.bumptech.glide.Glide;
 import com.vpaliy.espressoinaction.CoffeeApp;
 import com.vpaliy.espressoinaction.R;
 import com.vpaliy.espressoinaction.databinding.FragmentOrderFormBinding;
+import com.vpaliy.espressoinaction.databinding.LayoutOrderConfirmationBinding;
 import com.vpaliy.espressoinaction.di.component.DaggerViewComponent;
 import com.vpaliy.espressoinaction.di.module.PresenterModule;
 import com.vpaliy.espressoinaction.domain.model.Coffee;
@@ -216,6 +219,7 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
 
     public void go(){
         cleanUpOnFlip();
+        changeToConfirmScene();
         if(isVisible(binding.layoutOne.root)){
             binding.switcher.showNext();
         }else if(isVisible(binding.layoutTwo)){
@@ -223,10 +227,28 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
             prepareTime();
             binding.switcher.showNext();
         }else if(isVisible(binding.layoutThree.root)){
-            binding.propertyLabelOne.setText(R.string.size_label);
-            binding.propertyLabelTwo.setText(R.string.milk_label);
-            binding.switcher.showNext();
         }
+    }
+
+    @TargetApi(19)
+    private void changeToConfirmScene() {
+        LayoutOrderConfirmationBinding confBinding=prepareConfirmation();
+
+        final Scene scene = new Scene(binding.content,
+                ((ViewGroup) confBinding.getRoot()));
+
+        final Transition transition = TransitionInflater.from(getContext())
+                .inflateTransition(R.transition.transition_confirmation_view);
+        TransitionManager.go(scene, transition);
+    }
+
+    private LayoutOrderConfirmationBinding prepareConfirmation(){
+        LayoutOrderConfirmationBinding confirmationBinding=LayoutOrderConfirmationBinding
+                .inflate(LayoutInflater.from(getContext()),binding.mainContainer,false);
+        confirmationBinding.setMilkHolder(milkHolder);
+        confirmationBinding.setSizeHolder(sizeHolder);
+        confirmationBinding.setTimeHolder(timeHolder);
+        return confirmationBinding;
     }
 
     private void cleanUpOnFlip(){
@@ -312,9 +334,7 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
         final TextView fakeSelectedTextView = new TextView(getContext());
         TextView realTextView=TextView.class.cast(real);
         Drawable[] drawables=realTextView.getCompoundDrawables();
-        fakeSelectedTextView.setCompoundDrawables(drawables[0],drawables[1],drawables[2],drawables[3]);
-        sizeHolder.image=drawables[1];
-        sizeHolder.size=realTextView.getText().toString();
+        fakeSelectedTextView.setCompoundDrawables(drawables[0],drawables[1],drawables[2],drawables[3]);;
         fakeSelectedTextView.setPadding(0,0,0,0);
         fakeSelectedTextView.setLayoutParams(SelectedParamsFactory.startTextParams(real,binding));
         Pair<View,View> pair=new Pair<>(real,fakeSelectedTextView);
@@ -420,5 +440,4 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
             return endParams(v,targetView,0,marginLeft);
         }
     }
-
 }
