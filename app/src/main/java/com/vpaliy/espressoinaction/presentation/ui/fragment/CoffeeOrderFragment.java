@@ -26,8 +26,6 @@ import com.vpaliy.espressoinaction.presentation.mvp.contract.CoffeeOrderContract
 import com.vpaliy.espressoinaction.presentation.mvp.contract.CoffeeOrderContract.Presenter;
 import com.vpaliy.espressoinaction.presentation.ui.utils.CalendarUtils;
 import com.vpaliy.espressoinaction.presentation.ui.utils.TextUtils;
-
-import java.io.BufferedReader;
 import java.util.Calendar;
 import java.util.LinkedHashMap;
 import java.util.Locale;
@@ -46,6 +44,9 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
     private Presenter presenter;
     private FragmentOrderFormBinding binding;
     private Map<View,Pair<View,View>> clonedViewsMap=new LinkedHashMap<>();
+    private SizeHolder sizeHolder=new SizeHolder();
+    private MilkHolder milkHolder=new MilkHolder();
+    private TimeHolder timeHolder=new TimeHolder();
     @State int coffeeId;
 
     public interface OnPropertyClicked {
@@ -55,6 +56,22 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
     public interface TextHandler {
         CharSequence setText(String leftPart, String rightPart);
     }
+
+    public class SizeHolder {
+        public String size;
+        public Drawable image;
+    }
+
+    public class MilkHolder {
+        public String milkType;
+        public Drawable image;
+    }
+
+    public class TimeHolder {
+        public String day;
+        public String time;
+    }
+
 
     public static CoffeeOrderFragment newInstance(Bundle args){
         CoffeeOrderFragment fragment=new CoffeeOrderFragment();
@@ -110,7 +127,7 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
         binding.layoutOne.setMilkHandler(text-> {
             removeIfExists(binding.propertyLabelTwo);
             text.setEnabled(false);
-            animateIcon(createCupSizeView(text,binding.propertyLabelTwo),binding.propertyLabelTwo);
+            animateIcon(createMilkView(text,binding.propertyLabelTwo),binding.propertyLabelTwo);
         });
         binding.layoutOne.setSizeHandler(text-> {
             removeIfExists(binding.propertyLabelOne);
@@ -141,11 +158,15 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
         binding.layoutThree.setDayHandler(day->{
             removeIfExists(binding.propertyLabelOne);
             day.setSelected(true);
+            TextView dayText=TextView.class.cast(day);
+            timeHolder.day=dayText.getText().toString();
             animateText(createTimeView(day,binding.propertyLabelOne),binding.propertyLabelOne);
         });
         binding.layoutThree.setTimeHandler(time->{
             removeIfExists(binding.propertyLabelTwo);
             time.setSelected(true);
+            TextView timeText=TextView.class.cast(time);
+            timeHolder.time=timeText.getText().toString();
             animateText(createTimeView(time,binding.propertyLabelTwo), binding.propertyLabelTwo);
         });
     }
@@ -287,17 +308,35 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
         });
     }
 
-    private TextView createCupSizeView(View real, TextView textLabel){
+    private TextView createIconView(View real, TextView textLabel){
         final TextView fakeSelectedTextView = new TextView(getContext());
         TextView realTextView=TextView.class.cast(real);
         Drawable[] drawables=realTextView.getCompoundDrawables();
         fakeSelectedTextView.setCompoundDrawables(drawables[0],drawables[1],drawables[2],drawables[3]);
+        sizeHolder.image=drawables[1];
+        sizeHolder.size=realTextView.getText().toString();
         fakeSelectedTextView.setPadding(0,0,0,0);
         fakeSelectedTextView.setLayoutParams(SelectedParamsFactory.startTextParams(real,binding));
         Pair<View,View> pair=new Pair<>(real,fakeSelectedTextView);
         clonedViewsMap.put(textLabel,pair);
         binding.mainContainer.addView(fakeSelectedTextView);
         return fakeSelectedTextView;
+    }
+
+    private TextView createMilkView(View real, TextView textLabel){
+        TextView realTextView=TextView.class.cast(real);
+        Drawable[] drawables=realTextView.getCompoundDrawables();
+        milkHolder.image=drawables[1];
+        milkHolder.milkType=realTextView.getText().toString();
+        return createIconView(real,textLabel);
+    }
+
+    private TextView createCupSizeView(View real, TextView textLabel){
+        TextView realTextView=TextView.class.cast(real);
+        Drawable[] drawables=realTextView.getCompoundDrawables();
+        sizeHolder.image=drawables[1];
+        sizeHolder.size=realTextView.getText().toString();
+        return createIconView(real,textLabel);
     }
 
     private TextView createTimeView(View real, TextView textLabel){

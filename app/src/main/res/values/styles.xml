@@ -14,6 +14,14 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
+    <style name="ConfirmationTextAppearance" parent="Base.TextAppearance.AppCompat">
+        <item name="android:textColor">@color/colorWhite</item>
+    </style>
+
+
+    <style name="ConfirmationTextAppearance.Title">
+        <item name="android:textSize">19sp</item>
+    </style>
 
     <style name="Widget.DateTime">
         <item name="android:minWidth">75dp</item>
