@@ -1,17 +1,18 @@
 package com.vpaliy.espressoinaction.presentation.ui.fragment;
 
-import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomSheetDialogFragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.util.Pair;
 import android.support.v4.view.ViewCompat;
 import android.transition.Scene;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
 import android.transition.TransitionManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import android.view.animation.OvershootInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
+import com.jesusm.holocircleseekbar.lib.HoloCircleSeekBar;
 import com.vpaliy.espressoinaction.CoffeeApp;
 import com.vpaliy.espressoinaction.R;
 import com.vpaliy.espressoinaction.common.Constants;
@@ -29,6 +31,7 @@ import com.vpaliy.espressoinaction.di.module.PresenterModule;
 import com.vpaliy.espressoinaction.domain.model.Coffee;
 import com.vpaliy.espressoinaction.domain.model.CoffeeType;
 import com.vpaliy.espressoinaction.domain.model.SizeType;
+import com.vpaliy.espressoinaction.domain.model.Sweetness;
 import com.vpaliy.espressoinaction.presentation.mvp.contract.CoffeeOrderContract;
 import com.vpaliy.espressoinaction.presentation.mvp.contract.CoffeeOrderContract.Presenter;
 import com.vpaliy.espressoinaction.presentation.ui.utils.CalendarUtils;
@@ -38,7 +41,7 @@ import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
 import icepick.Icepick;
-import android.annotation.TargetApi;
+import android.databinding.BindingAdapter;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import javax.inject.Inject;
@@ -118,7 +121,6 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
         this.coffeeId = savedInstanceState.getInt(Constants.EXTRA_COFFEE_ID);
     }
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -133,21 +135,19 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
         super.onViewCreated(view, savedInstanceState);
         if(view!=null){
             presenter.start(coffeeId);
-            binding.goButton.setOnClickListener(v->go());
             initStepOne();
-            initStepTwo();
-            initStepThree();
         }
     }
 
     private void initStepOne(){
+        binding.goButton.setOnClickListener(v->initStepTwo());
         binding.layoutOne.setTextHandler((leftPart, rightPart) ->
             TextUtils.mergeColoredText(leftPart,rightPart,
-                    getResources().getColor(R.color.colorPrimary),
-                    getResources().getColor(R.color.colorPrice)));
+                    ContextCompat.getColor(getContext(),R.color.colorPrimary),
+                    ContextCompat.getColor(getContext(),R.color.colorPrice)));
         binding.layoutOne.setMilkHandler(text-> {
             removeIfExists(binding.propertyLabelTwo);
-            text.setEnabled(false);
+            text.setSelected(true);
             animateIcon(createMilkView(text,binding.propertyLabelTwo),binding.propertyLabelTwo);
         });
         binding.layoutOne.setSizeHandler(text-> {
@@ -166,16 +166,70 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
                     presenter.onSizeTypeSelected(SizeType.TALL);
                     break;
             }
-            text.setEnabled(false);
+            text.setSelected(true);
             animateIcon(createCupSizeView(text,binding.propertyLabelOne), binding.propertyLabelOne);
         });
     }
 
     private void initStepTwo(){
+        binding.switcher.showNext();
+        cleanUpOnFlip();
+        binding.propertyLabelOne.setVisibility(View.GONE);
+        binding.propertyLabelTwo.setVisibility(View.GONE);
+        binding.goButton.setOnClickListener(v->initStepThree());
+        binding.layoutTwo.picker.setOnSeekBarChangeListener(new HoloCircleSeekBar.OnCircleSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(HoloCircleSeekBar holoCircleSeekBar, int position, boolean wtf) {}
+            @Override
+            public void onStartTrackingTouch(HoloCircleSeekBar holoCircleSeekBar) {
+                ViewCompat.animate(binding.layoutTwo.sugarLevel)
+                        .alpha(0f)
+                        .setDuration(200)
+                        .start();
+            }
 
+            @Override
+            public void onStopTrackingTouch(HoloCircleSeekBar holoCircleSeekBar) {
+                int percent=holoCircleSeekBar.getValue();
+                for(Sweetness value:Sweetness.values()){
+                    if(value.percent>=percent){
+                        presenter.onSweetnessTypeSelected(value);
+                        binding.layoutTwo.sugarLevel.setText(getSweetnessText(value));
+                        break;
+                    }
+                }
+                ViewCompat.animate(binding.layoutTwo.sugarLevel)
+                        .alpha(1f)
+                        .setDuration(200)
+                        .start();
+            }
+        });
     }
 
+    private String getSweetnessText(Sweetness sweetness){
+        switch (sweetness){
+            case NOT_SWEET:
+                return getString(R.string.not_sweet_label);
+            case SLIGHTLY_SWEET:
+                return getString(R.string.slightly_sweet_label);
+            case HALF_SWEET:
+                return getString(R.string.half_sweet_label);
+            case MODERATELY_SWEET:
+                return getString(R.string.moderately_sweet_label);
+            case FULL_SWEETNESS:
+                return getString(R.string.full_sweetness_label);
+            default:
+                throw new UnsupportedOperationException("Unknown sweetness type"+sweetness);
+        }
+    }
     private void initStepThree(){
+        cleanUpOnFlip();
+        binding.propertyLabelOne.setVisibility(View.VISIBLE);
+        binding.propertyLabelTwo.setVisibility(View.VISIBLE);
+        prepareDay();
+        prepareTime();
+        binding.switcher.showNext();
+        binding.goButton.setOnClickListener(v->changeToConfirmScene());
         binding.layoutThree.setDayHandler(day->{
             removeIfExists(binding.propertyLabelOne);
             day.setSelected(true);
@@ -240,20 +294,7 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
     public void showMessage(String message) {
     }
 
-    public void go(){
-        cleanUpOnFlip();
-        if(isVisible(binding.layoutOne.root)){
-            binding.switcher.showNext();
-        }else if(isVisible(binding.layoutThree.root)){
-            changeToConfirmScene();
-        }else {
-            prepareDay();
-            prepareTime();
-            binding.switcher.showNext();
-        }
-    }
 
-    @TargetApi(19)
     private void changeToConfirmScene() {
         LayoutOrderConfirmationBinding confBinding=prepareConfirmation();
 
@@ -285,6 +326,12 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
                 binding.mainContainer.removeView(pair.second));
             clonedViewsMap.clear();
         }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        presenter.stop();
     }
 
     private void prepareDay(){
@@ -341,7 +388,6 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
         return ViewGroup.class.cast(getView());
     }
 
-    @TargetApi(19)
     private void animateIcon(View clonedView, View targetView){
         clonedView.post(()->{
             TransitionManager.beginDelayedTransition(getRoot());
@@ -349,7 +395,6 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
         });
     }
 
-    @TargetApi(19)
     private void animateText(TextView clonedView, TextView targetView){
         clonedView.post(()->{
             TransitionManager.beginDelayedTransition(getRoot());
@@ -404,8 +449,8 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
         String leftText=String.format(Locale.US,"$"+"%.0f",original);
         String rightText=String.format(Locale.US," + $"+"%.0f",additional);
         binding.coffeePrice.setText(TextUtils.mergeColoredText(leftText,rightText,
-                getResources().getColor(R.color.colorPrimary),
-                getResources().getColor(R.color.colorPrice)));
+                ContextCompat.getColor(getContext(),R.color.colorPrimary),
+                ContextCompat.getColor(getContext(),R.color.colorPrice)));
     }
 
     @Override

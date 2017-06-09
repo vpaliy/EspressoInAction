@@ -1,10 +1,13 @@
-<RelativeLayout android:id="@+id/root"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+<RelativeLayout
+    android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:ignore="HardcodedText"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    tools:ignore="HardcodedText">
 
     <com.jesusm.holocircleseekbar.lib.HoloCircleSeekBar
         android:layout_centerInParent="true"
@@ -20,6 +23,20 @@
         app:wheel_size="20"
         android:layout_width="285dp"
         android:layout_height="290dp" />
+
+    <TextView
+        android:id="@+id/sugar_level"
+        style="@style/Widget.Label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/colorPrice"
+        android:text="@string/not_sweet_label"
+        android:textSize="18sp"
+        android:layout_marginTop="64dp"
+        android:layout_alignTop="@+id/picker"
+        android:layout_centerHorizontal="true" />
+
     <TextView
         android:id="@+id/sugar"
         style="@style/Widget.Label"
@@ -33,3 +50,4 @@
         android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
+</layout>
