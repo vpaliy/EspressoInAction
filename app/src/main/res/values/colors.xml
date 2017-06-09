@@ -7,4 +7,6 @@
     <color name="colorWhite">#ffff</color>
     <color name="colorCupStripe">#8d6e63</color>
     <color name="colorPrice">#e57373</color>
+
+    <color name="colorSugar">#bcaaa4</color>
 </resources>

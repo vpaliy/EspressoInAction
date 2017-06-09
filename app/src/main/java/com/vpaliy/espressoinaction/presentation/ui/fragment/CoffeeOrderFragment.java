@@ -82,6 +82,7 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
     public static class CoffeeHolder {
         public String imageUrl;
         public String title;
+        public String price;
 
         @BindingAdapter({"bind:imageUrl"})
         public static void loadInto(ImageView image, String imageUrl){
@@ -230,7 +231,9 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
     }
 
     private void showCoffeePrice(double price){
-        binding.coffeePrice.setText(String.format(Locale.US,"$ "+"%.0f",price));
+        String textPrice=String.format(Locale.US,"$ "+"%.0f",price);
+        binding.coffeePrice.setText(textPrice);
+        coffeeHolder.price=textPrice;
     }
 
     @Override
@@ -257,7 +260,7 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
         final Scene scene = new Scene(binding.content,
                 ((ViewGroup) confBinding.getRoot()));
         scene.setEnterAction(()-> ViewCompat.animate(confBinding.txtSubtitle)
-                .scaleX(1).scaleY(1)
+                .scaleX(1.5f).scaleY(1.5f)
                 .setInterpolator(new OvershootInterpolator())
                 .setStartDelay(200)
                 .start());
@@ -397,6 +400,7 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
 
     @Override
     public void appendSizeCharge(double original, double additional) {
+        coffeeHolder.price=String.format(Locale.US,"$ "+"%.0f",original+additional);
         String leftText=String.format(Locale.US,"$"+"%.0f",original);
         String rightText=String.format(Locale.US," + $"+"%.0f",additional);
         binding.coffeePrice.setText(TextUtils.mergeColoredText(leftText,rightText,

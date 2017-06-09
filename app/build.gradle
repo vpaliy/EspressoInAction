@@ -50,6 +50,9 @@ dependencies {
     compile 'com.github.feeeei:CircleSeekbar:v1.1.2'
     compile "frankiesardo:icepick:3.2.0"
     provided "frankiesardo:icepick-processor:3.2.0"
+    compile 'com.github.feeeei:CircleSeekbar:v1.1.2'
+    compile 'com.github.JesusM:HoloCircleSeekBar:v2.2.2'
+
 
     compile libs.circleImage
     compile libs.constraintLayout

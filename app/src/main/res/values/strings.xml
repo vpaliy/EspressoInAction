@@ -15,6 +15,9 @@
     <string name="plus_three_label">\n+$3</string>
 
     <string name="order_placed">Enjoy your coffee!</string>
+    <string name="day_label_txt">Day %s</string>
+    <string name="time_label_txt">Time %s</string>
+    <string name="thank_you_message">Your total</string>
     <string name="day_label">Day</string>
     <string name="time_label">Time</string>
     <string name="size_label">Size</string>
