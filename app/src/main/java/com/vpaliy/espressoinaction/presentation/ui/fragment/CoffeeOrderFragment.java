@@ -41,7 +41,6 @@ import java.util.Calendar;
 import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
-import icepick.Icepick;
 import android.databinding.BindingAdapter;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -137,12 +136,12 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
         super.onViewCreated(view, savedInstanceState);
         if(view!=null){
             presenter.start(coffeeId);
-            initStepOne();
+            stepOne();
         }
     }
 
-    private void initStepOne(){
-        binding.goButton.setOnClickListener(v->initStepTwo());
+    private void stepOne(){
+        binding.goButton.setOnClickListener(v-> stepTwo());
         binding.layoutOne.setTextHandler((leftPart, rightPart) ->
             TextUtils.mergeColoredText(leftPart,rightPart,
                     ContextCompat.getColor(getContext(),R.color.colorPrimary),
@@ -187,12 +186,12 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
         });
     }
 
-    private void initStepTwo(){
+    private void stepTwo(){
         binding.switcher.showNext();
         cleanUpOnFlip();
         binding.propertyLabelOne.setVisibility(View.GONE);
         binding.propertyLabelTwo.setVisibility(View.GONE);
-        binding.goButton.setOnClickListener(v->initStepThree());
+        binding.goButton.setOnClickListener(v-> stepThree());
         binding.layoutTwo.picker.setOnSeekBarChangeListener(new HoloCircleSeekBar.OnCircleSeekBarChangeListener() {
             @Override
             public void onProgressChanged(HoloCircleSeekBar holoCircleSeekBar, int position, boolean wtf) {}
@@ -222,8 +221,9 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
         });
     }
 
-    private void initStepThree(){
+    private void stepThree(){
         cleanUpOnFlip();
+        binding.layoutTwo.picker.setVisibility(View.INVISIBLE);
         binding.propertyLabelOne.setVisibility(View.VISIBLE);
         binding.propertyLabelTwo.setVisibility(View.VISIBLE);
         prepareDay();
@@ -253,12 +253,6 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
             binding.mainContainer.removeView(pair.second);
             clonedViewsMap.remove(key);
         }
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        Icepick.saveInstanceState(this,outState);
     }
 
     @Override
@@ -328,7 +322,7 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
 
     private void prepareDay(){
         Calendar calendar=Calendar.getInstance();
-        for(int index=0;index<3;index++) {
+        for(int index=0;index<4;index++) {
             TextView day;
             switch (index){
                 case 0:
@@ -337,15 +331,17 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
                 case 1:
                     day=binding.layoutThree.tomorrowDay;
                     break;
-                default:
+                case 2:
                     day=binding.layoutThree.thirdDay;
                     break;
+                default:
+                    day=binding.layoutThree.fourthDay;
+                    break;
             }
-            StringBuilder builder = new StringBuilder();
-            builder.append(CalendarUtils.getDay(getContext(), calendar));
-            builder.append('\n');
-            builder.append(CalendarUtils.dayOfMonth(calendar));
-            day.setText(CalendarUtils.buildSpannableText(builder.toString(), 3));
+            String textDay=CalendarUtils.getDay(getContext(), calendar);
+            textDay+='\n';
+            textDay+=CalendarUtils.dayOfMonth(calendar);
+            day.setText(CalendarUtils.buildSpannableText(textDay, 3));
             calendar.add(Calendar.DAY_OF_MONTH,1);
         }
     }
@@ -353,7 +349,7 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
     private void prepareTime(){
         binding.propertyLabelOne.setText(getString(R.string.day_label));
         binding.propertyLabelTwo.setText(getString(R.string.time_label));
-        for(int index=0;index<3;index++){
+        for(int index=0;index<4;index++){
             TextView time;
             String text;
             switch (index){
@@ -367,8 +363,13 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
                     text=time.getText().toString();
                     time.setText(CalendarUtils.buildSpannableText(text,4));
                     break;
-                default:
+                case 2:
                     time=binding.layoutThree.timeFrameThree;
+                    text=time.getText().toString();
+                    time.setText(CalendarUtils.buildSpannableText(text,3));
+                    break;
+                default:
+                    time=binding.layoutThree.timeFrameFour;
                     text=time.getText().toString();
                     time.setText(CalendarUtils.buildSpannableText(text,3));
                     break;
@@ -399,7 +400,7 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
         final TextView fakeSelectedTextView = new TextView(getContext());
         TextView realTextView=TextView.class.cast(real);
         Drawable[] drawables=realTextView.getCompoundDrawables();
-        fakeSelectedTextView.setCompoundDrawables(drawables[0],drawables[1],drawables[2],drawables[3]);;
+        fakeSelectedTextView.setCompoundDrawables(drawables[0],drawables[1],drawables[2],drawables[3]);
         fakeSelectedTextView.setPadding(0,0,0,0);
         fakeSelectedTextView.setLayoutParams(SelectedParamsFactory.startTextParams(real,binding));
         Pair<View,View> pair=new Pair<>(real,fakeSelectedTextView);

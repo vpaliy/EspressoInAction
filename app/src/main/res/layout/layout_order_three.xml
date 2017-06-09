@@ -14,6 +14,7 @@
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/root"
+        android:paddingBottom="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -22,7 +23,7 @@
             style="@style/Widget.Label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_medium"
+            android:layout_marginTop="16dp"
             android:layout_marginLeft="@dimen/spacing_big"
             android:text="@string/day_to_pick_up_label"
             app:layout_constraintTop_toTopOf="parent"
@@ -45,7 +46,7 @@
             style="@style/Widget.DateTime"
             android:layout_marginEnd="@dimen/spacing_medium"
             android:layout_marginRight="@dimen/spacing_medium"
-            android:layout_marginTop="@dimen/spacing_big"
+            android:layout_marginTop="16dp"
             android:onClick="@{dayHandler::onClick}"
             tools:text="Today\n02"
             app:layout_constraintHorizontal_chainStyle="packed"
@@ -73,8 +74,20 @@
             android:onClick="@{dayHandler::onClick}"
             app:layout_constraintBottom_toBottomOf="@+id/tomorrow_day"
             app:layout_constraintLeft_toRightOf="@+id/tomorrow_day"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/fourth_day"
             app:layout_constraintTop_toTopOf="@+id/tomorrow_day"
+            />
+        <TextView
+            android:id="@+id/fourth_day"
+            style="@style/Widget.DateTime"
+            android:layout_marginLeft="@dimen/spacing_medium"
+            android:layout_marginStart="@dimen/spacing_medium"
+            tools:text="Friday\n05"
+            android:onClick="@{dayHandler::onClick}"
+            app:layout_constraintBottom_toBottomOf="@+id/third_day"
+            app:layout_constraintLeft_toRightOf="@+id/third_day"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/third_day"
             />
         <TextView
             android:id="@+id/time_frame_two"
@@ -90,23 +103,32 @@
             android:id="@+id/time_frame_three"
             style="@style/Widget.DateTime"
             android:layout_marginLeft="@dimen/spacing_medium"
-            android:layout_marginRight="0dp"
             android:text="PM\n3-5"
             android:onClick="@{timeHandler::onClick}"
             app:layout_constraintBottom_toBottomOf="@+id/time_frame_two"
             app:layout_constraintLeft_toRightOf="@+id/time_frame_two"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/time_frame_four"
             app:layout_constraintTop_toTopOf="@+id/time_frame_two"
+            app:layout_constraintVertical_bias="0.0" />
+        <TextView
+            android:id="@+id/time_frame_four"
+            style="@style/Widget.DateTime"
+            android:layout_marginLeft="@dimen/spacing_medium"
+            android:layout_marginRight="0dp"
+            android:text="PM\n5-9"
+            android:onClick="@{timeHandler::onClick}"
+            app:layout_constraintBottom_toBottomOf="@+id/time_frame_three"
+            app:layout_constraintLeft_toRightOf="@+id/time_frame_three"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/time_frame_three"
             />
         <TextView
             android:id="@+id/time_frame_one"
             style="@style/Widget.DateTime"
-            android:layout_marginBottom="@dimen/spacing_medium"
             android:layout_marginRight="@dimen/spacing_medium"
-            android:layout_marginTop="@dimen/spacing_big"
+            android:layout_marginTop="16dp"
             android:text="AM\n9-12"
             android:onClick="@{timeHandler::onClick}"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@+id/time_frame_two"

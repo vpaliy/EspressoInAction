@@ -39,90 +39,30 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:drawableLeft="@drawable/done"
+            android:drawableStart="@drawable/done"
             android:drawablePadding="@dimen/spacing_medium"
             android:drawableTint="@color/colorWhite"
             android:text="@string/order_placed"
-            android:scaleX="2.5"
-            android:scaleY="2.5"
+            android:scaleX="1.5"
+            android:scaleY="1.5"
             android:textAppearance="@style/ConfirmationTextAppearance.SubTitle"
             app:layout_constraintLeft_toLeftOf="@+id/coffee_title"
             app:layout_constraintRight_toRightOf="@+id/coffee_title"
             app:layout_constraintTop_toBottomOf="@+id/coffee_title"
             />
 
-        <TextView
-            android:id="@+id/pick_day"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{@string/day_label_txt(result.day)}"
-            android:textAppearance="@style/ConfirmationTextAppearance.Body"
-            tools:text="Day: Tomorrow 2"
-            app:layout_constraintLeft_toRightOf="@+id/imageView"
-            android:layout_marginLeft="8dp"
-            app:layout_constraintTop_toTopOf="@+id/imageView"
-            android:layout_marginTop="10dp" />
-
-        <TextView
-            android:id="@+id/pick_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="0dp"
-            android:layout_marginTop="10dp"
-            android:fontFamily="sans-serif"
-            android:text="@{@string/time_label_txt(result.time)}"
-            android:textAppearance="@style/ConfirmationTextAppearance.Body"
-            app:layout_constraintLeft_toLeftOf="@+id/pick_day"
-            app:layout_constraintTop_toBottomOf="@+id/pick_day"
-            tools:text="Time: PM 1-2" />
-
-
-        <TextView
-            android:id="@+id/milk_type"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_medium"
-            android:gravity="center"
-            android:text="@{result.milkType}"
-            android:textAppearance="@style/ConfirmationTextAppearance.Body"
-            app:layout_constraintLeft_toLeftOf="@+id/cup_size"
-            app:layout_constraintTop_toBottomOf="@+id/cup_size"
-            tools:drawableTop="@drawable/ic_coconut_x"
-            android:drawableTop="@{result.milkImage}"
-            tools:text="Coconut"
-            android:layout_marginLeft="0dp"
-            app:layout_constraintBottom_toBottomOf="@+id/coffee_icon"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintVertical_bias="0.907" />
-
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/coffee_icon"
             android:layout_width="200dp"
             android:layout_height="200dp"
-            android:layout_marginTop="@dimen/spacing_big"
+            android:layout_marginTop="52dp"
             app:layout_constraintTop_toBottomOf="@+id/txt_subtitle"
             tools:ignore="ContentDescription"
             tools:src="@drawable/cap"
             app:imageUrl="@{result.coffeeImage}"
-            android:layout_marginLeft="2dp"
-            app:layout_constraintLeft_toLeftOf="parent" />
-
-        <TextView
-            android:id="@+id/cup_size"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="Small"
-            android:text="@{result.size}"
-            android:gravity="center"
-            android:drawablePadding="2dp"
-            tools:drawableTop="@drawable/ic_coffee_xlarge_size"
-            android:textAppearance="@style/ConfirmationTextAppearance.Body"
-            app:layout_constraintLeft_toRightOf="@+id/coffee_icon"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/coffee_icon"
-            android:layout_marginTop="0dp"
-            android:drawableTop="@{result.sizeImage}"
-            app:layout_constraintHorizontal_bias="0.382" />
+            android:layout_marginStart="2dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            />
 
         <TextView
             android:id="@+id/txt_message"
@@ -140,7 +80,7 @@
             app:layout_constraintTop_toTopOf="@+id/coffee_price"
             app:layout_constraintVertical_bias="1.0"
             app:layout_constraintRight_toLeftOf="@+id/coffee_price"
-            android:layout_marginRight="31dp" />
+            android:layout_marginEnd="31dp" />
 
         <TextView
             android:id="@+id/coffee_price"
@@ -150,7 +90,7 @@
             android:textSize="26sp"
             android:textStyle="bold"
             android:text="@{result.price}"
-            android:layout_marginRight="@dimen/spacing_big"
+            android:layout_marginEnd="@dimen/spacing_big"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginBottom="@dimen/spacing_big" />
@@ -160,7 +100,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@null"
-            android:layout_marginRight="@dimen/spacing_big"
+            android:layout_marginEnd="@dimen/spacing_big"
             android:tint="@color/colorWhite"
             app:layout_constraintBottom_toBottomOf="@+id/coffee_title"
             app:layout_constraintRight_toRightOf="parent"
@@ -169,14 +109,72 @@
             tools:ignore="ContentDescription"
             />
 
-        <ImageView
-            android:id="@+id/imageView"
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/calendar_clock"
-            android:layout_marginTop="31dp"
+            style="@style/Widget.Label"
+            android:textColor="@color/colorWhite"
+            android:drawableStart="@drawable/calendar_clock"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:text="@{result.day +'\n'+result.time}"
+            tools:text="Sunday 2 \n  PM 1-2"
+            android:layout_marginStart="8dp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/coffee_icon"
+            android:layout_marginTop="0dp"
+            app:layout_constraintLeft_toRightOf="@+id/coffee_icon"
+            app:layout_constraintHorizontal_bias="0.0"
+            android:id="@+id/textView" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Small"
+            style="@style/Widget.Label"
+            android:textSize="16sp"
+            android:text="@{result.size}"
+            android:drawableStart="@{result.sizeImage}"
+            android:textColor="@color/colorWhite"
+            android:gravity="center"
+            tools:drawableLeft="@drawable/ic_small_coffee_size"
+            app:layout_constraintLeft_toRightOf="@+id/coffee_icon"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="25dp"
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text=" Coconut"
+            android:textSize="16sp"
+            style="@style/Widget.Label"
+            android:textColor="@color/colorWhite"
+            android:text="@{' '+result.milkType}"
+            android:drawableStart="@{result.milkImage}"
+            android:gravity="center"
+            android:layout_marginStart="5dp"
+            tools:drawableLeft="@drawable/ic_coconut_x"
+            app:layout_constraintLeft_toLeftOf="@+id/textView2"
+            android:layout_marginTop="24dp"
+            app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Full sweetness"
+            android:textSize="20sp"
+            android:gravity="center"
+            android:text="@{result.sugarType}"
+            android:textColor="@color/colorWhite"
+            style="@style/Widget.Label"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="42dp"
             app:layout_constraintTop_toBottomOf="@+id/coffee_icon"
-            android:layout_marginLeft="8dp"
-            app:layout_constraintLeft_toLeftOf="@+id/coffee_icon" />
+            android:layout_marginStart="32dp"
+            app:layout_constraintLeft_toLeftOf="parent" />
     </android.support.constraint.ConstraintLayout>
 </layout>

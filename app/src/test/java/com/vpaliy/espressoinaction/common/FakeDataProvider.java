@@ -21,7 +21,7 @@ public class FakeDataProvider {
     public static final String FAKE_NAME="fake_name";
     public static final CoffeeType FAKE_COFFEE_TYPE=CoffeeType.ESPRESSO;
     public static final String FAKE_IMAGE_URL="fake_image_url";
-    public static final MilkType FAKE_MILK_TYPE= MilkType.NONFAT_MILK;
+    public static final MilkType FAKE_MILK_TYPE= MilkType.WHOLE_MILK;
     public static final SizeType FAKE_SIZE_TYPE=SizeType.LARGE;
     public static final Sweetness FAKE_SWEETNESS=Sweetness.FULL_SWEETNESS;
 
