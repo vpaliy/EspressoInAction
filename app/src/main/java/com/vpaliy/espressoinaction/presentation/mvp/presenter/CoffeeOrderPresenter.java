@@ -74,6 +74,8 @@ public class CoffeeOrderPresenter implements CoffeeOrderContract.Presenter {
     public void onFinish() {
         this.order.setCoffees(Collections.singletonList(coffee));
         orderIRepository.insert(order);
+        coffee.setPrice(coffee.getPrice()+coffee.getSizeType().price);
+        view.showCustomizedCoffee(coffee);
     }
 
     @Override

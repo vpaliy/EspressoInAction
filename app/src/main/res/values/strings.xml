@@ -20,6 +20,12 @@
     <string name="moderately_sweet_label">Moderately Sweet</string>
     <string name="full_sweetness_label">Full Sweetness</string>
 
+    <string name="soy_milk_label">Soy</string>
+    <string name="almond_milk_label">Almond</string>
+    <string name="coconut_milk_label">Coconut</string>
+    <string name="whole_milk_label">Whole Milk</string>
+    <string name="none_milk_type">None</string>
+
     <string name="order_placed">Enjoy your coffee!</string>
     <string name="day_label_txt">Day %s</string>
     <string name="time_label_txt">Time %s</string>

@@ -30,5 +30,6 @@ public interface CoffeeOrderContract {
         void appendSizeCharge(double original, double additional);
         void showUpdatedPrice(double price);
         void showMessage(String message);
+        void showCustomizedCoffee(Coffee coffee);
     }
 }

@@ -2,10 +2,9 @@ package com.vpaliy.espressoinaction.domain.model;
 
 
 public enum MilkType {
-
     NONE,
-    NONFAT_MILK,
-    ONE_PERCENT_MILK,
-    TWO_PERCENT_MILK,
+    SOY,
+    ALMOND,
+    COCONUT,
     WHOLE_MILK;
 }

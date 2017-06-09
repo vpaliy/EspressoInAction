@@ -5,17 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools">
     <data>
         <variable
-            name="coffeeHolder"
-            type="com.vpaliy.espressoinaction.presentation.ui.fragment.CoffeeOrderFragment.CoffeeHolder"/>
-        <variable
-            name="sizeHolder"
-            type="com.vpaliy.espressoinaction.presentation.ui.fragment.CoffeeOrderFragment.SizeHolder" />
-        <variable
-            name="milkHolder"
-            type="com.vpaliy.espressoinaction.presentation.ui.fragment.CoffeeOrderFragment.MilkHolder" />
-        <variable
-            name="timeHolder"
-            type="com.vpaliy.espressoinaction.presentation.ui.fragment.CoffeeOrderFragment.TimeHolder"/>
+            name="result"
+            type="com.vpaliy.espressoinaction.presentation.ui.fragment.CoffeeOrderFragment.Result"/>
     </data>
     <android.support.constraint.ConstraintLayout
         android:id="@+id/go_button"
@@ -33,7 +24,7 @@
             android:layout_marginLeft="0dp"
             android:layout_marginRight="0dp"
             android:layout_marginTop="16dp"
-            android:text="@{coffeeHolder.title}"
+            android:text="@{result.title}"
             android:fontFamily="sans-serif-medium"
             android:textAppearance="@style/ConfirmationTextAppearance.Title"
             android:textSize="18sp"
@@ -64,7 +55,7 @@
             android:id="@+id/pick_day"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{@string/day_label_txt(timeHolder.day)}"
+            android:text="@{@string/day_label_txt(result.day)}"
             android:textAppearance="@style/ConfirmationTextAppearance.Body"
             tools:text="Day: Tomorrow 2"
             app:layout_constraintLeft_toRightOf="@+id/imageView"
@@ -79,7 +70,7 @@
             android:layout_marginLeft="0dp"
             android:layout_marginTop="10dp"
             android:fontFamily="sans-serif"
-            android:text="@{@string/time_label_txt(timeHolder.time)}"
+            android:text="@{@string/time_label_txt(result.time)}"
             android:textAppearance="@style/ConfirmationTextAppearance.Body"
             app:layout_constraintLeft_toLeftOf="@+id/pick_day"
             app:layout_constraintTop_toBottomOf="@+id/pick_day"
@@ -92,12 +83,12 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_medium"
             android:gravity="center"
-            android:text="@{milkHolder.milkType}"
-            android:drawableTop="@{milkHolder.image}"
+            android:text="@{result.milkType}"
             android:textAppearance="@style/ConfirmationTextAppearance.Body"
             app:layout_constraintLeft_toLeftOf="@+id/cup_size"
             app:layout_constraintTop_toBottomOf="@+id/cup_size"
             tools:drawableTop="@drawable/ic_coconut_x"
+            android:drawableTop="@{result.milkImage}"
             tools:text="Coconut"
             android:layout_marginLeft="0dp"
             app:layout_constraintBottom_toBottomOf="@+id/coffee_icon"
@@ -112,7 +103,7 @@
             app:layout_constraintTop_toBottomOf="@+id/txt_subtitle"
             tools:ignore="ContentDescription"
             tools:src="@drawable/cap"
-            app:imageUrl="@{coffeeHolder.imageUrl}"
+            app:imageUrl="@{result.coffeeImage}"
             android:layout_marginLeft="2dp"
             app:layout_constraintLeft_toLeftOf="parent" />
 
@@ -121,8 +112,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="Small"
-            android:text="@{sizeHolder.size}"
-            android:drawableTop="@{sizeHolder.image}"
+            android:text="@{result.size}"
             android:gravity="center"
             android:drawablePadding="2dp"
             tools:drawableTop="@drawable/ic_coffee_xlarge_size"
@@ -131,6 +121,7 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="@+id/coffee_icon"
             android:layout_marginTop="0dp"
+            android:drawableTop="@{result.sizeImage}"
             app:layout_constraintHorizontal_bias="0.382" />
 
         <TextView
@@ -158,7 +149,7 @@
             android:textAppearance="@style/ConfirmationTextAppearance.Body"
             android:textSize="26sp"
             android:textStyle="bold"
-            android:text="@{coffeeHolder.price}"
+            android:text="@{result.price}"
             android:layout_marginRight="@dimen/spacing_big"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"

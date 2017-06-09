@@ -44,9 +44,9 @@ public class CoffeeHandler implements DataHandler<Coffee> {
         Random random=new Random();
         for(CoffeeType type:CoffeeType.values()){
             Coffee coffee=new Coffee();
-            coffee.setSizeType(SizeType.LARGE);
+            coffee.setSizeType(SizeType.SMALL);
             coffee.setPrice(random.nextInt(8));
-            coffee.setMilkType(MilkType.NONFAT_MILK);
+            coffee.setMilkType(MilkType.NONE);
             coffee.setSweetness(Sweetness.FULL_SWEETNESS);
             coffee.setCoffeeId(id++);
             coffee.setCoffeeType(type);
