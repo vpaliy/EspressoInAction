@@ -1,6 +1,7 @@
 package com.vpaliy.espressoinaction.presentation.ui.fragment;
 
 
+import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -11,15 +12,18 @@ import android.transition.Scene;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
 import android.transition.TransitionManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.target.ImageViewTarget;
 import com.vpaliy.espressoinaction.CoffeeApp;
 import com.vpaliy.espressoinaction.R;
+import com.vpaliy.espressoinaction.common.Constants;
 import com.vpaliy.espressoinaction.databinding.FragmentOrderFormBinding;
 import com.vpaliy.espressoinaction.databinding.LayoutOrderConfirmationBinding;
 import com.vpaliy.espressoinaction.di.component.DaggerViewComponent;
@@ -35,6 +39,8 @@ import java.util.Calendar;
 import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
+
+import icepick.Bundler;
 import icepick.Icepick;
 
 import icepick.State;
@@ -46,6 +52,7 @@ import javax.inject.Inject;
 public class CoffeeOrderFragment extends BottomSheetDialogFragment
         implements CoffeeOrderContract.View{
 
+    private static final String TAG=CoffeeOrderFragment.class.getSimpleName();
     private Presenter presenter;
     private FragmentOrderFormBinding binding;
     private Map<View,Pair<View,View>> clonedViewsMap=new LinkedHashMap<>();
@@ -53,7 +60,7 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
     private MilkHolder milkHolder=new MilkHolder();
     private TimeHolder timeHolder=new TimeHolder();
     private CoffeeHolder coffeeHolder=new CoffeeHolder();
-    @State int coffeeId;
+    private int coffeeId;
 
     public interface OnPropertyClicked {
         void onClick(View view);
@@ -78,9 +85,18 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
         public String time;
     }
 
-    public class CoffeeHolder {
-        public Drawable image;
+    public static class CoffeeHolder {
+        public String imageUrl;
         public String title;
+
+        @BindingAdapter({"bind:imageUrl"})
+        public static void loadInto(ImageView image, String imageUrl){
+            int resourceId = Integer.parseInt(imageUrl.substring(imageUrl.lastIndexOf("/") + 1));
+            Glide.with(image.getContext())
+                    .load(resourceId)
+                    .centerCrop()
+                    .into(image);
+        }
     }
 
     public static CoffeeOrderFragment newInstance(Bundle args){
@@ -103,10 +119,10 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
         initializeDependencies();
         if(savedInstanceState==null) {
             savedInstanceState=getArguments();
-            Icepick.saveInstanceState(this,savedInstanceState);
         }
-        Icepick.restoreInstanceState(this,savedInstanceState);
+        this.coffeeId = savedInstanceState.getInt(Constants.EXTRA_COFFEE_ID);
     }
+
 
     @Nullable
     @Override
@@ -133,7 +149,7 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
         binding.layoutOne.setTextHandler((leftPart, rightPart) ->
             TextUtils.mergeColoredText(leftPart,rightPart,
                     getResources().getColor(R.color.colorPrimary),
-                    getResources().getColor(R.color.colorAccent)));
+                    getResources().getColor(R.color.colorPrice)));
         binding.layoutOne.setMilkHandler(text-> {
             removeIfExists(binding.propertyLabelTwo);
             text.setEnabled(false);
@@ -208,19 +224,15 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
         binding.coffeeName.setText(coffeeType.name);
     }
 
-    private void showCoffeeImage(Coffee coffee){
-        String drawableUri=coffee.getImageUrl();
-        int resourceId=Integer.parseInt(drawableUri.substring(drawableUri.lastIndexOf("/")+1));
+
+    private void showCoffeeImage(Coffee coffee) {
+        String drawableUri = coffee.getImageUrl();
+        coffeeHolder.imageUrl = coffee.getImageUrl();
+        int resourceId = Integer.parseInt(drawableUri.substring(drawableUri.lastIndexOf("/") + 1));
         Glide.with(getContext())
                 .load(resourceId)
                 .centerCrop()
-                .into(new ImageViewTarget<GlideDrawable>(binding.coffeeImage) {
-                    @Override
-                    protected void setResource(GlideDrawable resource) {
-                        binding.coffeeImage.setImageDrawable(resource);
-                        coffeeHolder.image=resource;
-                    }
-                });
+                .into(binding.coffeeImage);
     }
 
     private void showCoffeePrice(double price){
@@ -233,14 +245,14 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
 
     public void go(){
         cleanUpOnFlip();
-        changeToConfirmScene();
         if(isVisible(binding.layoutOne.root)){
             binding.switcher.showNext();
-        }else if(isVisible(binding.layoutTwo)){
+        }else if(isVisible(binding.layoutThree.root)){
+            changeToConfirmScene();
+        }else {
             prepareDay();
             prepareTime();
             binding.switcher.showNext();
-        }else if(isVisible(binding.layoutThree.root)){
         }
     }
 
@@ -391,7 +403,7 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
         String rightText=String.format(Locale.US," + $"+"%.0f",additional);
         binding.coffeePrice.setText(TextUtils.mergeColoredText(leftText,rightText,
                 getResources().getColor(R.color.colorPrimary),
-                getResources().getColor(R.color.colorAccent)));
+                getResources().getColor(R.color.colorPrice)));
     }
 
     @Override

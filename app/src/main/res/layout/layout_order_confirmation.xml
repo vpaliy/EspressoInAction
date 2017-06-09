@@ -108,11 +108,11 @@
             android:id="@+id/coffee_icon"
             android:layout_width="200dp"
             android:layout_height="200dp"
-            android:src="@{coffeeHolder.image}"
             android:layout_marginTop="@dimen/spacing_big"
             app:layout_constraintTop_toBottomOf="@+id/txt_subtitle"
             tools:ignore="ContentDescription"
             tools:src="@drawable/cap"
+            app:imageUrl="@{coffeeHolder.imageUrl}"
             android:layout_marginLeft="2dp"
             app:layout_constraintLeft_toLeftOf="parent" />
 
