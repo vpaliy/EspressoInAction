@@ -69,7 +69,7 @@
 
             <ViewFlipper
                 android:id="@+id/switcher"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:paddingBottom="15dp"
@@ -94,8 +94,6 @@
                 android:id="@+id/go_button"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_marginBottom="0dp"
-                android:layout_marginLeft="0dp"
                 android:background="@color/colorPrimaryDark"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="@+id/guideline"
@@ -131,8 +129,6 @@
                 android:id="@+id/property_label_two"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="0dp"
-                android:layout_marginStart="0dp"
                 android:layout_marginTop="16dp"
                 style="@style/Widget.Label"
                 android:text="@string/milk_label"
@@ -149,7 +145,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 app:layout_constraintGuide_percent="0.55"
-                />
+                tools:layout_editor_absoluteY="25dp"
+                tools:layout_editor_absoluteX="211dp" />
         </android.support.constraint.ConstraintLayout>
     </FrameLayout>
 </layout>

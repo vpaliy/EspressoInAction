@@ -27,4 +27,8 @@ public class TextUtils {
         rightPartSpannable.setSpan(new ForegroundColorSpan(rightColor),0,rightPart.length(),0);
         return builder.append(leftPartSpannable).append(rightPartSpannable);
     }
+
+    public static String toSingleLine(CharSequence sequence){
+        return sequence.toString().replace('\n',' ');
+    }
 }

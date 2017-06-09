@@ -18,7 +18,7 @@
             type="com.vpaliy.espressoinaction.presentation.ui.fragment.CoffeeOrderFragment.TimeHolder"/>
     </data>
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/btn_go"
+        android:id="@+id/go_button"
         android:layout_width="match_parent"
         android:layout_height="@dimen/bottom_sheet_height"
         android:background="@color/colorPrimary"
@@ -64,7 +64,7 @@
             android:id="@+id/pick_day"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{timeHolder.day}"
+            android:text="@{@string/day_label(timeHolder.day)}"
             android:textAppearance="@style/ConfirmationTextAppearance.Body"
             tools:text="Day: Tomorrow 2"
             app:layout_constraintLeft_toRightOf="@+id/imageView"
@@ -79,7 +79,7 @@
             android:layout_marginLeft="0dp"
             android:layout_marginTop="10dp"
             android:fontFamily="sans-serif"
-            android:text="@{timeHolder.time}"
+            android:text="@{@string/time_label(timeHolder.time)}"
             android:textAppearance="@style/ConfirmationTextAppearance.Body"
             app:layout_constraintLeft_toLeftOf="@+id/pick_day"
             app:layout_constraintTop_toBottomOf="@+id/pick_day"

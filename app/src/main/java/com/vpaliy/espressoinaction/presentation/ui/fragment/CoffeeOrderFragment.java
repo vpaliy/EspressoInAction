@@ -1,6 +1,5 @@
 package com.vpaliy.espressoinaction.presentation.ui.fragment;
 
-
 import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
 import android.graphics.drawable.Drawable;
@@ -8,19 +7,18 @@ import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v4.util.Pair;
+import android.support.v4.view.ViewCompat;
 import android.transition.Scene;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
 import android.transition.TransitionManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.OvershootInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.target.ImageViewTarget;
 import com.vpaliy.espressoinaction.CoffeeApp;
 import com.vpaliy.espressoinaction.R;
 import com.vpaliy.espressoinaction.common.Constants;
@@ -39,11 +37,7 @@ import java.util.Calendar;
 import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
-
-import icepick.Bundler;
 import icepick.Icepick;
-
-import icepick.State;
 import android.annotation.TargetApi;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -184,23 +178,23 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
         binding.layoutThree.setDayHandler(day->{
             removeIfExists(binding.propertyLabelOne);
             day.setSelected(true);
-            TextView dayText=TextView.class.cast(day);
-            timeHolder.day=dayText.getText().toString();
-            animateText(createTimeView(day,binding.propertyLabelOne),binding.propertyLabelOne);
+            TextView timeText=createTimeView(day,binding.propertyLabelOne);
+            timeHolder.day=TextUtils.toSingleLine(timeText.getText());
+            animateText(timeText,binding.propertyLabelOne);
         });
         binding.layoutThree.setTimeHandler(time->{
             removeIfExists(binding.propertyLabelTwo);
             time.setSelected(true);
-            TextView timeText=TextView.class.cast(time);
-            timeHolder.time=timeText.getText().toString();
-            animateText(createTimeView(time,binding.propertyLabelTwo), binding.propertyLabelTwo);
+            TextView timeText=createTimeView(time,binding.propertyLabelTwo);
+            timeHolder.time=TextUtils.toSingleLine(timeText.getText());
+            animateText(timeText, binding.propertyLabelTwo);
         });
     }
 
     private void removeIfExists(View key){
         if(clonedViewsMap.containsKey(key)) {
             Pair<View, View> pair = clonedViewsMap.get(key);
-            pair.first.setEnabled(true);
+            pair.first.setSelected(false);
             binding.mainContainer.removeView(pair.second);
             clonedViewsMap.remove(key);
         }
@@ -262,7 +256,11 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
 
         final Scene scene = new Scene(binding.content,
                 ((ViewGroup) confBinding.getRoot()));
-
+        scene.setEnterAction(()-> ViewCompat.animate(confBinding.txtSubtitle)
+                .scaleX(1).scaleY(1)
+                .setInterpolator(new OvershootInterpolator())
+                .setStartDelay(200)
+                .start());
         final Transition transition = TransitionInflater.from(getContext())
                 .inflateTransition(R.transition.transition_confirmation_view);
         TransitionManager.go(scene, transition);
@@ -353,7 +351,7 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
         clonedView.post(()->{
             TransitionManager.beginDelayedTransition(getRoot());
             clonedView.setLayoutParams(SelectedParamsFactory.endTextParams(clonedView,targetView));
-            clonedView.setText(clonedView.getText().toString().replace('\n',' '));
+            clonedView.setText(TextUtils.toSingleLine(clonedView.getText()));
         });
     }
 
@@ -423,7 +421,6 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
     }
 
     private static class SelectedParamsFactory {
-
         private static ConstraintLayout.LayoutParams startTextParams(View selectedView, FragmentOrderFormBinding binding) {
             final ConstraintLayout.LayoutParams layoutParams =
                     new ConstraintLayout.LayoutParams(
