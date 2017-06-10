@@ -2,6 +2,8 @@ package com.vpaliy.espressoinaction.data.local;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.util.Log;
+
 import com.vpaliy.espressoinaction.domain.model.Coffee;
 import com.vpaliy.espressoinaction.domain.model.CoffeeType;
 import com.vpaliy.espressoinaction.domain.model.MilkType;
@@ -14,10 +16,11 @@ import static com.vpaliy.espressoinaction.data.local.CoffeeContract.OrderColumns
 
 public class DatabaseUtils {
 
+    private static final String TAG=DatabaseUtils.class.getSimpleName();
+
     public static ContentValues toValues(Coffee coffee){
         if(coffee==null) return null;
         ContentValues values=new ContentValues();
-        values.put(CoffeeColumns.COFFEE_ID,coffee.getCoffeeId());
         values.put(CoffeeColumns.COFFEE_COFFEE_TYPE,coffee.getCoffeeType().name());
         values.put(CoffeeColumns.COFFEE_IMAGE_URL,coffee.getImageUrl());
         values.put(CoffeeColumns.COFFEE_MILK_TYPE,coffee.getMilkType().name());
@@ -31,7 +34,6 @@ public class DatabaseUtils {
         if(order==null) return null;
         ContentValues values=new ContentValues();
         values.put(OrderColumns.COFFEE_ID,order.getCoffee().getCoffeeId());
-        values.put(OrderColumns.ORDER_ID,order.getOrderId());
         values.put(OrderColumns.ORDER_PICK_UP_DAY,order.getPickUpDay());
         values.put(OrderColumns.ORDER_PICK_UP_TIME,order.getPickUpTime());
         return values;
@@ -43,15 +45,22 @@ public class DatabaseUtils {
         order.setOrderId(cursor.getInt(cursor.getColumnIndex(OrderColumns.ORDER_ID)));
         order.setPickUpDay(cursor.getString(cursor.getColumnIndex(OrderColumns.ORDER_PICK_UP_DAY)));
         order.setPickUpTime(cursor.getString(cursor.getColumnIndex(OrderColumns.ORDER_PICK_UP_TIME)));
-        order.setName(cursor.getString(cursor.getColumnIndex(OrderColumns.ORDER_NAME)));
         return order;
     }
 
     public static Coffee toCoffee(Cursor cursor){
         if(cursor==null) return null;
         Coffee coffee=new Coffee();
+        int id=cursor.getInt(cursor.getColumnIndex(CoffeeColumns.COFFEE_ID));
+        Log.d(TAG,Integer.toString(id));
+        Log.d(TAG,Double.toString(cursor.getFloat(cursor.getColumnIndex(CoffeeColumns.COFFEE_PRICE))));
+        Log.d(TAG,cursor.getString(cursor.getColumnIndex(CoffeeColumns.COFFEE_IMAGE_URL)));
+        Log.d(TAG,cursor.getString(cursor.getColumnIndex(CoffeeColumns.COFFEE_SWEETNESS)));
+        Log.d(TAG,cursor.getString(cursor.getColumnIndex(CoffeeColumns.COFFEE_MILK_TYPE)));
+        Log.d(TAG,cursor.getString(cursor.getColumnIndex(CoffeeColumns.COFFEE_COFFEE_TYPE)));
+
         coffee.setCoffeeId(cursor.getInt(cursor.getColumnIndex(CoffeeColumns.COFFEE_ID)));
-        coffee.setPrice(cursor.getDouble(cursor.getColumnIndex(CoffeeColumns.COFFEE_PRICE)));
+        coffee.setPrice(cursor.getFloat(cursor.getColumnIndex(CoffeeColumns.COFFEE_PRICE)));
         coffee.setImageUrl(cursor.getString(cursor.getColumnIndex(CoffeeColumns.COFFEE_IMAGE_URL)));
         Sweetness sweetness=Sweetness.valueOf(cursor.getString(cursor.getColumnIndex(CoffeeColumns.COFFEE_SWEETNESS)));
         MilkType milkType=MilkType.valueOf(cursor.getString(cursor.getColumnIndex(CoffeeColumns.COFFEE_MILK_TYPE)));

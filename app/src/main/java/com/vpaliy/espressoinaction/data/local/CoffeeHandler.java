@@ -3,6 +3,8 @@ package com.vpaliy.espressoinaction.data.local;
 import android.content.ContentResolver;
 import android.database.Cursor;
 import android.net.Uri;
+import android.util.Log;
+
 import com.vpaliy.espressoinaction.R;
 import com.vpaliy.espressoinaction.domain.model.Coffee;
 import com.vpaliy.espressoinaction.domain.model.CoffeeType;
@@ -18,6 +20,8 @@ import javax.inject.Singleton;
 
 @Singleton
 public class CoffeeHandler implements DataHandler<Coffee> {
+
+    private static final String TAG=CoffeeHandler.class.getSimpleName();
 
     private ContentResolver contentResolver;
 
@@ -41,13 +45,33 @@ public class CoffeeHandler implements DataHandler<Coffee> {
 
     @Override
     public List<Coffee> fetchAll() {
+        Cursor cursor=contentResolver.query(CoffeeProvider.Coffees.COFFEES,null,null,null,null);
+        if(cursor!=null){
+            if(cursor.getCount()>0){
+                List<Coffee> result=new ArrayList<>(cursor.getCount());
+                while(cursor.moveToNext()){
+                    Coffee coffee=DatabaseUtils.toCoffee(cursor);
+                    result.add(coffee);
+                }
+                if(!cursor.isClosed()) cursor.close();
+                return result;
+            }
+        }
+        List<Coffee> fakes=createFake();
+        fakes.forEach(this::insert);
+        return fakes;
+    }
+
+    private List<Coffee> createFake(){
         List<Coffee> result=new ArrayList<>();
         int id=0;
         Random random=new Random();
         for(CoffeeType type:CoffeeType.values()){
             Coffee coffee=new Coffee();
             coffee.setSizeType(SizeType.SMALL);
-            coffee.setPrice(random.nextInt(8));
+            int price=random.nextInt(8);
+            if(price<=1) price++;
+            coffee.setPrice(price);
             coffee.setMilkType(MilkType.NONE);
             coffee.setSweetness(Sweetness.FULL_SWEETNESS);
             coffee.setCoffeeId(id++);

@@ -14,7 +14,7 @@ public interface OrdersContract {
         void attachView(@NonNull View view);
         void start();
         void stop();
-        void onCoffeeSelected(int id);
+        void onOrderSelected(int id);
     }
 
     interface View extends BaseView<Presenter> {

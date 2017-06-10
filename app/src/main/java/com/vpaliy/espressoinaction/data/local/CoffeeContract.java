@@ -11,6 +11,7 @@ public class CoffeeContract {
 
     public static final String PATH_COFFEE="coffees";
     public static final String PATH_ORDER="orders";
+    public static final String PATH_ORDERED_COFFEE="ordered_coffees";
 
     public interface CoffeeColumns{
         @DataType(DataType.Type.INTEGER)
@@ -56,5 +57,6 @@ public class CoffeeContract {
         @DataType(DataType.Type.TEXT)
         String ORDER_NAME="order_name";
     }
+
 
 }

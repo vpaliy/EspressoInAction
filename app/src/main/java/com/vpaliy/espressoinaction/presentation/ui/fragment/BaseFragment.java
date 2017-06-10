@@ -2,19 +2,29 @@ package com.vpaliy.espressoinaction.presentation.ui.fragment;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import butterknife.BindBool;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-
 import android.support.annotation.CallSuper;
 import android.support.annotation.Nullable;
+
+import com.vpaliy.espressoinaction.R;
+import com.vpaliy.espressoinaction.presentation.bus.RxBus;
+import javax.inject.Inject;
+
 public abstract class BaseFragment extends Fragment {
 
     protected Unbinder unbinder;
+
+    @Inject
+    protected RxBus rxBus;
+
+    @BindView(R.id.coffee_recycler)
+    protected RecyclerView list;
 
 
     @Override

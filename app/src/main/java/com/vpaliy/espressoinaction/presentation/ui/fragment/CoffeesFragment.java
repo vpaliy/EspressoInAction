@@ -27,12 +27,6 @@ public class CoffeesFragment extends BaseFragment
 
     private Presenter presenter;
 
-    @BindView(R.id.products_recycler)
-    protected RecyclerView coffeeList;
-
-    @Inject
-    protected RxBus rxBus;
-
     private CoffeeAdapter adapter;
 
     @Nullable
@@ -58,8 +52,8 @@ public class CoffeesFragment extends BaseFragment
         super.onViewCreated(view, savedInstanceState);
         if(view!=null){
             adapter=new CoffeeAdapter(getContext(),rxBus);
-            coffeeList.addItemDecoration(new PaddingDecoration(getContext()));
-            coffeeList.setAdapter(adapter);
+            list.addItemDecoration(new PaddingDecoration(getContext()));
+            list.setAdapter(adapter);
             presenter.start();
         }
     }
