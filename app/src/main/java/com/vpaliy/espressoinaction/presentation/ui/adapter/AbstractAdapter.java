@@ -59,6 +59,13 @@ public abstract class AbstractAdapter<T> extends RecyclerView.Adapter<AbstractAd
         return data.get(index);
     }
 
+    public void removeAt(int index){
+        if(data.size()>index){
+            data.remove(index);
+            notifyItemRemoved(index);
+        }
+    }
+
     @Override
     public int getItemCount() {
         return data.size();

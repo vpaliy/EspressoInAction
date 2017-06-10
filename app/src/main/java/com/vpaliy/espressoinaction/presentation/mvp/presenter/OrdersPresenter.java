@@ -38,6 +38,11 @@ public class OrdersPresenter implements Presenter {
     }
 
     @Override
+    public void cancelOrder(Order order) {
+
+    }
+
+    @Override
     public void start() {
         subscription.add(repository.getAll()
                 .observeOn(schedulerProvider.io())

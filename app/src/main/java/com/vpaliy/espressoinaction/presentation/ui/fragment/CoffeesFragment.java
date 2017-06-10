@@ -14,6 +14,7 @@ import com.vpaliy.espressoinaction.presentation.ui.adapter.CoffeeAdapter;
 import com.vpaliy.espressoinaction.presentation.view.PaddingDecoration;
 import java.util.List;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import butterknife.BindView;
@@ -55,6 +56,7 @@ public class CoffeesFragment extends BaseFragment
             list.addItemDecoration(new PaddingDecoration(getContext()));
             list.setAdapter(adapter);
             presenter.start();
+
         }
     }
 

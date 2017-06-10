@@ -51,14 +51,6 @@ public class DatabaseUtils {
     public static Coffee toCoffee(Cursor cursor){
         if(cursor==null) return null;
         Coffee coffee=new Coffee();
-        int id=cursor.getInt(cursor.getColumnIndex(CoffeeColumns.COFFEE_ID));
-        Log.d(TAG,Integer.toString(id));
-        Log.d(TAG,Double.toString(cursor.getFloat(cursor.getColumnIndex(CoffeeColumns.COFFEE_PRICE))));
-        Log.d(TAG,cursor.getString(cursor.getColumnIndex(CoffeeColumns.COFFEE_IMAGE_URL)));
-        Log.d(TAG,cursor.getString(cursor.getColumnIndex(CoffeeColumns.COFFEE_SWEETNESS)));
-        Log.d(TAG,cursor.getString(cursor.getColumnIndex(CoffeeColumns.COFFEE_MILK_TYPE)));
-        Log.d(TAG,cursor.getString(cursor.getColumnIndex(CoffeeColumns.COFFEE_COFFEE_TYPE)));
-
         coffee.setCoffeeId(cursor.getInt(cursor.getColumnIndex(CoffeeColumns.COFFEE_ID)));
         coffee.setPrice(cursor.getFloat(cursor.getColumnIndex(CoffeeColumns.COFFEE_PRICE)));
         coffee.setImageUrl(cursor.getString(cursor.getColumnIndex(CoffeeColumns.COFFEE_IMAGE_URL)));

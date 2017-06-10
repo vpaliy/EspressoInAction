@@ -1,10 +1,16 @@
 package com.vpaliy.espressoinaction.presentation.ui.fragment;
 
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +24,8 @@ import com.vpaliy.espressoinaction.presentation.mvp.contract.OrdersContract;
 import com.vpaliy.espressoinaction.presentation.ui.adapter.OrderAdapter;
 import java.util.List;
 import javax.inject.Inject;
-
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 public class OrdersFragment extends BaseFragment
             implements OrdersContract.View {
@@ -51,7 +58,56 @@ public class OrdersFragment extends BaseFragment
             list.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL,false));
             list.addItemDecoration(new DividerItemDecoration(getContext(),LinearLayoutManager.VERTICAL));
             list.setAdapter(adapter);
+            hookUpTouchEvent();
         }
+    }
+
+
+    private void hookUpTouchEvent(){
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.RIGHT){
+            private Drawable background;
+            private Drawable xMark;
+            private int xMarkMargin;
+            private boolean isSetUp;
+
+            private void setUp() {
+                background =new ColorDrawable(ContextCompat.getColor(getContext(),R.color.colorPrimaryDark));
+                xMark = ContextCompat.getDrawable(getContext(), R.drawable.done);
+                xMark.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
+                xMarkMargin = (int) getResources().getDimension(R.dimen.spacing_huge);
+                isSetUp = true;
+            }
+
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                Order order=adapter.at(viewHolder.getAdapterPosition());
+                adapter.removeAt(viewHolder.getAdapterPosition());
+                adapter.pendingRemoval(viewHolder.getAdapterPosition());
+            }
+
+            @Override
+            public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+                if (viewHolder.getAdapterPosition() == -1) {
+                    return;
+                }
+
+                if (!isSetUp) {
+                    setUp();
+                }
+
+                View itemView = viewHolder.itemView;
+
+                background.setBounds(itemView.getLeft() + (int) dX, itemView.getTop(), itemView.getLeft(), itemView.getBottom());
+                background.draw(c);
+
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+            }
+        }).attachToRecyclerView(list);
     }
 
     @Override

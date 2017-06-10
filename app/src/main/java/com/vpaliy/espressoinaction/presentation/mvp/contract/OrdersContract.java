@@ -14,6 +14,7 @@ public interface OrdersContract {
         void attachView(@NonNull View view);
         void start();
         void stop();
+        void cancelOrder(Order order);
         void onOrderSelected(int id);
     }
 
