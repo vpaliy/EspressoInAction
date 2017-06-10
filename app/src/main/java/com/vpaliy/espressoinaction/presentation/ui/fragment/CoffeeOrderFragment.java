@@ -30,6 +30,7 @@ import com.vpaliy.espressoinaction.di.module.PresenterModule;
 import com.vpaliy.espressoinaction.domain.model.Coffee;
 import com.vpaliy.espressoinaction.domain.model.CoffeeType;
 import com.vpaliy.espressoinaction.domain.model.MilkType;
+import com.vpaliy.espressoinaction.domain.model.Order;
 import com.vpaliy.espressoinaction.domain.model.SizeType;
 import com.vpaliy.espressoinaction.domain.model.Sweetness;
 import com.vpaliy.espressoinaction.presentation.mvp.contract.CoffeeOrderContract;
@@ -53,6 +54,7 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
     private FragmentOrderFormBinding binding;
     private Map<View,Pair<View,View>> clonedViewsMap=new LinkedHashMap<>();
     private Result result=new Result();
+    private Transition selectedTransition;
     private int coffeeId;
 
     public interface OnPropertyClicked {
@@ -77,16 +79,16 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
 
         @BindingAdapter({"bind:imageUrl"})
         public static void loadInto(ImageView image, String imageUrl){
-            int resourceId = Integer.parseInt(imageUrl.substring(imageUrl.lastIndexOf("/") + 1));
             Glide.with(image.getContext())
-                    .load(resourceId)
+                    .load(imageUrl)
                     .centerCrop()
                     .into(image);
         }
     }
 
     @Override
-    public void showCustomizedCoffee(Coffee coffee) {
+    public void showOrder(Order order) {
+        Coffee coffee=order.getCoffee();
         result.title=coffee.getCoffeeType().name;
         result.milkType= ConvertUtils.getMilkTypeLabel(getContext(),coffee.getMilkType());
         result.milkImage=ConvertUtils.getMilkImage(getContext(),coffee.getMilkType());
@@ -95,6 +97,8 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
         result.price=String.format(Locale.US,"$%.0f",coffee.getPrice());
         result.sugarType=ConvertUtils.getSweetnessText(getContext(),coffee.getSweetness());
         result.coffeeImage=coffee.getImageUrl();
+        result.day=order.getPickUpDay();
+        result.time=order.getPickUpTime();
         changeToConfirmScene();
     }
 
@@ -136,6 +140,7 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
         super.onViewCreated(view, savedInstanceState);
         if(view!=null){
             presenter.start(coffeeId);
+            selectedTransition=TransitionInflater.from(getContext()).inflateTransition(R.transition.transition_selected_view);
             stepOne();
         }
     }
@@ -229,19 +234,20 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
         prepareDay();
         prepareTime();
         binding.switcher.showNext();
+        binding.txtAction.setText(R.string.order_label);
         binding.goButton.setOnClickListener(v->presenter.onFinish());
         binding.layoutThree.setDayHandler(day->{
             removeIfExists(binding.propertyLabelOne);
             day.setSelected(true);
             TextView timeText=createTimeView(day,binding.propertyLabelOne);
-            result.day=TextUtils.toSingleLine(timeText.getText());
+            presenter.onPickUpDaySelected(TextUtils.toSingleLine(timeText.getText()));
             animateText(timeText,binding.propertyLabelOne);
         });
         binding.layoutThree.setTimeHandler(time->{
             removeIfExists(binding.propertyLabelTwo);
             time.setSelected(true);
             TextView timeText=createTimeView(time,binding.propertyLabelTwo);
-            result.time=TextUtils.toSingleLine(timeText.getText());
+            presenter.onPickUpTimeSelected(TextUtils.toSingleLine(timeText.getText()));
             animateText(timeText, binding.propertyLabelTwo);
         });
     }
@@ -268,12 +274,7 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
 
 
     private void showCoffeeImage(Coffee coffee) {
-        String drawableUri = coffee.getImageUrl();
-        int resourceId = Integer.parseInt(drawableUri.substring(drawableUri.lastIndexOf("/") + 1));
-        Glide.with(getContext())
-                .load(resourceId)
-                .centerCrop()
-                .into(binding.coffeeImage);
+        Result.loadInto(binding.coffeeImage,coffee.getImageUrl());
     }
 
     private void showCoffeePrice(double price){
@@ -383,14 +384,14 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
 
     private void animateIcon(View clonedView, View targetView){
         clonedView.post(()->{
-            TransitionManager.beginDelayedTransition(getRoot());
+            TransitionManager.beginDelayedTransition(getRoot(),selectedTransition);
             clonedView.setLayoutParams(SelectedParamsFactory.endIconParams(clonedView,targetView));
         });
     }
 
     private void animateText(TextView clonedView, TextView targetView){
         clonedView.post(()->{
-            TransitionManager.beginDelayedTransition(getRoot());
+            TransitionManager.beginDelayedTransition(getRoot(),selectedTransition);
             clonedView.setLayoutParams(SelectedParamsFactory.endTextParams(clonedView,targetView));
             clonedView.setText(TextUtils.toSingleLine(clonedView.getText()));
         });
@@ -410,7 +411,7 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
     }
 
     private TextView createTimeView(View real, TextView textLabel){
-        final TextView fakeSelectedTextView = new TextView(getContext(),null,R.attr.textStyle);
+        final TextView fakeSelectedTextView = new TextView(getContext(),null,R.attr.dateStyle);
         TextView realTextView=TextView.class.cast(real);
         fakeSelectedTextView.setText(realTextView.getText());
         fakeSelectedTextView.setLayoutParams(SelectedParamsFactory.startTextParams(real,binding));

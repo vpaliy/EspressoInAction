@@ -1,15 +1,14 @@
 package com.vpaliy.espressoinaction.data.local;
 
 import android.content.ContentResolver;
+import android.database.Cursor;
 import android.net.Uri;
-
 import com.vpaliy.espressoinaction.R;
 import com.vpaliy.espressoinaction.domain.model.Coffee;
 import com.vpaliy.espressoinaction.domain.model.CoffeeType;
 import com.vpaliy.espressoinaction.domain.model.MilkType;
 import com.vpaliy.espressoinaction.domain.model.SizeType;
 import com.vpaliy.espressoinaction.domain.model.Sweetness;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -29,12 +28,15 @@ public class CoffeeHandler implements DataHandler<Coffee> {
 
     @Override
     public Coffee fetchById(int id) {
-        return null;
+        Cursor cursor=contentResolver.query(CoffeeProvider.Coffees.withId(id),null,null,null,null);
+        Coffee coffee=DatabaseUtils.toCoffee(cursor);
+        if(cursor!=null) cursor.close();
+        return coffee;
     }
 
     @Override
     public void insert(Coffee item) {
-
+        contentResolver.insert(CoffeeProvider.Coffees.COFFEES,DatabaseUtils.toValues(item));
     }
 
     @Override

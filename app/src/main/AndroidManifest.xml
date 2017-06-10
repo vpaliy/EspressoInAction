@@ -16,6 +16,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <provider
+            android:authorities="com.vpaliy.espressoinaction.CoffeeProvider"
+            android:name=".data.local.generated.CoffeeProvider"
+            android:exported="false"/>
     </application>
 
 </manifest>

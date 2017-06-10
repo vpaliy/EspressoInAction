@@ -1,33 +1,38 @@
 package com.vpaliy.espressoinaction.domain.model;
 
-
-import java.util.Date;
-import java.util.List;
-
 public class Order {
 
     private int orderId;
-    private List<Coffee> coffees;
-    private Date pickUpTime;
+    private Coffee coffee;
     private String name;
+    private String pickUpDay;
+    private String pickUpTime;
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public void setCoffees(List<Coffee> coffees) {
-        this.coffees = coffees;
+    public void setCoffee(Coffee coffee) {
+        this.coffee = coffee;
     }
 
     public void setOrderId(int orderId) {
         this.orderId = orderId;
     }
 
-    public void setPickUpTime(Date pickUpTime) {
+    public void setPickUpTime(String pickUpTime) {
         this.pickUpTime = pickUpTime;
     }
 
-    public Date getPickUpTime() {
+    public void setPickUpDay(String pickUpDay) {
+        this.pickUpDay = pickUpDay;
+    }
+
+    public String getPickUpDay() {
+        return pickUpDay;
+    }
+
+    public String getPickUpTime() {
         return pickUpTime;
     }
 
@@ -35,7 +40,7 @@ public class Order {
         return orderId;
     }
 
-    public List<Coffee> getCoffees() {
-        return coffees;
+    public Coffee getCoffee() {
+        return coffee;
     }
 }

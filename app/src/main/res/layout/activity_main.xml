@@ -28,6 +28,10 @@
 
     <com.roughike.bottombar.BottomBar
         android:id="@+id/bottom_navigation"
+        app:bb_activeTabColor="@color/colorWhite"
+        app:bb_titleTextAppearance="@style/Widget.Label"
+        app:bb_showShadow="true"
+        app:bb_inActiveTabColor="@color/colorPrimaryDark"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:fitsSystemWindows="false"

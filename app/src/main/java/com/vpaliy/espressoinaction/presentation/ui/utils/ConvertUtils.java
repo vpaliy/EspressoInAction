@@ -42,7 +42,7 @@ public final class ConvertUtils {
             case COCONUT:
                 return ContextCompat.getDrawable(context,R.drawable.ic_coconut_x);
             case WHOLE_MILK:
-                return ContextCompat.getDrawable(context,R.drawable.ic_cow);
+                return ContextCompat.getDrawable(context,R.drawable.ic_milk_bottle);
             default:
                 throw new UnsupportedOperationException("Unknown milk type:"+type);
         }

@@ -17,7 +17,8 @@ public class FakeDataProvider {
 
     public static final int FAKE_ID=123;
     public static final double FAKE_PRICE=100.0;
-    public static final Date FAKE_DATE= Calendar.getInstance().getTime();
+    public static final String FAKE_TIME="fake_time";
+    public static final String FAKE_DAY="fake_day";
     public static final String FAKE_NAME="fake_name";
     public static final CoffeeType FAKE_COFFEE_TYPE=CoffeeType.ESPRESSO;
     public static final String FAKE_IMAGE_URL="fake_image_url";
@@ -51,10 +52,11 @@ public class FakeDataProvider {
 
     public static Order provideOrder(){
         Order order=new Order();
-        order.setCoffees(provideCoffeeList());
+        order.setCoffee(provideCoffee());
         order.setName(FAKE_NAME);
         order.setOrderId(FAKE_ID);
-        order.setPickUpTime(FAKE_DATE);
+        order.setPickUpTime(FAKE_TIME);
+        order.setPickUpDay(FAKE_DAY);
         return order;
     }
 }

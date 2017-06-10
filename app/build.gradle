@@ -50,7 +50,8 @@ dependencies {
     compile "frankiesardo:icepick:3.2.0"
     provided "frankiesardo:icepick-processor:3.2.0"
     compile 'com.github.JesusM:HoloCircleSeekBar:v2.2.2'
-
+    annotationProcessor  'net.simonvt.schematic:schematic-compiler:0.6.3'
+    compile 'net.simonvt.schematic:schematic:0.6.3'
 
     compile libs.circleImage
     compile libs.constraintLayout

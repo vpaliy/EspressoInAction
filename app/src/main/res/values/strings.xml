@@ -26,6 +26,7 @@
     <string name="whole_milk_label">Whole Milk</string>
     <string name="none_milk_type">None</string>
 
+    <string name="order_label">Order</string>
     <string name="order_placed">Enjoy your coffee!</string>
     <string name="day_label_txt">Day %s</string>
     <string name="time_label_txt">Time %s</string>

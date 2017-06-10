@@ -7,20 +7,14 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="textStyle">@style/Widget.SelectedItem</item>
+        <item name="dateStyle">@style/Widget.DateTime</item>
     </style>
 
-    <style name="Widget.Label">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-    </style>
+    <style name="Widget"/>
 
-    <style name="ConfirmationTextAppearance" parent="Base.TextAppearance.AppCompat">
-        <item name="android:textColor">@color/colorWhite</item>
-    </style>
-
-
-    <style name="ConfirmationTextAppearance.Title">
-        <item name="android:textSize">19sp</item>
+    <style name="Widget.SelectedItem">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textSize">20sp</item>
     </style>
 
     <style name="Widget.DateTime">
@@ -30,6 +24,36 @@
         <item name="android:background">@drawable/bg_square_date</item>
         <item name="android:gravity">center</item>
         <item name="android:textColor">@color/csl_date</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
         <item name="android:padding">@dimen/spacing_medium</item>
     </style>
+
+    <style name="Widget.Label">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+
+
+    <style name="ConfirmationTextAppearance" parent="Base.TextAppearance.AppCompat">
+        <item name="android:textColor">@color/colorWhite</item>
+    </style>
+
+
+    <style name="ConfirmationTextAppearance.Title">
+        <item name="android:textSize">19sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+
+    <style name="ConfirmationTextAppearance.SubTitle">
+        <item name="android:textSize">20sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+
+    <style name="ConfirmationTextAppearance.Body">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">italic</item>
+    </style>
+
 </resources>

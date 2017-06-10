@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.vpaliy.espressoinaction.domain.model.Coffee;
 import com.vpaliy.espressoinaction.domain.model.MilkType;
+import com.vpaliy.espressoinaction.domain.model.Order;
 import com.vpaliy.espressoinaction.domain.model.SizeType;
 import com.vpaliy.espressoinaction.domain.model.Sweetness;
 import com.vpaliy.espressoinaction.presentation.mvp.BasePresenter;
@@ -18,7 +19,8 @@ public interface CoffeeOrderContract {
         void onMilkTypeSelected(MilkType milkType);
         void onSizeTypeSelected(SizeType sizeType);
         void onSweetnessTypeSelected(Sweetness sweetness);
-        void onPickUpTimeSelected(Date date);
+        void onPickUpTimeSelected(String pickUpTime);
+        void onPickUpDaySelected(String pickUpDay);
         void onFinish();
         void start(int id);
         void stop();
@@ -30,6 +32,6 @@ public interface CoffeeOrderContract {
         void appendSizeCharge(double original, double additional);
         void showUpdatedPrice(double price);
         void showMessage(String message);
-        void showCustomizedCoffee(Coffee coffee);
+        void showOrder(Order order);
     }
 }

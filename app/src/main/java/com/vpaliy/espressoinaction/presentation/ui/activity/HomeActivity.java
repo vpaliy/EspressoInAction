@@ -3,6 +3,7 @@ package com.vpaliy.espressoinaction.presentation.ui.activity;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.support.annotation.CallSuper;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -23,8 +24,6 @@ import butterknife.ButterKnife;
 import io.reactivex.disposables.CompositeDisposable;
 
 public class HomeActivity extends AppCompatActivity {
-
-    private static final String TAG=HomeActivity.class.getSimpleName();
 
     @BindView(R.id.pager)
     protected CoffeePager pager;
@@ -79,6 +78,7 @@ public class HomeActivity extends AppCompatActivity {
     private void setUI(){
         setPager();
         setBottomNavigation();
+        actionBar.setTitleTextColor(ContextCompat.getColor(this,R.color.colorSugar));
     }
 
     private void setPager(){

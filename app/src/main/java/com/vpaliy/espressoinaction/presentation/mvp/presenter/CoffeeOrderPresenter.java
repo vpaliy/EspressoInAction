@@ -51,8 +51,13 @@ public class CoffeeOrderPresenter implements CoffeeOrderContract.Presenter {
     }
 
     @Override
-    public void onPickUpTimeSelected(Date date) {
-        this.order.setPickUpTime(date);
+    public void onPickUpTimeSelected(String pickUpTime) {
+        this.order.setPickUpTime(pickUpTime);
+    }
+
+    @Override
+    public void onPickUpDaySelected(String pickUpDay) {
+        this.order.setPickUpDay(pickUpDay);
     }
 
     @Override
@@ -72,10 +77,10 @@ public class CoffeeOrderPresenter implements CoffeeOrderContract.Presenter {
 
     @Override
     public void onFinish() {
-        this.order.setCoffees(Collections.singletonList(coffee));
+        this.order.setCoffee(coffee);
         orderIRepository.insert(order);
         coffee.setPrice(coffee.getPrice()+coffee.getSizeType().price);
-        view.showCustomizedCoffee(coffee);
+        view.showOrder(order);
     }
 
     @Override

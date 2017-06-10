@@ -57,9 +57,8 @@ public class CoffeeAdapter extends AbstractAdapter<Coffee> {
         void onBind() {
             Coffee coffee=at(getAdapterPosition());
             String drawableUri=coffee.getImageUrl();
-            int resourceId=Integer.parseInt(drawableUri.substring(drawableUri.lastIndexOf("/")+1));
             Glide.with(inflater.getContext())
-                    .load(resourceId)
+                    .load(drawableUri)
                     .centerCrop()
                     .into(image);
             name.setText(coffee.getCoffeeType().name);

@@ -3,7 +3,7 @@
         id="@+id/coffee"
         icon="@drawable/ic_take_away_coffee"
         activeColor="#ffff"
-        barColorWhenSelected="#ff6f00"
+        barColorWhenSelected="@color/colorPrimary"
         badgeHidesWhenActive="true"
         title="Coffee" />
     <tab
