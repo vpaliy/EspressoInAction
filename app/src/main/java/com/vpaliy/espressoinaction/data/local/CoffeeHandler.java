@@ -39,6 +39,11 @@ public class CoffeeHandler implements DataHandler<Coffee> {
     }
 
     @Override
+    public void delete(Coffee item) {
+        contentResolver.delete(CoffeeProvider.Coffees.withId(item.getCoffeeId()),null,null);
+    }
+
+    @Override
     public void insert(Coffee item) {
         contentResolver.insert(CoffeeProvider.Coffees.COFFEES,DatabaseUtils.toValues(item));
     }

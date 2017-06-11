@@ -30,6 +30,11 @@ public class OrderRepository implements IRepository<Order> {
                 .doOnNext(this::cache);
     }
 
+    @Override
+    public void delete(Order item) {
+        handler.delete(item);
+    }
+
     private void cache(List<Order> orders){
         if(orders!=null){
             orders.forEach(order->cache.put(order.getOrderId(),order));

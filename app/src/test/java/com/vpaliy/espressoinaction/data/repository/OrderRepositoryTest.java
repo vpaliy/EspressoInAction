@@ -58,6 +58,14 @@ public class OrderRepositoryTest {
     }
 
     @Test
+    public void deletesOrder(){
+        Order order=provideOrder();
+        repository.delete(order);
+
+        verify(handler).delete(order);
+    }
+
+    @Test
     public void getOrderByIdFromCache(){
         when(cache.isInCache(FAKE_ID)).thenReturn(true);
         when(cache.get(FAKE_ID)).thenReturn(provideOrder());

@@ -25,6 +25,11 @@ public class CoffeeRepository implements IRepository<Coffee> {
     }
 
     @Override
+    public void delete(Coffee item) {
+        handler.delete(item);
+    }
+
+    @Override
     public Observable<List<Coffee>> getAll() {
         return Observable.fromCallable(()->handler.fetchAll())
                 .doOnNext(this::cache);

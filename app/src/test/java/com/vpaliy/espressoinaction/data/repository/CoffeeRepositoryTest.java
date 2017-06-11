@@ -71,6 +71,14 @@ public class CoffeeRepositoryTest {
     }
 
     @Test
+    public void deletesCoffee(){
+        Coffee coffee=provideCoffee();
+        repository.delete(coffee);
+
+        verify(handler).delete(coffee);
+    }
+
+    @Test
     public void insertsCoffeeIntoCacheAndHandler(){
         Coffee coffee=provideCoffee();
         repository.insert(coffee);

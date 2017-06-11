@@ -39,7 +39,7 @@ public class OrdersPresenter implements Presenter {
 
     @Override
     public void cancelOrder(Order order) {
-
+        repository.delete(order);
     }
 
     @Override
