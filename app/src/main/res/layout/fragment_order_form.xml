@@ -105,7 +105,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="Go"
+                    android:text="@string/go_label"
                     android:textColor="#fff"
                     android:textSize="38sp" />
             </FrameLayout>

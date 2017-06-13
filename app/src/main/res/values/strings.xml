@@ -19,6 +19,7 @@
     <string name="half_sweet_label">Half Sweet</string>
     <string name="moderately_sweet_label">Moderately Sweet</string>
     <string name="full_sweetness_label">Full Sweetness</string>
+    <string name="go_label">Go</string>
 
     <string name="soy_milk_label">Soy</string>
     <string name="almond_milk_label">Almond</string>

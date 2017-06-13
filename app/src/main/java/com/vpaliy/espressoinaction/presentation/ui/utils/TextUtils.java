@@ -38,6 +38,6 @@ public class TextUtils {
     }
 
     public static int parseToResourceId(String imageUrl){
-        return 0;
+        return Integer.parseInt(imageUrl.substring(imageUrl.lastIndexOf('/')+1,imageUrl.length()));
     }
 }

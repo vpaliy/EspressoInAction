@@ -1,5 +1,6 @@
 package com.vpaliy.espressoinaction.presentation.ui.fragment;
 
+import android.app.Dialog;
 import android.databinding.DataBindingUtil;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
