@@ -10,10 +10,11 @@ import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
+import com.vpaliy.espressoinaction.presentation.ui.utils.CalendarUtils;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
+import java.util.Calendar;
 import java.util.Locale;
-
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class TestMatchers {
@@ -35,6 +36,42 @@ public class TestMatchers {
             @Override
             public void describeTo(Description description) {
                 description.appendText(String.format(Locale.US,"Has image drawable %d",resourceId));
+            }
+        };
+    }
+
+    static Matcher<View> withSameDay(Calendar calendar){
+        return new BoundedMatcher<View, TextView>(TextView.class) {
+
+            @Override
+            protected boolean matchesSafely(TextView item) {
+                CharSequence sample=item.getText();
+                if(sample!=null){
+                    String day=CalendarUtils.getDay(item.getContext(),calendar);
+                    day+=" "+CalendarUtils.dayOfMonth(calendar);
+                    return TextUtils.equals(sample,day);
+                }
+                return false;
+            }
+
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("Text should be the same day:"+CalendarUtils.dayOfMonth(calendar));
+            }
+        };
+    }
+
+    static Matcher<View> withTrimmedText(int resourceId){
+        return new BoundedMatcher<View, TextView>(TextView.class) {
+            @Override
+            protected boolean matchesSafely(TextView item) {
+                String text=item.getContext().getString(resourceId);
+                return text.replace('\n',' ').equals(item.getText());
+            }
+
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("Find text with id:"+resourceId);
             }
         };
     }
