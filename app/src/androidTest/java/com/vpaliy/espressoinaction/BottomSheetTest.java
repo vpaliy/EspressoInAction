@@ -239,79 +239,27 @@ public class BottomSheetTest {
                 .check(matches(isDisplayed()));
     }
 
-    private SparseArray<Pair<Integer,Integer>> cups(){
-        SparseArray<Pair<Integer,Integer>> cups=new SparseArray<>();
-        cups.put(R.id.small_cup_size,new Pair<>(R.string.small_size_label,R.drawable.ic_small_coffee_size));
-        cups.put(R.id.medium_size_cup,new Pair<>(R.string.medium_size_label,R.drawable.ic_coffee_medium_size));
-        cups.put(R.id.large_size_cup,new Pair<>(R.string.large_size_label,R.drawable.ic_coffee_large_size));
-        cups.put(R.id.tall_size_cup,new Pair<>(R.string.tall_size_label,R.drawable.ic_coffee_xlarge_size));
-        return cups;
-    }
-
-    private SparseArray<Pair<Integer,Integer>> milkTypes(){
-        SparseArray<Pair<Integer,Integer>> milks=new SparseArray<>();
-        milks.put(R.id.coconut_milk,new Pair<>(R.string.coconut_milk_label,R.drawable.ic_coconut_x));
-        milks.put(R.id.soy_milk,new Pair<>(R.string.soy_milk_label,R.drawable.ic_beans));
-        milks.put(R.id.almond_milk,new Pair<>(R.string.almond_milk_label,R.drawable.ic_almond));
-        milks.put(R.id.cow_milk,new Pair<>(R.string.whole_milk_label,R.drawable.ic_milk_bottle));
-        return milks;
-    }
-
-    private Map<Sweetness,Integer> sweetness(){
-        Map<Sweetness,Integer> sweetness=new HashMap<>();
-        sweetness.put(Sweetness.NOT_SWEET,R.string.not_sweet_label);
-        sweetness.put(Sweetness.SLIGHTLY_SWEET,R.string.slightly_sweet_label);
-        sweetness.put(Sweetness.HALF_SWEET,R.string.half_sweet_label);
-        sweetness.put(Sweetness.MODERATELY_SWEET,R.string.moderately_sweet_label);
-        sweetness.put(Sweetness.FULL_SWEETNESS,R.string.full_sweetness_label);
-        return sweetness;
-    }
-
     @Test
     public void showsConfirmationScreenWithAllPossibleCombinations(){
-        SparseArray<Pair<Integer,Integer>> milkTypes=milkTypes();
-        SparseArray<Pair<Integer,Integer>> cupTypes=cups();
-        for(int index=0;index<cupTypes.size();index++){
-            int key=cupTypes.keyAt(index);
-            for(int jIndex=0;jIndex<milkTypes.size();jIndex++){
-                int milkKey=milkTypes.keyAt(jIndex);
-                sweetness().forEach((sweetness,string)->{
-                    openBottomSheet();
-                    moveToNextWithClicks(key,milkKey);
-                    moveToNextWithDrag(sweetness.percent);
-                    moveToNextStep();
-                    showsConfirmationScreenWithFollowingCombination(cupTypes.get(key),
-                            milkTypes.get(milkKey),
-                            null,
-                            string,
-                            CoffeeType.ESPRESSO_FRAPPUCCINO.name);
-                    Espresso.pressBack();
-                });
-            }
-        }
+        openBottomSheet();
         moveToNextWithClicks(R.id.small_cup_size,R.id.almond_milk);
-
-    }
-
-    private void showsConfirmationScreenWithFollowingCombination(Pair<Integer,Integer> cupSize,
-                                        Pair<Integer,Integer> milkType,
-                                        Pair<String,String> time,
-                                        int  sweetness,String title){
+        moveToNextWithDrag(100);
+        moveToNextStep();
         onView(withId(R.id.coffee_title))
-                .check(matches(allOf(withText(title),isDisplayed())));
+                .check(matches(allOf(withText(CoffeeType.ESPRESSO_FRAPPUCCINO.name),isDisplayed())));
         onView(withId(R.id.confirmation_sweetness))
-                .check(matches(allOf(withText(sweetness),isDisplayed())));
+                .check(matches(allOf(withText(R.string.full_sweetness_label),isDisplayed())));
 
         onView(withId(R.id.txt_subtitle))
                 .check(matches(allOf(withText(R.string.order_placed),isDisplayed())));
 
         onView(withId(R.id.confirmation_cup_type))
-                .check(matches(allOf(withText(cupSize.first),
-                        withCompoundDrawable(cupSize.second),isDisplayed())));
+                .check(matches(allOf(withText(R.string.small_size_label),
+                        withCompoundDrawable(R.drawable.ic_small_coffee_size),isDisplayed())));
 
         onView(withId(R.id.confirmation_milk_type))
-                .check(matches(allOf(withText(milkType.first),
-                        withCompoundDrawable(milkType.second),isDisplayed())));
+                .check(matches(allOf(withText(R.string.almond_milk_label),
+                        withCompoundDrawable(R.drawable.ic_almond),isDisplayed())));
     }
 
     /* Just opens the bottom sheet*/
