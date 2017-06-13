@@ -3,12 +3,18 @@ package com.vpaliy.espressoinaction.presentation.ui.activity;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.support.annotation.CallSuper;
+import android.support.annotation.NonNull;
+import android.support.test.espresso.IdlingResource;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewCompat;
+import android.support.v4.view.ViewPropertyAnimatorListenerAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.roughike.bottombar.BottomBar;
 import com.vpaliy.espressoinaction.CoffeeApp;
 import com.vpaliy.espressoinaction.R;
@@ -16,6 +22,7 @@ import com.vpaliy.espressoinaction.presentation.bus.RxBus;
 import com.vpaliy.espressoinaction.presentation.bus.event.OnCoffeeClicked;
 import com.vpaliy.espressoinaction.presentation.ui.adapter.CoffeePagerAdapter;
 import com.vpaliy.espressoinaction.presentation.ui.fragment.CoffeeOrderFragment;
+import com.vpaliy.espressoinaction.presentation.ui.utils.idlingResource.SimpleIdlingResource;
 import com.vpaliy.espressoinaction.presentation.view.CoffeePager;
 
 import javax.inject.Inject;
@@ -38,6 +45,8 @@ public class HomeActivity extends AppCompatActivity {
     protected RxBus rxBus;
 
     private CompositeDisposable disposables;
+
+    private SimpleIdlingResource idlingResource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +99,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private void setBottomNavigation(){
         bottomNavigation.setOnTabSelectListener((tabId -> {
+            if(idlingResource!=null) idlingResource.setIdleState(false);
             pager.animate()
                     .alpha(0)
                     .setDuration(200)
@@ -113,7 +123,15 @@ public class HomeActivity extends AppCompatActivity {
                             pager.animate()
                                     .alpha(1.f)
                                     .setDuration(200)
-                                    .setListener(null).start();
+                                    .setListener(new AnimatorListenerAdapter() {
+                                        @Override
+                                        public void onAnimationEnd(Animator animation) {
+                                            super.onAnimationEnd(animation);
+                                            if(idlingResource!=null) {
+                                                idlingResource.setIdleState(true);
+                                            }
+                                        }
+                                    }).start();
                         }
                     }).start();
         }));
@@ -123,5 +141,12 @@ public class HomeActivity extends AppCompatActivity {
     protected void onStop(){
         super.onStop();
         disposables.clear();
+    }
+
+    @VisibleForTesting
+    @NonNull
+    public IdlingResource getIdlingResource() {
+        if(idlingResource==null) idlingResource=new SimpleIdlingResource();
+        return idlingResource;
     }
 }

@@ -105,9 +105,6 @@ public class BottomSheetTest {
         onView(withId(R.id.coffee_price))
                 .check(matches(withText(String.format(Locale.US,"$ %.0f",coffee.getPrice()))));
 
-        //here's concurrency
-       // onView(withId(R.id.coffee_image))
-           //     .check(matches(allOf(isDisplayed(), withDrawable(TextUtils.parseToResourceId(coffee.getImageUrl())))));
         onView(withId(R.id.small_cup_size)).check(matches(allOf(isDisplayed(),
                 withDoubleText(R.string.small_size_label,R.string.plus_zero_label),
                 withCompoundDrawable(R.drawable.ic_small_coffee_size))));

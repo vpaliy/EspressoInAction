@@ -1,18 +1,22 @@
 package com.vpaliy.espressoinaction;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.test.espresso.matcher.BoundedMatcher;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 import com.vpaliy.espressoinaction.presentation.ui.utils.CalendarUtils;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
+import org.hamcrest.TypeSafeMatcher;
+
 import java.util.Calendar;
 import java.util.Locale;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -36,6 +40,40 @@ public class TestMatchers {
             @Override
             public void describeTo(Description description) {
                 description.appendText(String.format(Locale.US,"Has image drawable %d",resourceId));
+            }
+        };
+    }
+
+    static Matcher<View> atPositionOnView(int recyclerViewId,
+                                          int position,
+                                          int targetViewId) {
+        return new TypeSafeMatcher<View>() {
+            Resources resources = null;
+            View childView;
+
+            public void describeTo(Description description) {
+                description.appendText("with id: " + position);
+            }
+
+            public boolean matchesSafely(View view) {
+                this.resources = view.getResources();
+                if (childView == null) {
+                    RecyclerView recyclerView = RecyclerView.class.cast(view.getRootView().findViewById(recyclerViewId));
+                    if (recyclerView != null && recyclerView.getId() == recyclerViewId) {
+                        childView = recyclerView.findViewHolderForAdapterPosition(position).itemView;
+                    }
+                    else {
+                        return false;
+                    }
+                }
+
+                if (targetViewId == -1) {
+                    return view == childView;
+                } else {
+                    View targetView = childView.findViewById(targetViewId);
+                    return view == targetView;
+                }
+
             }
         };
     }

@@ -74,6 +74,9 @@ dependencies {
     provided libs.javaxAnnotation
 
     /* Testing Libraries */
+    compile 'com.android.support.test.espresso:espresso-idling-resource:2.2', {
+        exclude group: 'com.android.support', module: 'design'
+    }
     androidTestCompile 'com.google.dexmaker:dexmaker:1.2'
     androidTestAnnotationProcessor "com.google.dagger:dagger-compiler:2.9"
     androidTestCompile 'com.google.dexmaker:dexmaker-mockito:1.2:'
