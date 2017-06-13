@@ -20,7 +20,6 @@ import android.view.animation.OvershootInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
-import com.jesusm.holocircleseekbar.lib.HoloCircleSeekBar;
 import com.vpaliy.espressoinaction.CoffeeApp;
 import com.vpaliy.espressoinaction.R;
 import com.vpaliy.espressoinaction.common.Constants;
@@ -64,6 +63,11 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
 
     public interface TextHandler {
         CharSequence setText(String leftPart, String rightPart);
+    }
+
+    public interface DataTextHandler {
+        CharSequence setText(int daysFromNow, int offset);
+        CharSequence setText(String text,int offset);
     }
 
     public static class Result{
@@ -198,42 +202,50 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
         binding.propertyLabelOne.setVisibility(View.GONE);
         binding.propertyLabelTwo.setVisibility(View.GONE);
         binding.goButton.setOnClickListener(v-> stepThree());
-        binding.layoutTwo.picker.setOnSeekBarChangeListener(new HoloCircleSeekBar.OnCircleSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(HoloCircleSeekBar holoCircleSeekBar, int position, boolean wtf) {}
-            @Override
-            public void onStartTrackingTouch(HoloCircleSeekBar holoCircleSeekBar) {
+        binding.layoutTwo.picker.setOnStartTrackingTouch(tracker ->
                 ViewCompat.animate(binding.layoutTwo.sugarLevel)
-                        .alpha(0f)
-                        .setDuration(200)
-                        .start();
-            }
-
-            @Override
-            public void onStopTrackingTouch(HoloCircleSeekBar holoCircleSeekBar) {
-                int percent=holoCircleSeekBar.getValue();
-                for(Sweetness value:Sweetness.values()){
-                    if(value.percent>=percent){
-                        presenter.onSweetnessTypeSelected(value);
-                        binding.layoutTwo.sugarLevel.setText(ConvertUtils.getSweetnessText(getContext(),value));
-                        break;
-                    }
+                .alpha(0f)
+                .setDuration(200)
+                .start());
+        binding.layoutTwo.picker.setOnStopTrackingTouch(tracker -> {
+            int percent=tracker.getValue();
+            for(Sweetness value:Sweetness.values()){
+                if(value.percent>=percent){
+                    presenter.onSweetnessTypeSelected(value);
+                    binding.layoutTwo.sugarLevel.setText(ConvertUtils.getSweetnessText(getContext(),value));
+                    break;
                 }
-                ViewCompat.animate(binding.layoutTwo.sugarLevel)
-                        .alpha(1f)
-                        .setDuration(200)
-                        .start();
             }
+            ViewCompat.animate(binding.layoutTwo.sugarLevel)
+                    .alpha(1f)
+                    .setDuration(200)
+                    .start();
         });
     }
 
     private void stepThree(){
         cleanUpOnFlip();
+        binding.propertyLabelOne.setText(getString(R.string.day_label));
+        binding.propertyLabelTwo.setText(getString(R.string.time_label));
         binding.layoutTwo.picker.setVisibility(View.INVISIBLE);
         binding.propertyLabelOne.setVisibility(View.VISIBLE);
         binding.propertyLabelTwo.setVisibility(View.VISIBLE);
-        prepareDay();
-        prepareTime();
+        binding.layoutThree.setTextHandler(new DataTextHandler() {
+            @Override
+            public CharSequence setText(int daysFromNow, int offset) {
+                Calendar calendar=Calendar.getInstance();
+                calendar.add(Calendar.DAY_OF_MONTH,daysFromNow);
+                String textDay=CalendarUtils.getDay(getContext(), calendar);
+                textDay+='\n';
+                textDay+=CalendarUtils.dayOfMonth(calendar);
+                return CalendarUtils.buildSpannableText(textDay, offset);
+            }
+
+            @Override
+            public CharSequence setText(String text, int offset) {
+                return CalendarUtils.buildSpannableText(text,offset);
+            }
+        });
         binding.switcher.showNext();
         binding.txtAction.setText(R.string.order_label);
         binding.goButton.setOnClickListener(v->presenter.onFinish());
@@ -320,63 +332,6 @@ public class CoffeeOrderFragment extends BottomSheetDialogFragment
     public void onStop() {
         super.onStop();
         presenter.stop();
-    }
-
-    private void prepareDay(){
-        Calendar calendar=Calendar.getInstance();
-        for(int index=0;index<4;index++) {
-            TextView day;
-            switch (index){
-                case 0:
-                    day=binding.layoutThree.todayDay;
-                    break;
-                case 1:
-                    day=binding.layoutThree.tomorrowDay;
-                    break;
-                case 2:
-                    day=binding.layoutThree.thirdDay;
-                    break;
-                default:
-                    day=binding.layoutThree.fourthDay;
-                    break;
-            }
-            String textDay=CalendarUtils.getDay(getContext(), calendar);
-            textDay+='\n';
-            textDay+=CalendarUtils.dayOfMonth(calendar);
-            day.setText(CalendarUtils.buildSpannableText(textDay, 3));
-            calendar.add(Calendar.DAY_OF_MONTH,1);
-        }
-    }
-
-    private void prepareTime(){
-        binding.propertyLabelOne.setText(getString(R.string.day_label));
-        binding.propertyLabelTwo.setText(getString(R.string.time_label));
-        for(int index=0;index<4;index++){
-            TextView time;
-            String text;
-            switch (index){
-                case 0:
-                    time=binding.layoutThree.timeFrameOne;
-                    text=time.getText().toString();
-                    time.setText(CalendarUtils.buildSpannableText(text,4));
-                    break;
-                case 1:
-                    time=binding.layoutThree.timeFrameTwo;
-                    text=time.getText().toString();
-                    time.setText(CalendarUtils.buildSpannableText(text,4));
-                    break;
-                case 2:
-                    time=binding.layoutThree.timeFrameThree;
-                    text=time.getText().toString();
-                    time.setText(CalendarUtils.buildSpannableText(text,3));
-                    break;
-                default:
-                    time=binding.layoutThree.timeFrameFour;
-                    text=time.getText().toString();
-                    time.setText(CalendarUtils.buildSpannableText(text,3));
-                    break;
-            }
-        }
     }
 
     private ViewGroup getRoot(){

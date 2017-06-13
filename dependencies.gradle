@@ -33,7 +33,6 @@ ext {
     constraintLayoutVersion="1.0.2"
     bottomBarVersion="2.3.1"
     calligraphyVersion="2.2.0"
-    circleSeekBarVersion="v2.2.2"
     schematicVersion="0.6.3"
 
 
@@ -73,7 +72,6 @@ ext {
             supportAnnotations : "com.android.support:support-annotations:${supportVersion}",
             calligraphy        : "uk.co.chrisjenx:calligraphy:${calligraphyVersion}",
             bottomBar          : "com.roughike:bottom-bar:${bottomBarVersion}",
-            circleSeekBar      : "com.github.JesusM:HoloCircleSeekBar:${circleSeekBarVersion}",
             schematic          : "net.simonvt.schematic:schematic:${schematicVersion}",
             schematicCompiler  : "net.simonvt.schematic:schematic-compiler:${schematicVersion}"
     ]

@@ -1,4 +1,4 @@
-<resources>
+<resources tools:ignore="TypographyDashes" xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">EspressoInAction</string>
 
     <string name="coffee_tab">Coffees</string>
@@ -13,6 +13,11 @@
     <string name="plus_one_label">\n+$1</string>
     <string name="plus_two_label">\n+$2</string>
     <string name="plus_three_label">\n+$3</string>
+    
+    <string name="nine_to_twelve_label">AM\n9-12</string>
+    <string name="twelve_to_three_label">PM\n12-3</string>
+    <string name="three_to_five_label">PM\n3-5</string>
+    <string name="five_to_nine_label">PM\n5-9</string>
 
     <string name="not_sweet_label">Not Sweet</string>
     <string name="slightly_sweet_label">Slightly Sweet</string>

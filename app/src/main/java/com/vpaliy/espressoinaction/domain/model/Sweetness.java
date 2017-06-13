@@ -9,9 +9,9 @@ public enum Sweetness {
     MODERATELY_SWEET(75),
     FULL_SWEETNESS(100);
 
-    public final double percent;
+    public final float percent;
 
-    Sweetness(double percent){
+    Sweetness(float percent){
         this.percent=percent;
     }
 }

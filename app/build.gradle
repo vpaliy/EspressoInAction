@@ -48,14 +48,12 @@ android {
     }
 }
 
-
 dependencies {
 
     compile libs.bottomBar
     compile libs.calligraphy
     compile "frankiesardo:icepick:3.2.0"
     provided "frankiesardo:icepick-processor:3.2.0"
-    compile libs.circleSeekBar
     annotationProcessor libs.schematicCompiler
     compile libs.schematic
     compile libs.supportAnnotations

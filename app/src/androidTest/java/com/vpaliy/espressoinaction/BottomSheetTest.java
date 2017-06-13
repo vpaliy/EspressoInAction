@@ -2,6 +2,7 @@ package com.vpaliy.espressoinaction;
 
 import android.app.Instrumentation;
 import android.support.test.InstrumentationRegistry;
+import android.support.test.espresso.action.ViewActions;
 import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
@@ -15,8 +16,10 @@ import com.vpaliy.espressoinaction.di.module.ApplicationModule;
 import com.vpaliy.espressoinaction.domain.IRepository;
 import com.vpaliy.espressoinaction.domain.model.Coffee;
 import com.vpaliy.espressoinaction.domain.model.Order;
+import com.vpaliy.espressoinaction.domain.model.Sweetness;
 import com.vpaliy.espressoinaction.fake.DataProvider;
 import com.vpaliy.espressoinaction.presentation.ui.activity.HomeActivity;
+import com.vpaliy.espressoinaction.presentation.ui.utils.CalendarUtils;
 import com.vpaliy.espressoinaction.presentation.ui.utils.TextUtils;
 
 import org.junit.Before;
@@ -24,11 +27,13 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
 import rx.Observable;
 
+import static android.support.test.InstrumentationRegistry.getContext;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.swipeUp;
@@ -41,7 +46,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.vpaliy.espressoinaction.TestMatchers.withCompoundDrawable;
 import static com.vpaliy.espressoinaction.TestMatchers.withDoubleText;
-import static com.vpaliy.espressoinaction.TestMatchers.withDrawable;
+import static com.vpaliy.espressoinaction.TestViewActions.dragToPosition;
 import static org.hamcrest.core.AllOf.allOf;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.mockito.Mockito.when;
@@ -76,7 +81,7 @@ public class BottomSheetTest {
     }
 
     @Test
-    public void showsBottomSheetWhenItemIsSelected(){
+    public void showsBottomSheetWithStepOneWhenItemIsSelected(){
         Coffee coffee=data.get(ITEM_POSITION);
         openBottomSheet();
 
@@ -124,12 +129,53 @@ public class BottomSheetTest {
                 withText(R.string.whole_milk_label),withCompoundDrawable(R.drawable.ic_milk_bottle))));
     }
 
+    @Test
+    public void showsBottomSheetWithStepTwoWhenItemIsSelected(){
+        openBottomSheet();
+        moveToNextStep();
+
+        Coffee coffee=data.get(ITEM_POSITION);
+
+        onView(withId(R.id.coffee_name))
+                .check(matches(allOf(isDisplayed(),withText(coffee.getCoffeeType().name))));
+
+        onView(withId(R.id.go_button))
+                .check(matches(isDisplayed()));
+
+        onView(allOf(instanceOf(TextView.class), withParent(withId(R.id.go_button))))
+                .check(matches(withText(R.string.go_label)));
+
+        onView(withId(R.id.coffee_price))
+                .check(matches(allOf(isDisplayed(),
+                        withText(String.format(Locale.US,"$ %.0f",coffee.getPrice())))));
+
+        onView(withId(R.id.picker)).perform(dragToPosition(Sweetness.NOT_SWEET.percent));
+        onView(withId(R.id.sugar_level)).check(matches(withText(R.string.not_sweet_label)));
+
+        onView(withId(R.id.picker)).perform(dragToPosition(Sweetness.SLIGHTLY_SWEET.percent));
+        onView(withId(R.id.sugar_level)).check(matches(withText(R.string.slightly_sweet_label)));
+
+        onView(withId(R.id.picker)).perform(dragToPosition(Sweetness.HALF_SWEET.percent));
+        onView(withId(R.id.sugar_level)).check(matches(withText(R.string.half_sweet_label)));
+
+        onView(withId(R.id.picker)).perform(dragToPosition(Sweetness.MODERATELY_SWEET.percent));
+        onView(withId(R.id.sugar_level)).check(matches(withText(R.string.moderately_sweet_label)));
+
+        onView(withId(R.id.picker)).perform(dragToPosition(Sweetness.FULL_SWEETNESS.percent));
+        onView(withId(R.id.sugar_level)).check(matches(withText(R.string.full_sweetness_label)));
+    }
+
     /* Just opens the bottom sheet*/
     private void openBottomSheet(){
         onView(allOf(isDisplayed(),withId(R.id.coffee_recycler)))
                 .perform(RecyclerViewActions.actionOnItemAtPosition(ITEM_POSITION,click()));
         onView(withId(R.id.content)).check(matches(isDisplayed()));
         onView(isRoot()).perform(swipeUp());
+    }
+
+    private void moveToNextStep(){
+        onView(withId(R.id.go_button)).perform(click());
+        onView(withId(R.id.content)).check(matches(isDisplayed()));
     }
 
     @Test
