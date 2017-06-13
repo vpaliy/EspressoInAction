@@ -3,6 +3,8 @@ package com.vpaliy.espressoinaction.di.module;
 import android.content.ContentResolver;
 import android.content.Context;
 
+import com.vpaliy.espressoinaction.common.scheduler.BaseSchedulerProvider;
+import com.vpaliy.espressoinaction.common.scheduler.SchedulerProvider;
 import com.vpaliy.espressoinaction.data.cache.CacheStore;
 import com.vpaliy.espressoinaction.data.local.CoffeeHandler;
 import com.vpaliy.espressoinaction.data.local.DataHandler;
@@ -61,6 +63,12 @@ public class DataModule {
     @Provides
     CacheStore<Order> provideOrderCache(){
         return new CacheStore<>(CACHE_SIZE);
+    }
+
+    @Provides
+    @Singleton
+    BaseSchedulerProvider provideScheduler(){
+        return new SchedulerProvider();
     }
 
 }

@@ -56,12 +56,12 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        disposables.clear();
         disposables.add(rxBus.asFlowable()
             .subscribe(this::handleEvent));
     }
 
     private void handleEvent(Object object){
-        disposables.clear();
         if(object!=null){
             if(object instanceof OnCoffeeClicked){
                 OnCoffeeClicked event=OnCoffeeClicked.class.cast(object);
@@ -73,6 +73,7 @@ public class HomeActivity extends AppCompatActivity {
     private void prepareOrder(OnCoffeeClicked event){
         CoffeeOrderFragment.newInstance(event.convertToBundle())
                 .show(getSupportFragmentManager(), null);
+
     }
 
     private void setUI(){

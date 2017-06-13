@@ -43,4 +43,8 @@ public class CoffeeApp extends Application {
                 .build();
     }
 
+    /* For testing */
+    public void setComponent(ApplicationComponent component) {
+        this.component = component;
+    }
 }

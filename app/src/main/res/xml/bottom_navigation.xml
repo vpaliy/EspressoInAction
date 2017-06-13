@@ -3,21 +3,21 @@
         id="@+id/coffee"
         icon="@drawable/ic_take_away_coffee"
         activeColor="#ffff"
-        barColorWhenSelected="@color/colorPrimary"
+        barColorWhenSelected="@color/coffee_tab_color"
         badgeHidesWhenActive="true"
         title="Coffee" />
     <tab
         id="@+id/orders"
         icon="@drawable/ic_order"
         activeColor="#ffff"
-        barColorWhenSelected="#4db6f1"
+        barColorWhenSelected="@color/order_tab_color"
         badgeHidesWhenActive="true"
         title="Order" />
     <tab
-        id="@+id/personal"
+        id="@+id/info"
         icon="@drawable/ic_info"
         activeColor="#ffff"
-        barColorWhenSelected="#00695c"
+        barColorWhenSelected="@color/info_tab_color"
         badgeHidesWhenActive="true"
         title="Info" />
 </tabs>

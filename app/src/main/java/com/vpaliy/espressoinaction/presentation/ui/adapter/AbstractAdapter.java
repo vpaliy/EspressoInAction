@@ -1,8 +1,10 @@
 package com.vpaliy.espressoinaction.presentation.ui.adapter;
 
 import android.content.Context;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -18,6 +20,7 @@ public abstract class AbstractAdapter<T> extends RecyclerView.Adapter<AbstractAd
     protected RxBus rxBus;
     protected List<T> data;
     private boolean locked;
+    private Handler handler=new Handler();
 
     public AbstractAdapter(@NonNull Context context,
                            @NonNull RxBus rxBus){
@@ -45,6 +48,10 @@ public abstract class AbstractAdapter<T> extends RecyclerView.Adapter<AbstractAd
 
     public void lock(){
         locked=true;
+    }
+
+    protected void unlockAfter(long milliSec){
+        handler.postDelayed(this::unlock,milliSec);
     }
 
     public void unlock(){

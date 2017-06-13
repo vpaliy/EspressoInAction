@@ -1,9 +1,9 @@
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
 
-def config=rootProject.ext.configuration;
-def libs=rootProject.ext.dependencies;
-def testLibs=rootProject.ext.testDependencies;
+def config = rootProject.ext.configuration;
+def libs = rootProject.ext.dependencies;
+def testLibs = rootProject.ext.testDependencies;
 
 
 android {
@@ -40,19 +40,25 @@ android {
     packagingOptions {
         exclude 'META-INF/rxjava.properties'
     }
+    sourceSets {
+        main {
+            resources.srcDirs = ['src/main/resources', 'src/main/resources/']
+            java.srcDirs = ['src/main/java', 'src/commonMock/java']
+        }
+    }
 }
 
 
 dependencies {
 
-    compile 'com.roughike:bottom-bar:2.3.1'
-    compile 'uk.co.chrisjenx:calligraphy:2.2.0'
+    compile libs.bottomBar
+    compile libs.calligraphy
     compile "frankiesardo:icepick:3.2.0"
     provided "frankiesardo:icepick-processor:3.2.0"
-    compile 'com.github.JesusM:HoloCircleSeekBar:v2.2.2'
-    annotationProcessor  'net.simonvt.schematic:schematic-compiler:0.6.3'
-    compile 'net.simonvt.schematic:schematic:0.6.3'
-
+    compile libs.circleSeekBar
+    annotationProcessor libs.schematicCompiler
+    compile libs.schematic
+    compile libs.supportAnnotations
     compile libs.circleImage
     compile libs.constraintLayout
     compile libs.cardView
@@ -68,9 +74,27 @@ dependencies {
     annotationProcessor libs.Dagger2Compiler
     annotationProcessor libs.butterKnifeCompiler
     provided libs.javaxAnnotation
+
     /* Testing Libraries */
+    androidTestCompile 'com.google.dexmaker:dexmaker:1.2'
+    androidTestAnnotationProcessor "com.google.dagger:dagger-compiler:2.9"
+    androidTestCompile 'com.google.dexmaker:dexmaker-mockito:1.2:'
+    androidTestCompile testLibs.espressoCore, {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    }
+    androidTestCompile testLibs.testRules, {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    }
+    androidTestCompile testLibs.espressoContrib, {
+        exclude group: 'com.android.support', module: 'support-annotations'
+        exclude group: 'com.android.support', module: 'support-v4'
+        exclude group: 'com.android.support', module: 'design'
+        exclude group: 'com.android.support', module: 'recyclerview-v7'
+    }
+    androidTestCompile testLibs.testRunner, {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    }
     testCompile testLibs.robolectric
     testCompile testLibs.mockito
-    testCompile testLibs.espresso
     testCompile testLibs.jUnit
 }

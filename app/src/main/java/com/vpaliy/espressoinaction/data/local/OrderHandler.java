@@ -50,7 +50,6 @@ public class OrderHandler implements DataHandler<Order> {
                 Coffee coffee = DatabaseUtils.toCoffee(cursor);
                 order.setCoffee(coffee);
                 orders.add(order);
-
             }
             if(!cursor.isClosed()) cursor.close();
             return orders;

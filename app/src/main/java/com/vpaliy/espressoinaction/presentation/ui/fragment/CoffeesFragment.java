@@ -13,8 +13,11 @@ import com.vpaliy.espressoinaction.presentation.mvp.contract.CoffeesContract.Pre
 import com.vpaliy.espressoinaction.presentation.ui.adapter.CoffeeAdapter;
 import com.vpaliy.espressoinaction.presentation.view.PaddingDecoration;
 import java.util.List;
+
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import butterknife.BindView;
@@ -27,7 +30,6 @@ public class CoffeesFragment extends BaseFragment
         implements CoffeesContract.View {
 
     private Presenter presenter;
-
     private CoffeeAdapter adapter;
 
     @Nullable
@@ -63,12 +65,6 @@ public class CoffeesFragment extends BaseFragment
     @Override
     public void showCoffeeList(@NonNull List<Coffee> coffeeList) {
         adapter.setData(coffeeList);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if(adapter!=null) adapter.resume();
     }
 
     @Override

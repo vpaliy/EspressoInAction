@@ -11,13 +11,13 @@ import com.vpaliy.espressoinaction.R;
 import com.vpaliy.espressoinaction.domain.model.Coffee;
 import com.vpaliy.espressoinaction.presentation.bus.RxBus;
 import com.vpaliy.espressoinaction.presentation.bus.event.OnCoffeeClicked;
-
 import java.util.Locale;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class CoffeeAdapter extends AbstractAdapter<Coffee> {
+
+    private static final int UNLOCK_TIME=500;
 
     public CoffeeAdapter(@NonNull Context context,
                          @NonNull RxBus rxBus){
@@ -50,6 +50,7 @@ public class CoffeeAdapter extends AbstractAdapter<Coffee> {
                 lock();
                 Coffee coffee=at(getAdapterPosition());
                 rxBus.send(OnCoffeeClicked.click(coffee));
+                unlockAfter(UNLOCK_TIME);
             }
         }
 

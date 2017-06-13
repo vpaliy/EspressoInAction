@@ -31,16 +31,23 @@ ext {
     circleImageVersion="2.1.0"
     multiDexVersion="1.0.1"
     constraintLayoutVersion="1.0.2"
+    bottomBarVersion="2.3.1"
+    calligraphyVersion="2.2.0"
+    circleSeekBarVersion="v2.2.2"
+    schematicVersion="0.6.3"
 
 
     /* Testing versions */
     robolectricVersion = '3.1.1'
     jUnitVersion = '4.12'
+    testRunnerVersion='0.5'
     assertJVersion = '1.7.1'
     mockitoVersion = '2.7.13'
     dexmakerVersion = '1.0'
-    espressoVersion = '2.0'
+    espressoVersion = '2.2'
     testingSupportLibVersion = '0.1'
+    rulesVersion = "0.5"
+
 
 
     /** Main dependencies **/
@@ -62,16 +69,23 @@ ext {
             cardView           : "com.android.support:cardview-v7:${supportVersion}",
             rxRelay            : "com.jakewharton.rxrelay2:rxrelay:${rxRelayVersion}",
             multiDex           : "com.android.support:multidex:${multiDexVersion}",
-            constraintLayout   : "com.android.support.constraint:constraint-layout:${constraintLayoutVersion}"
-
-
+            constraintLayout   : "com.android.support.constraint:constraint-layout:${constraintLayoutVersion}",
+            supportAnnotations : "com.android.support:support-annotations:${supportVersion}",
+            calligraphy        : "uk.co.chrisjenx:calligraphy:${calligraphyVersion}",
+            bottomBar          : "com.roughike:bottom-bar:${bottomBarVersion}",
+            circleSeekBar      : "com.github.JesusM:HoloCircleSeekBar:${circleSeekBarVersion}",
+            schematic          : "net.simonvt.schematic:schematic:${schematicVersion}",
+            schematicCompiler  : "net.simonvt.schematic:schematic-compiler:${schematicVersion}"
     ]
 
     testDependencies = [
             jUnit :             "junit:junit:${jUnitVersion}",
             robolectric:        "org.robolectric:robolectric:${robolectricVersion}",
             mockito:            "org.mockito:mockito-core:${mockitoVersion}",
-            espresso:           "com.android.support.test.espresso:espresso-core:${espressoVersion}",
+            testRunner:         "com.android.support.test:runner:${testRunnerVersion}",
+            espressoCore:       "com.android.support.test.espresso:espresso-core:${espressoVersion}",
+            espressoContrib: "com.android.support.test.espresso:espresso-contrib:${espressoVersion}",
+            testRules:      "com.android.support.test:rules:${rulesVersion}",
             testingSupportLib:  "com.android.support.test:testing-support-lib:${testingSupportLibVersion}",
     ]
 

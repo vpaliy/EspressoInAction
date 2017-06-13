@@ -7,10 +7,7 @@ import com.vpaliy.espressoinaction.domain.model.MilkType;
 import com.vpaliy.espressoinaction.domain.model.Order;
 import com.vpaliy.espressoinaction.domain.model.SizeType;
 import com.vpaliy.espressoinaction.domain.model.Sweetness;
-
 import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 public class FakeDataProvider {

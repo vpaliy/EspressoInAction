@@ -23,7 +23,7 @@
         android:padding="10dp">
 
         <TextView
-            android:id="@+id/property_label_one"
+            android:id="@+id/label_one"
             android:layout_marginLeft="@dimen/spacing_big"
             android:layout_marginTop="@dimen/spacing_medium"
             style="@style/Widget.Label"
@@ -44,7 +44,7 @@
             tools:text="@string/small_size_label"
             android:text="@{textHandler.setText(@string/small_size_label,@string/plus_zero_label)}"
             android:fontFamily="sans-serif-medium"
-            app:layout_constraintTop_toBottomOf="@+id/property_label_one"
+            app:layout_constraintTop_toBottomOf="@+id/label_one"
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintRight_toLeftOf="@+id/medium_size_cup"
             app:layout_constraintHorizontal_bias="0.5"

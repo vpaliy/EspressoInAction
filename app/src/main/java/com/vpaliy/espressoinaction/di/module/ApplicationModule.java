@@ -31,10 +31,4 @@ public class ApplicationModule {
     RxBus provideBus(){
         return new RxBus();
     }
-
-    @Provides
-    @Singleton
-    BaseSchedulerProvider provideScheduler(){
-        return new SchedulerProvider();
-    }
 }
